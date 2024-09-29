@@ -1,0 +1,1 @@
+// nombre_view.dart contenido

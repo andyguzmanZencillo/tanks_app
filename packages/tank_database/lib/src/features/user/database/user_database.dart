@@ -1,6 +1,6 @@
 import 'package:failures/failures.dart';
 import 'package:isar/isar.dart';
-import 'package:pos_database/pos_database.dart';
+import 'package:tank_database/tank_database.dart';
 
 class UserDatabase {
   UserDatabase({

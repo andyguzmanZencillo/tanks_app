@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:tank_database/tank_database.dart';
 import 'package:tanks_app/injection/injection.dart';
 
 class MyHttpOverrides extends HttpOverrides {

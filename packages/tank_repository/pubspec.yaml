@@ -13,8 +13,8 @@ dependencies:
     sdk: flutter
   tank_api:
     path: ../tank_api
-  pos_database:
-    path: ../pos_database
+  tank_database:
+    path: ../tank_database
   failures:
     path: ../failures
   intl: ^0.19.0

@@ -9,7 +9,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:pos_database/pos_database.dart';
+import 'package:tank_database/src/features/features.dart';
 
 /// {@template database}
 /// Database with isar

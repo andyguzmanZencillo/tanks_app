@@ -1,7 +1,7 @@
 import 'package:failures/failures.dart';
 import 'package:oxidized/oxidized.dart';
-import 'package:pos_database/pos_database.dart';
 import 'package:tank_api/tank_api.dart';
+import 'package:tank_database/tank_database.dart';
 import 'package:tank_repository/core/generic_token.dart';
 import 'package:tank_repository/features/article/article.dart';
 

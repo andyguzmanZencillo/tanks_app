@@ -1,39 +1,46 @@
 part of 'dialog_handler_cubit.dart';
 
-enum DialogType { success, error, info, none }
+enum DialogType { loading, success, error, info, none }
+
+enum DialogState { open, close }
 
 class DialogHandlerState extends Equatable {
   const DialogHandlerState({
-    this.dialogInfo = const DialogInfo.empty(),
+    this.dialogData = const DialogData.empty(),
+    this.message = '',
+    this.dialogState = DialogState.close,
+    this.closeManually = false,
+    this.dialogType = DialogType.none,
   });
-  final DialogInfo dialogInfo;
+  final DialogData dialogData;
+  final DialogType dialogType;
+  final String message;
+  final DialogState dialogState;
 
-  DialogHandlerState copyWith(DialogInfo dialogInfo) {
+  final bool closeManually;
+
+  DialogHandlerState copyWith({
+    DialogData? dialogData,
+    DialogState? dialogState,
+    String? message,
+    DialogType? dialogType,
+    bool? closeManually,
+  }) {
     return DialogHandlerState(
-      dialogInfo: dialogInfo,
+      dialogData: dialogData ?? this.dialogData,
+      dialogState: dialogState ?? this.dialogState,
+      message: message ?? this.message,
+      dialogType: dialogType ?? this.dialogType,
+      closeManually: closeManually ?? this.closeManually,
     );
   }
 
   @override
-  List<Object> get props => [dialogInfo];
-}
-
-class DialogInfo extends Equatable {
-  const DialogInfo({
-    required this.dialogData,
-    required this.dialogType,
-  });
-
-  const DialogInfo.empty()
-      : dialogType = DialogType.none,
-        dialogData = null;
-
-  final DialogType dialogType;
-  final DialogData? dialogData;
-
-  @override
-  List<Object?> get props => [
-        dialogType,
+  List<Object> get props => [
         dialogData,
+        dialogState,
+        message,
+        closeManually,
+        dialogType,
       ];
 }

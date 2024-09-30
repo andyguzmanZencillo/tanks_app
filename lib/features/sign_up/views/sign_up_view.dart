@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
+import 'package:tanks_app/core/util/extensions/extension_context.dart';
+import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
+import 'package:tanks_app/features/article/list/views/article_list.dart';
+import 'package:tanks_app/features/sign_up/cubit/sign_up_cubit.dart';
 import 'package:tanks_app/features/sign_up/views/sign_up_body.dart';
 
 class SignUpView extends StatelessWidget {
@@ -6,6 +12,45 @@ class SignUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SignUpBody();
+    final dialog = context.read<DialogHandlerCubit>();
+    return BlocListener<SignUpCubit, SignUpState>(
+      listener: (context, state) {
+        final s = state.status;
+        if (s == SignUpStatus.loading) {
+          dialog.onOpenNotification(
+            message: 'Registrando...',
+            dialogType: DialogType.loading,
+          );
+        } else if (s == SignUpStatus.error) {
+          dialog.onOpenNotification(
+            dialogData: DialogData(
+              barrierDismissible: false,
+              message: 'Error al registrar',
+              title: 'Error',
+              onPressed: () {
+                context.pop();
+              },
+              textButton: 'Cerrar',
+            ),
+            dialogType: DialogType.error,
+          );
+        } else if (s == SignUpStatus.success) {
+          dialog.onOpenNotification(
+            dialogData: DialogData(
+              barrierDismissible: false,
+              message: 'Registro exitoso!',
+              title: '¡Exito!',
+              onPressed: () {
+                context.pop();
+                context.push(ArticleList.route());
+              },
+              textButton: 'Cerrar',
+            ),
+            dialogType: DialogType.success,
+          );
+        }
+      },
+      child: const SignUpBody(),
+    );
   }
 }

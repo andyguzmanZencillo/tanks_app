@@ -31,10 +31,12 @@ class ApiMethod {
       dio.interceptors.add(ApiInterceptor());
 
       log('REQUEST TOKEN SED ===> ${jsonEncode(data)}');
-      final response = await dio.post<String>(
-        uri.toString(),
-        data: jsonEncode(data),
-      );
+      final response = await dio
+          .post<String>(
+            uri.toString(),
+            data: jsonEncode(data),
+          )
+          .timeout(const Duration(seconds: 2));
 
       final decoded = json.decode(response.data!);
       log('RESPONSE TOKEN ===> ${jsonEncode(decoded)}');
@@ -78,10 +80,12 @@ class ApiMethod {
       log('DATA SEND API ===> ${jsonEncode(data)}');
 
       dio.interceptors.add(TokenInterceptor());
-      final response = await dio.post<String>(
-        uri.toString(),
-        data: jsonEncode(data),
-      ); //.timeout(const Duration(seconds: 2));
+      final response = await dio
+          .post<String>(
+            uri.toString(),
+            data: jsonEncode(data),
+          )
+          .timeout(const Duration(seconds: 2));
 
       final decoded = jsonDecode(response.data!);
       log(json.toString());

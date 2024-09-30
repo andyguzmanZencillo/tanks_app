@@ -142,10 +142,17 @@ class DialogData {
     required this.barrierDismissible,
   });
 
+  const DialogData.empty()
+      : message = '',
+        title = '',
+        textButton = '',
+        onPressed = null,
+        barrierDismissible = true;
+
   final String message;
   final String title;
   final String textButton;
-  final void Function() onPressed;
+  final void Function()? onPressed;
   final bool barrierDismissible;
 }
 
@@ -213,7 +220,7 @@ class ErrorDialog extends StatelessWidget {
       actions: <Widget>[
         ButtonCustom(
           text: dialogData.textButton,
-          onPressed: dialogData.onPressed,
+          onPressed: dialogData.onPressed ?? () {},
           backgroundColor: Colors.redAccent,
         ),
       ],
@@ -292,7 +299,7 @@ class GoodDialog extends StatelessWidget {
         ButtonCustom(
           backgroundColor: Colors.green,
           text: dialogData.textButton,
-          onPressed: dialogData.onPressed,
+          onPressed: dialogData.onPressed ?? () {},
         ),
       ],
       actionsAlignment: MainAxisAlignment.center,
@@ -341,7 +348,7 @@ class InfoDialog extends StatelessWidget {
       actions: <Widget>[
         ButtonCustom(
           text: dialogData.textButton,
-          onPressed: dialogData.onPressed,
+          onPressed: dialogData.onPressed ?? () {},
         ),
       ],
       actionsAlignment: MainAxisAlignment.center,

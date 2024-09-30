@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:tank_api/core/encryption/encryption.dart';
-import 'package:tank_api/features/user/models/user_request.dart';
 
 class RequestBase {
   RequestBase({
@@ -142,20 +141,7 @@ class SelectCompanyRequest extends CompanyRequest {
   }
 }
 
-class Asdasd {
-  void asdasds() {
-    final s = InsertUserRequest(
-      operation: 'operation',
-      idCompania: 213,
-      nombre: 'nombre',
-      clave: 'clave',
-    );
 
-    if (s.clave == 'asdasd') {
-      final ss = s.idCompania;
-    }
-  }
-}
 
 //**{
      // "transaction": "100",

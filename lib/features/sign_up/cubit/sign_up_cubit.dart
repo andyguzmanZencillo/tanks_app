@@ -11,16 +11,23 @@ class SignUpCubit extends Cubit<SignUpState> {
     required String idCompany,
     required String user,
     required String password,
+    required String name,
   }) async {
+    emit(state.copyWith(status: SignUpStatus.loading));
     final result = await userRepository.signUp(
       idCompany: int.parse(idCompany),
       user: user,
+      name: name,
       password: password,
     );
 
     result.when(
-      ok: (ok) {},
-      err: (err) {},
+      ok: (ok) {
+        emit(state.copyWith(status: SignUpStatus.success));
+      },
+      err: (err) {
+        emit(state.copyWith(status: SignUpStatus.success));
+      },
     );
   }
 }

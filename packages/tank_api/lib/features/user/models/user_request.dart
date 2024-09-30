@@ -11,6 +11,7 @@ class InsertUserRequest extends UserRequest {
     required this.idCompania,
     required this.nombre,
     required this.clave,
+    required this.usuario,
     this.idUserTrace = 123,
     this.operation = 'I',
   });
@@ -20,6 +21,7 @@ class InsertUserRequest extends UserRequest {
   final int idCompania;
   final String nombre;
   final String clave;
+  final String usuario;
 
   Map<String, dynamic> toJson() {
     return super.toJsonParams({
@@ -27,6 +29,7 @@ class InsertUserRequest extends UserRequest {
       'operation': operation,
       'id_compania': idCompania,
       'nombre': nombre,
+      'usuario': usuario,
       'clave': clave,
     });
   }

@@ -31,11 +31,13 @@ class UserRepository {
     required int idCompany,
     required String user,
     required String password,
+    required String name,
   }) {
     return handleExceptionToken<Unit>(() async {
       final request = InsertUserRequest(
         idCompania: idCompany,
-        nombre: user,
+        nombre: name,
+        usuario: user,
         clave: password,
       );
       await _api.insertUser(request);

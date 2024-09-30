@@ -40,6 +40,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   Bloc.observer = const AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
+  await Database.instance.initAvanced();
   await initializeDateFormatting('es');
   HttpOverrides.global = MyHttpOverrides();
 

@@ -20,7 +20,7 @@ class SignInCubit extends Cubit<SignInState> {
       user: userName,
       password: password,
     );
-
+    await Future.delayed(const Duration(seconds: 3));
     result.when(
       ok: (ok) {
         emit(state.copyWith(status: SignStatus.success));

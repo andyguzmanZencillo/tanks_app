@@ -35,21 +35,41 @@ class MultiChannelAlertProcessor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dialogCubit = context.read<DialogHandlerCubit>();
     return MultiBlocListener(
       listeners: [
         BlocListener<DialogHandlerCubit, DialogHandlerState>(
           listenWhen: (previous, current) {
-            return current.dialogInfo != const DialogInfo.empty();
+            return current.closeManually;
           },
           listener: (context, state) {
-            final dialogData = state.dialogInfo.dialogData;
-            if (dialogData == null) return;
-            final status = state.dialogInfo.dialogType;
-            context.read<DialogHandlerCubit>().onNotification(
-                  const DialogInfo.empty(),
-                );
+            if (state.closeManually) {
+              context.pop();
+            }
+          },
+        ),
+        BlocListener<DialogHandlerCubit, DialogHandlerState>(
+          listenWhen: (previous, current) {
+            return current.dialogState == DialogState.open;
+          },
+          listener: (context, state) {
+            final dialogData = state.dialogData;
+            final message = state.message;
+            final status = state.dialogType;
 
-            if (status == DialogType.success) {
+            if (status == DialogType.loading) {
+              showDialog<void>(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return DialogText(
+                    text: message,
+                  );
+                },
+              ).then((s) {
+                dialogCubit.changeStateDialog(DialogState.close);
+              });
+            } else if (status == DialogType.success) {
               showDialog<void>(
                 barrierDismissible: false,
                 context: context,
@@ -58,7 +78,9 @@ class MultiChannelAlertProcessor extends StatelessWidget {
                     dialogData: dialogData,
                   );
                 },
-              );
+              ).then((s) {
+                dialogCubit.changeStateDialog(DialogState.close);
+              });
             } else if (status == DialogType.info) {
               showDialog<void>(
                 barrierDismissible: false,
@@ -68,7 +90,9 @@ class MultiChannelAlertProcessor extends StatelessWidget {
                     dialogData: dialogData,
                   );
                 },
-              );
+              ).then((s) {
+                dialogCubit.changeStateDialog(DialogState.close);
+              });
             } else if (status == DialogType.error) {
               showDialog<void>(
                 barrierDismissible: false,
@@ -78,7 +102,9 @@ class MultiChannelAlertProcessor extends StatelessWidget {
                     dialogData: dialogData,
                   );
                 },
-              );
+              ).then((s) {
+                dialogCubit.changeStateDialog(DialogState.close);
+              });
             }
           },
         ),

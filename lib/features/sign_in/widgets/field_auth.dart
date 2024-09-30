@@ -142,6 +142,7 @@ class ResultValidate {
   final bool isPassed;
 }
 */
+
 class FieldAuth2 extends StatefulWidget {
   const FieldAuth2({
     required this.controller,
@@ -150,11 +151,8 @@ class FieldAuth2 extends StatefulWidget {
     required this.label,
     required this.icon,
     this.onFocusChange,
-    this.isLoading = false,
     this.isLabelTitle = false,
     this.showDecoration = true,
-    this.isActiveValidation = true,
-    this.showError = false,
     this.isPassword = false,
     this.inputFormatters,
     this.inputType,
@@ -166,12 +164,11 @@ class FieldAuth2 extends StatefulWidget {
   final void Function({required bool focus})? onFocusChange;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? inputType;
-  final bool isLoading;
+
   final String label;
   final bool isLabelTitle;
   final bool showDecoration;
-  final bool showError;
-  final bool isActiveValidation;
+
   final bool isPassword;
   final Icon icon;
 
@@ -180,7 +177,8 @@ class FieldAuth2 extends StatefulWidget {
 }
 
 class _FieldAuth2State extends State<FieldAuth2> {
-  var _isPassword = false;
+  bool _isPasswordVisible = false; // Mejoramos el nombre de la variable
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -197,23 +195,25 @@ class _FieldAuth2State extends State<FieldAuth2> {
         const SizedBox(
           height: 5,
         ),
-        Container(
-          height: 50,
-          alignment: Alignment.center,
-          padding: const EdgeInsets.only(left: 15),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 233, 235, 236),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: FocusScope(
-            onFocusChange: (s) => widget.onFocusChange,
+        FocusScope(
+          onFocusChange: (focus) {
+            // Corregimos la invocación del onFocusChange
+            if (widget.onFocusChange != null) {
+              widget.onFocusChange!(focus: focus);
+            }
+          },
+          child: SizedBox(
+            //height: 50,
             child: TextFormField(
-              obscureText: _isPassword,
+              textAlignVertical: TextAlignVertical.center,
+              obscureText: widget.isPassword
+                  ? !_isPasswordVisible
+                  : false, // Control de visibilidad de la contraseña
               keyboardType: widget.inputType,
               key: widget.controller.fieldKey,
-              validator: widget.isActiveValidation ? widget.validator : null,
+              validator: widget.validator,
               inputFormatters: widget.inputFormatters,
-              readOnly: widget.isLoading,
+
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: widget.controller.textEditingController,
               onChanged: widget.onChanged,
@@ -221,37 +221,45 @@ class _FieldAuth2State extends State<FieldAuth2> {
                 color: Colors.black,
               ),
               decoration: InputDecoration(
-                /*icon: Icon(
-                  icon.icon,
-                  color: const Color.fromARGB(255, 65, 65, 65),
-                ),*/
+                filled: true,
+                fillColor: const Color.fromARGB(255, 233, 235, 236),
                 hintText: 'Ingresa tu ${widget.label.toLowerCase()}',
                 hintStyle: const TextStyle(
                   color: Color.fromARGB(255, 117, 117, 117),
                   fontWeight: FontWeight.w400,
                 ),
-                errorStyle: !widget.showError
-                    ? const TextStyle(
-                        color: Colors.transparent,
-                        fontSize: 0,
-                      )
-                    : null,
                 suffixIcon: widget.isPassword
                     ? GestureDetector(
-                        child: _isPassword
-                            ? const Icon(Icons.read_more)
-                            : const Icon(Icons.remove_red_eye),
+                        child: Icon(
+                          _isPasswordVisible
+                              ? Icons.remove_red_eye
+                              : Icons
+                                  .visibility_off, // Cambia el ícono según el estado
+                        ),
                         onTap: () {
                           setState(() {
-                            _isPassword = !_isPassword;
+                            _isPasswordVisible =
+                                !_isPasswordVisible; // Cambia el estado de visibilidad
                           });
                         },
                       )
                     : null,
-                focusedErrorBorder: !widget.showError ? InputBorder.none : null,
-                errorBorder: !widget.showError ? InputBorder.none : null,
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
+                enabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide.none,
+                ),
+                errorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide.none,
+                ),
+                focusedErrorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide.none,
+                ),
               ),
             ),
           ),

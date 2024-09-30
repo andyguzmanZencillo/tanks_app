@@ -20,7 +20,8 @@ dependencies:
   toggle_switch: ^2.3.0
   collection: ^1.18.0
   elegant_notification: ^2.3.0
-
+  pos_database:
+    path: ../pos_database
 dev_dependencies:
   flutter_test:
     sdk: flutter

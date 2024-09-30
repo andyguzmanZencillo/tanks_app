@@ -141,6 +141,7 @@ class DialogData {
     required this.onPressed,
     required this.barrierDismissible,
   });
+
   final String message;
   final String title;
   final String textButton;
@@ -221,19 +222,19 @@ class ErrorDialog extends StatelessWidget {
   }
 }
 
-class DialogInfo extends StatelessWidget {
-  const DialogInfo({required this.dialog, super.key});
+class DialogManagment extends StatelessWidget {
+  const DialogManagment({required this.dialog, super.key});
 
-  DialogInfo.good({
+  DialogManagment.good({
     required DialogData dialogData,
     super.key,
   }) : dialog = GoodDialog(dialogData: dialogData);
-  DialogInfo.error({
+  DialogManagment.error({
     required DialogData dialogData,
     super.key,
   }) : dialog = ErrorDialog(dialogData: dialogData);
 
-  DialogInfo.info({
+  DialogManagment.info({
     required DialogData dialogData,
     super.key,
   }) : dialog = InfoDialog(dialogData: dialogData);

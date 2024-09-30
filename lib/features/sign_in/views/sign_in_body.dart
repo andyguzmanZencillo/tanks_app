@@ -15,7 +15,7 @@ class SignInBody extends StatelessWidget {
     //final inherited = SignUpInherited.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: const Color.fromARGB(255, 22, 22, 22),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: BlocContext<SignInCubit, SignInState>(
         builder: (context, cubit) {
           return CustomScrollView(
@@ -32,15 +32,13 @@ class SignInBody extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.white,
-                              ),
+                              border: Border.all(),
                               borderRadius: BorderRadius.circular(100),
                             ),
                             child: const Icon(
                               Icons.bolt,
                               weight: 3,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                           const SizedBox(
@@ -48,7 +46,7 @@ class SignInBody extends StatelessWidget {
                           ),
                           const Expanded(
                             child: Divider(
-                              color: Colors.white,
+                              color: Colors.black,
                               thickness: 0.5,
                               indent: 1,
                               endIndent: 0,
@@ -73,7 +71,7 @@ class SignInBody extends StatelessWidget {
                             '¡Bienvenido de nuevo! Por favor, ingresa tus datos.',
                             style: TextStyle(
                               fontSize: 15,
-                              fontWeight: FontWeight.w300,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ],
@@ -92,36 +90,6 @@ class SignInBody extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            /*Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: const Color.fromARGB(255, 230, 230, 230),
-                                ),
-                                child: ToggleSwitch(
-                                  minWidth: double.maxFinite,
-                                  minHeight: 45,
-                                  inactiveBgColor:
-                                      const Color.fromARGB(255, 230, 230, 230),
-                                  activeBgColor: const [Colors.white],
-                                  radiusStyle: true,
-                                  animationDuration: 100,
-                                  cornerRadius: 30,
-                                  inactiveFgColor:
-                                      const Color.fromARGB(255, 100, 100, 100),
-                                  activeFgColor: Colors.black,
-                                  customTextStyles: const [
-                                    TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ],
-                                  multiLineText: true,
-                                  centerText: true,
-                                  totalSwitches: 2,
-                                  labels: const ['Login', 'Registro'],
-                                  onToggle: (index) {},
-                                ),
-                              ),*/
                             const SizedBox(
                               height: 20,
                             ),
@@ -156,6 +124,7 @@ class SignInBody extends StatelessWidget {
                                 return null;
                               },
                               onChanged: (p0) {},
+                              isPassword: true,
                               label: 'Contraseña',
                             ),
                             const SizedBox(
@@ -182,7 +151,6 @@ class SignInBody extends StatelessWidget {
                                   '¿No tiene una cuenta?',
                                   style: TextStyle(
                                     fontSize: 15,
-                                    color: Color.fromARGB(255, 175, 174, 174),
                                   ),
                                 ),
                                 TextButton(
@@ -194,7 +162,7 @@ class SignInBody extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 255, 255, 255),
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),

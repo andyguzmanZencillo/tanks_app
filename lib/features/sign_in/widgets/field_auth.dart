@@ -142,7 +142,7 @@ class ResultValidate {
   final bool isPassed;
 }
 */
-class FieldAuth2 extends StatelessWidget {
+class FieldAuth2 extends StatefulWidget {
   const FieldAuth2({
     required this.controller,
     required this.validator,
@@ -155,6 +155,7 @@ class FieldAuth2 extends StatelessWidget {
     this.showDecoration = true,
     this.isActiveValidation = true,
     this.showError = false,
+    this.isPassword = false,
     this.inputFormatters,
     this.inputType,
     super.key,
@@ -171,16 +172,24 @@ class FieldAuth2 extends StatelessWidget {
   final bool showDecoration;
   final bool showError;
   final bool isActiveValidation;
+  final bool isPassword;
   final Icon icon;
+
+  @override
+  State<FieldAuth2> createState() => _FieldAuth2State();
+}
+
+class _FieldAuth2State extends State<FieldAuth2> {
+  var _isPassword = false;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
+          widget.label,
           style: const TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 15,
             fontWeight: FontWeight.w400,
           ),
@@ -193,41 +202,54 @@ class FieldAuth2 extends StatelessWidget {
           alignment: Alignment.center,
           padding: const EdgeInsets.only(left: 15),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 53, 53, 53),
+            color: const Color.fromARGB(255, 233, 235, 236),
             borderRadius: BorderRadius.circular(10),
           ),
           child: FocusScope(
-            onFocusChange: (s) => onFocusChange,
+            onFocusChange: (s) => widget.onFocusChange,
             child: TextFormField(
-              keyboardType: inputType,
-              key: controller.fieldKey,
-              validator: isActiveValidation ? validator : null,
-              inputFormatters: inputFormatters,
-              readOnly: isLoading,
+              obscureText: _isPassword,
+              keyboardType: widget.inputType,
+              key: widget.controller.fieldKey,
+              validator: widget.isActiveValidation ? widget.validator : null,
+              inputFormatters: widget.inputFormatters,
+              readOnly: widget.isLoading,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              controller: controller.textEditingController,
-              onChanged: onChanged,
-              style: const TextStyle(color: Colors.white),
-              scrollPadding: EdgeInsets.zero,
+              controller: widget.controller.textEditingController,
+              onChanged: widget.onChanged,
+              style: const TextStyle(
+                color: Colors.black,
+              ),
               decoration: InputDecoration(
-                icon: Icon(
+                /*icon: Icon(
                   icon.icon,
-                  color: const Color.fromARGB(255, 136, 136, 136),
-                ),
-                contentPadding: EdgeInsets.zero,
-                hintText: 'Ingresa tu ${label.toLowerCase()}',
+                  color: const Color.fromARGB(255, 65, 65, 65),
+                ),*/
+                hintText: 'Ingresa tu ${widget.label.toLowerCase()}',
                 hintStyle: const TextStyle(
-                  color: Color.fromARGB(255, 223, 223, 223),
+                  color: Color.fromARGB(255, 117, 117, 117),
                   fontWeight: FontWeight.w400,
                 ),
-                errorStyle: !showError
+                errorStyle: !widget.showError
                     ? const TextStyle(
                         color: Colors.transparent,
                         fontSize: 0,
                       )
                     : null,
-                focusedErrorBorder: !showError ? InputBorder.none : null,
-                errorBorder: !showError ? InputBorder.none : null,
+                suffixIcon: widget.isPassword
+                    ? GestureDetector(
+                        child: _isPassword
+                            ? const Icon(Icons.read_more)
+                            : const Icon(Icons.remove_red_eye),
+                        onTap: () {
+                          setState(() {
+                            _isPassword = !_isPassword;
+                          });
+                        },
+                      )
+                    : null,
+                focusedErrorBorder: !widget.showError ? InputBorder.none : null,
+                errorBorder: !widget.showError ? InputBorder.none : null,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
               ),

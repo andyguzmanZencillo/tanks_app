@@ -58,58 +58,17 @@ class UserDatabase {
     }
   }
 
-  Future<UserCollection> getUserByIdEmployeLogin({
-    required int idEmploye,
-  }) async {
-    try {
-      final all = await _database.getAll<UserCollection>();
-      if (all.isEmpty) {
-        throw const ResultException(
-          'No hay empleados configurados...',
-        );
-      }
-      final user = await _database.get<UserCollection>();
-      final login =
-          await user.filter().idEmployeeEqualTo(idEmploye).findFirst();
-
-      final newLogin = login
-        ?..logged = true
-        ..date = DateTime.now();
-
-      await _database.save<UserCollection>(newLogin!);
-      return login!;
-    } catch (e) {
-      if (e is TypeError) throw NotFoundException();
-      rethrow;
-    }
-  }
-
   Future<UserCollection> getUser() async {
     try {
       final all = await _database.getAll<UserCollection>();
       if (all.isEmpty) {
-        throw const ResultException(
-          'No hay usuarios configurados...',
+        throw const DataNullException(
+          'No hay usuarios guardados',
         );
       }
       return await _database.getById<UserCollection>(1);
     } catch (e) {
       if (e is TypeError) throw NotFoundException();
-      rethrow;
-    }
-  }
-
-  Future<UserCollection> getLastLogin() async {
-    try {
-      final user = await _database.get<UserCollection>();
-      final login = await user
-          .filter()
-          .loggedEqualTo(true)
-          .sortByDateDesc()
-          .limit(1)
-          .findFirst();
-      return login!;
-    } catch (e) {
       rethrow;
     }
   }

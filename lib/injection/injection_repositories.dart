@@ -8,4 +8,6 @@ void registerRepositories() {
   sl.registerLazySingleton<CompanyRepository>(CompanyRepository.new);
   sl.registerLazySingleton<UserRepository>(UserRepository.new);
   sl.registerLazySingleton<ArticleRepository>(ArticleRepository.new);
+  sl.registerLazySingleton<SalesCenterRepository>(SalesCenterRepository.new);
+  sl.registerLazySingleton<ConsoleRepository>(ConsoleRepository.new);
 }

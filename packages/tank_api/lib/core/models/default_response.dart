@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 class DefaultResponse {
   DefaultResponse({
@@ -166,27 +167,28 @@ class DataResponse {
     required this.result,
     required this.resultSp,
   });
-
   factory DataResponse.fromJson(Map<String, dynamic> json) {
-    final data = jsonDecode(json['data'] as String) as Map<String, dynamic>;
+    dynamic validate(dynamic value) {
+      if (value == null) {
+        return null;
+      } else if (value is List) {
+        return value;
+      } else {
+        return value as Map<String, dynamic>;
+      }
+    }
 
+    final data = jsonDecode(json['data'] as String) as Map<String, dynamic>;
+    log(data.toString());
     return DataResponse(
       message: data['message'] as String,
       result: data['result'] as bool,
-      resultSp: ResultSp.fromJson(
-        data['resultsp'] as Map<String, dynamic>,
-      ),
+      resultSp: validate(data['resultsp']),
     );
   }
+
+  void valid() {}
   final String message;
   final bool result;
-  final ResultSp resultSp;
-
-  Map<String, dynamic> toJson() {
-    return {
-      'message': message,
-      'result': result,
-      'resultsp': resultSp.toJson(),
-    };
-  }
+  final dynamic resultSp;
 }

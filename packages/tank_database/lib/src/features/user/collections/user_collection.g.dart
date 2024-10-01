@@ -17,38 +17,28 @@ const UserCollectionSchema = CollectionSchema(
   name: r'UserCollection',
   id: 1551134645489327298,
   properties: {
-    r'date': PropertySchema(
-      id: 0,
-      name: r'date',
-      type: IsarType.dateTime,
-    ),
     r'idCompany': PropertySchema(
-      id: 1,
+      id: 0,
       name: r'idCompany',
       type: IsarType.long,
     ),
     r'idEmployee': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'idEmployee',
       type: IsarType.long,
     ),
-    r'logged': PropertySchema(
-      id: 3,
-      name: r'logged',
-      type: IsarType.bool,
-    ),
     r'login': PropertySchema(
-      id: 4,
+      id: 2,
       name: r'login',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 5,
+      id: 3,
       name: r'name',
       type: IsarType.string,
     ),
     r'password': PropertySchema(
-      id: 6,
+      id: 4,
       name: r'password',
       type: IsarType.string,
     )
@@ -85,13 +75,11 @@ void _userCollectionSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.date);
-  writer.writeLong(offsets[1], object.idCompany);
-  writer.writeLong(offsets[2], object.idEmployee);
-  writer.writeBool(offsets[3], object.logged);
-  writer.writeString(offsets[4], object.login);
-  writer.writeString(offsets[5], object.name);
-  writer.writeString(offsets[6], object.password);
+  writer.writeLong(offsets[0], object.idCompany);
+  writer.writeLong(offsets[1], object.idEmployee);
+  writer.writeString(offsets[2], object.login);
+  writer.writeString(offsets[3], object.name);
+  writer.writeString(offsets[4], object.password);
 }
 
 UserCollection _userCollectionDeserialize(
@@ -101,14 +89,11 @@ UserCollection _userCollectionDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = UserCollection(
-    date: reader.readDateTimeOrNull(offsets[0]),
-    id: id,
-    idCompany: reader.readLong(offsets[1]),
-    idEmployee: reader.readLong(offsets[2]),
-    logged: reader.readBoolOrNull(offsets[3]) ?? false,
-    login: reader.readString(offsets[4]),
-    name: reader.readString(offsets[5]),
-    password: reader.readString(offsets[6]),
+    idCompany: reader.readLong(offsets[0]),
+    idEmployee: reader.readLong(offsets[1]),
+    login: reader.readString(offsets[2]),
+    name: reader.readString(offsets[3]),
+    password: reader.readString(offsets[4]),
   );
   return object;
 }
@@ -121,18 +106,14 @@ P _userCollectionDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 3:
-      return (reader.readBoolOrNull(offset) ?? false) as P;
+      return (reader.readString(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
-    case 5:
-      return (reader.readString(offset)) as P;
-    case 6:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -233,80 +214,6 @@ extension UserCollectionQueryWhere
 
 extension UserCollectionQueryFilter
     on QueryBuilder<UserCollection, UserCollection, QFilterCondition> {
-  QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition>
-      dateIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'date',
-      ));
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition>
-      dateIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'date',
-      ));
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition>
-      dateEqualTo(DateTime? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'date',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition>
-      dateGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'date',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition>
-      dateLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'date',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition>
-      dateBetween(
-    DateTime? lower,
-    DateTime? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'date',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -470,16 +377,6 @@ extension UserCollectionQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition>
-      loggedEqualTo(bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'logged',
-        value: value,
       ));
     });
   }
@@ -901,18 +798,6 @@ extension UserCollectionQueryLinks
 
 extension UserCollectionQuerySortBy
     on QueryBuilder<UserCollection, UserCollection, QSortBy> {
-  QueryBuilder<UserCollection, UserCollection, QAfterSortBy> sortByDate() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'date', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterSortBy> sortByDateDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'date', Sort.desc);
-    });
-  }
-
   QueryBuilder<UserCollection, UserCollection, QAfterSortBy> sortByIdCompany() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idCompany', Sort.asc);
@@ -937,19 +822,6 @@ extension UserCollectionQuerySortBy
       sortByIdEmployeeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idEmployee', Sort.desc);
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterSortBy> sortByLogged() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'logged', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterSortBy>
-      sortByLoggedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'logged', Sort.desc);
     });
   }
 
@@ -993,18 +865,6 @@ extension UserCollectionQuerySortBy
 
 extension UserCollectionQuerySortThenBy
     on QueryBuilder<UserCollection, UserCollection, QSortThenBy> {
-  QueryBuilder<UserCollection, UserCollection, QAfterSortBy> thenByDate() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'date', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterSortBy> thenByDateDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'date', Sort.desc);
-    });
-  }
-
   QueryBuilder<UserCollection, UserCollection, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1041,19 +901,6 @@ extension UserCollectionQuerySortThenBy
       thenByIdEmployeeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idEmployee', Sort.desc);
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterSortBy> thenByLogged() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'logged', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QAfterSortBy>
-      thenByLoggedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'logged', Sort.desc);
     });
   }
 
@@ -1097,12 +944,6 @@ extension UserCollectionQuerySortThenBy
 
 extension UserCollectionQueryWhereDistinct
     on QueryBuilder<UserCollection, UserCollection, QDistinct> {
-  QueryBuilder<UserCollection, UserCollection, QDistinct> distinctByDate() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'date');
-    });
-  }
-
   QueryBuilder<UserCollection, UserCollection, QDistinct>
       distinctByIdCompany() {
     return QueryBuilder.apply(this, (query) {
@@ -1114,12 +955,6 @@ extension UserCollectionQueryWhereDistinct
       distinctByIdEmployee() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'idEmployee');
-    });
-  }
-
-  QueryBuilder<UserCollection, UserCollection, QDistinct> distinctByLogged() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'logged');
     });
   }
 
@@ -1153,12 +988,6 @@ extension UserCollectionQueryProperty
     });
   }
 
-  QueryBuilder<UserCollection, DateTime?, QQueryOperations> dateProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'date');
-    });
-  }
-
   QueryBuilder<UserCollection, int, QQueryOperations> idCompanyProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'idCompany');
@@ -1168,12 +997,6 @@ extension UserCollectionQueryProperty
   QueryBuilder<UserCollection, int, QQueryOperations> idEmployeeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'idEmployee');
-    });
-  }
-
-  QueryBuilder<UserCollection, bool, QQueryOperations> loggedProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'logged');
     });
   }
 

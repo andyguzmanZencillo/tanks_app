@@ -1,4 +1,4 @@
-import 'package:tank_api/features/article/models/article_request.dart';
+import 'package:tank_api/features/article/article.dart';
 import 'package:tank_api/features/company/api/company_api.dart';
 
 class ArticleApi extends BaseApi {
@@ -9,33 +9,38 @@ class ArticleApi extends BaseApi {
       final response = await post(
         insertArticleRequest.toJson(),
       );
-      return response;
+      return response.message;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<List<ArticleRequest>> getArticles(
+  Future<List<ArticleResponse>> getArticles(
     GetArticleRequest getArticleRequest,
   ) async {
     try {
       final response = await post(
         getArticleRequest.toJson(),
       );
-      return [];
+      final list = response.resultSp as List;
+      return list
+          .map(
+            (e) => ArticleResponse.fromJson(e as Map<String, dynamic>),
+          )
+          .toList();
     } catch (e) {
       rethrow;
     }
   }
 
   Future<String> deleteArticle(
-    DeletehArticleRequest deletehUserRequest,
+    DeleteArticleRequest deletehUserRequest,
   ) async {
     try {
       final response = await post(
         deletehUserRequest.toJson(),
       );
-      return response;
+      return response.message;
     } catch (e) {
       rethrow;
     }
@@ -48,7 +53,7 @@ class ArticleApi extends BaseApi {
       final response = await post(
         updateArticleRequest.toJson(),
       );
-      return response;
+      return response.message;
     } catch (e) {
       rethrow;
     }

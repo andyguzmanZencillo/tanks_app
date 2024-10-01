@@ -25,8 +25,8 @@ class SignInView extends StatelessWidget {
           dialog.onOpenNotification(
             dialogData: DialogData(
               barrierDismissible: false,
-              message: 'Error al iniciar sesión',
-              title: 'Error',
+              message: state.errorMessage ?? 'Error al iniciar sesión',
+              title: 'Error al iniciar sesión',
               onPressed: () {
                 context.pop();
               },

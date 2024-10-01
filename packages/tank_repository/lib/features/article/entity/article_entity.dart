@@ -7,12 +7,22 @@ class ArticleEntity extends Equatable {
     required this.descripcion,
     required this.color,
     required this.precio,
+    required this.code,
   });
+  const ArticleEntity.empty()
+      : idArticulo = 0,
+        articulo = '',
+        descripcion = '',
+        color = '',
+        precio = 0.0,
+        code = '';
+
   final int idArticulo;
   final String articulo;
   final String descripcion;
   final String color;
   final double precio;
+  final String code;
 
   ArticleEntity copyWith({
     int? idArticulo,
@@ -21,6 +31,7 @@ class ArticleEntity extends Equatable {
     String? descripcion,
     String? color,
     double? precio,
+    String? code,
   }) {
     return ArticleEntity(
       idArticulo: idArticulo ?? this.idArticulo,
@@ -28,6 +39,7 @@ class ArticleEntity extends Equatable {
       descripcion: descripcion ?? this.descripcion,
       color: color ?? this.color,
       precio: precio ?? this.precio,
+      code: code ?? this.code,
     );
   }
 
@@ -38,5 +50,6 @@ class ArticleEntity extends Equatable {
         descripcion,
         color,
         precio,
+        code,
       ];
 }

@@ -107,6 +107,15 @@ class ControllerField {
   FocusNode get focuNode => _focusNode;
   TextEditingController get textEditingController => _textEditingController;
 
+  // ignore: use_setters_to_change_properties
+  void setValue(String value) {
+    _textEditingController.text = value;
+  }
+
+  String getValue() {
+    return _textEditingController.text;
+  }
+
   void dispose() {
     _textEditingController.dispose();
     _focusNode.dispose();

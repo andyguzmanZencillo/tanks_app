@@ -9,6 +9,10 @@ extension ContextRouter on BuildContext {
     Navigator.push(this, route);
   }
 
+  Future<T?> pushResult<T>(Route<T> route) {
+    return Navigator.push<T>(this, route);
+  }
+
   void pop() {
     Navigator.pop(this);
   }

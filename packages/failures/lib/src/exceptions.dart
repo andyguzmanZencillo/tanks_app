@@ -33,6 +33,12 @@ class ResultException implements Exception {
   final String message;
 }
 
+class DataNullException implements Exception {
+  const DataNullException(this.message);
+
+  final String message;
+}
+
 /// Exception thrown when No Client Found
 class UnauthorizedException implements Exception {}
 

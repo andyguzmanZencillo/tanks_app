@@ -17,12 +17,57 @@ class ArticleRepository {
 
   Future<Result<List<ArticleEntity>, Failure>> getArticles() {
     return handleExceptionCompleteToken<List<ArticleEntity>>(() async {
-      final user = await _userDatabase.getUser();
+      //final user = await _userDatabase.getUser();
       final request = GetArticleRequest(
-        idCompania: user.idCompany,
+        idCompania: 1,
       );
       final response = await _api.getArticles(request);
-      return [];
+      return response.map((e) => e.toEntity()).toList();
+    });
+  }
+
+  Future<Result<bool, Failure>> saveArticle(ArticleEntity articleEntity) {
+    return handleExceptionCompleteToken<bool>(() async {
+      //final user = await _userDatabase.getUser();
+      final request = InsertArticleRequest(
+        idCompania: 1,
+        articulo: articleEntity.articulo,
+        descripcion: articleEntity.descripcion,
+        codigoArticulo: articleEntity.code,
+        color: articleEntity.color,
+        precio: articleEntity.precio,
+      );
+      final response = await _api.saveArticle(request);
+      return true;
+    });
+  }
+
+  Future<Result<bool, Failure>> updateArticle(ArticleEntity articleEntity) {
+    return handleExceptionCompleteToken<bool>(() async {
+      //final user = await _userDatabase.getUser();
+      final request = UpdateArticleRequest(
+        idArticulo: articleEntity.idArticulo,
+        idCompania: 1,
+        articulo: articleEntity.articulo,
+        descripcion: articleEntity.descripcion,
+        codigoArticulo: articleEntity.code,
+        color: articleEntity.color,
+        precio: articleEntity.precio,
+      );
+      final response = await _api.updateArticle(request);
+      return true;
+    });
+  }
+
+  Future<Result<bool, Failure>> deleteArticle(int idArticle) {
+    return handleExceptionCompleteToken<bool>(() async {
+      //final user = await _userDatabase.getUser();
+      final request = DeleteArticleRequest(
+        idArticle: idArticle,
+        idCompania: 1,
+      );
+      final response = await _api.deleteArticle(request);
+      return true;
     });
   }
 }

@@ -147,20 +147,21 @@ class FieldAuth2 extends StatefulWidget {
   const FieldAuth2({
     required this.controller,
     required this.validator,
-    required this.onChanged,
     required this.label,
     required this.icon,
+    this.onChanged,
     this.onFocusChange,
     this.isLabelTitle = false,
     this.showDecoration = true,
     this.isPassword = false,
     this.inputFormatters,
     this.inputType,
+    this.labelSingle = true,
     super.key,
   });
   final ControllerField controller;
   final String? Function(String?) validator;
-  final void Function(String) onChanged;
+  final void Function(String)? onChanged;
   final void Function({required bool focus})? onFocusChange;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? inputType;
@@ -171,6 +172,8 @@ class FieldAuth2 extends StatefulWidget {
 
   final bool isPassword;
   final Icon icon;
+
+  final bool labelSingle;
 
   @override
   State<FieldAuth2> createState() => _FieldAuth2State();
@@ -223,7 +226,9 @@ class _FieldAuth2State extends State<FieldAuth2> {
               decoration: InputDecoration(
                 filled: true,
                 fillColor: const Color.fromARGB(255, 233, 235, 236),
-                hintText: 'Ingresa tu ${widget.label.toLowerCase()}',
+                hintText: widget.labelSingle
+                    ? 'Ingresa tu ${widget.label.toLowerCase()}'
+                    : widget.label,
                 hintStyle: const TextStyle(
                   color: Color.fromARGB(255, 117, 117, 117),
                   fontWeight: FontWeight.w400,

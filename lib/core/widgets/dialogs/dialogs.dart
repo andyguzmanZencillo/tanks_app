@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
 
 class DialogLoading extends StatelessWidget {
@@ -128,6 +129,55 @@ class DialogText extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class DialogTextBackground extends StatelessWidget {
+  const DialogTextBackground({required this.text, super.key});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: const Color.fromARGB(255, 255, 255, 255),
+      ),
+      padding: const EdgeInsets.all(20),
+      //height: 80,
+
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(
+                  color: Color.fromARGB(255, 243, 170, 25),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Text(
+                    text,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color.fromARGB(255, 56, 56, 56),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -303,6 +353,79 @@ class GoodDialog extends StatelessWidget {
         ),
       ],
       actionsAlignment: MainAxisAlignment.center,
+    );
+  }
+}
+
+class GoodDialogBackground extends StatelessWidget {
+  const GoodDialogBackground({
+    required this.dialogData,
+    required this.dialogType,
+    super.key,
+  });
+
+  final DialogData dialogData;
+  final DialogType dialogType;
+
+  @override
+  Widget build(BuildContext context) {
+    Color backgroundColor;
+    Color iconColor;
+
+    // Establecer colores según el tipo de diálogo
+    if (dialogType == DialogType.success) {
+      backgroundColor = Colors.white;
+      iconColor = Colors.green;
+    } else {
+      backgroundColor = Colors.red[50]!;
+      iconColor = Colors.red;
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            dialogType == DialogType.success ? Icons.task_alt : Icons.error,
+            size: 50,
+            color: iconColor,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            dialogData.title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            dialogData.message,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: iconColor,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            ),
+            onPressed: dialogData.onPressed ?? () {},
+            child: Text(dialogData.textButton),
+          ),
+        ],
+      ),
     );
   }
 }

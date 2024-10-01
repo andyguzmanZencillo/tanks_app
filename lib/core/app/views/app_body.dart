@@ -24,7 +24,7 @@ class AppBody extends StatelessWidget {
           titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
         ),
       ),
-      home: const MultiChannelAlertProcessor(child: SignInPage()),
+      home: const MultiChannelAlertProcessor(child: SplashView()),
     );
   }
 }

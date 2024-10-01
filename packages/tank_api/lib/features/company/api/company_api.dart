@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:tank_api/core/models/default_response.dart';
 import 'package:tank_api/core/network/api_method.dart';
 import 'package:tank_api/core/network/endpoints.dart';
 import 'package:tank_api/features/company/models/company_request.dart';
@@ -11,7 +12,7 @@ class CompanyApi extends BaseApi {
       final response = await post(
         insertCompanyRequest.toJson(),
       );
-      return response;
+      return response.message;
     } catch (e) {
       rethrow;
     }
@@ -24,7 +25,7 @@ class BaseApi {
   }) : _dio = dio ?? Dio();
 
   final Dio _dio;
-  Future<String> post(
+  Future<DataResponse> post(
     Map<String, dynamic> data,
   ) async {
     try {

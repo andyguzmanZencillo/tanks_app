@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:failures/failures.dart';
 import 'package:tank_repository/tank_repository.dart';
 
 part 'sign_in_state.dart';
@@ -20,13 +21,26 @@ class SignInCubit extends Cubit<SignInState> {
       user: userName,
       password: password,
     );
-    await Future.delayed(const Duration(seconds: 3));
     result.when(
       ok: (ok) {
         emit(state.copyWith(status: SignStatus.success));
       },
       err: (err) {
-        emit(state.copyWith(status: SignStatus.error));
+        if (err is ResultFailure) {
+          emit(
+            state.copyWith(
+              status: SignStatus.error,
+              errorMessage: err.message,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              status: SignStatus.error,
+              errorMessage: 'Error desconocido',
+            ),
+          );
+        }
       },
     );
   }

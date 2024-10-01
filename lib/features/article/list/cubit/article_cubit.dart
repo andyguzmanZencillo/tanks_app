@@ -10,6 +10,7 @@ class ArticleCubit extends Cubit<ArticleState> {
   final ArticleRepository articleRepository;
 
   Future<void> getArticles() async {
+    emit(state.copyWith(articleStatus: ArticleStatus.success));
     final result = await articleRepository.getArticles();
     result.when(
       ok: (ok) {
@@ -24,6 +25,27 @@ class ArticleCubit extends Cubit<ArticleState> {
         emit(
           state.copyWith(
             articles: [],
+            articleStatus: ArticleStatus.error,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> deleteArticle(int idArticle) async {
+    emit(state.copyWith(articleStatus: ArticleStatus.success));
+    final result = await articleRepository.deleteArticle(idArticle);
+    result.when(
+      ok: (ok) {
+        emit(
+          state.copyWith(
+            articleStatus: ArticleStatus.successDelete,
+          ),
+        );
+      },
+      err: (err) {
+        emit(
+          state.copyWith(
             articleStatus: ArticleStatus.error,
           ),
         );

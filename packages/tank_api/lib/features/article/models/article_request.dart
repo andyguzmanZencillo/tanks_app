@@ -52,7 +52,7 @@ class UpdateArticleRequest extends ArticleRequest {
     required this.color,
     required this.precio,
     this.idUserTrace = 123,
-    this.operation = 'I',
+    this.operation = 'U',
   });
 
   final int idUserTrace;
@@ -102,23 +102,23 @@ class GetArticleRequest extends ArticleRequest {
   }
 }
 
-class DeletehArticleRequest extends ArticleRequest {
-  DeletehArticleRequest({
-    required this.idUsuario,
+class DeleteArticleRequest extends ArticleRequest {
+  DeleteArticleRequest({
+    required this.idArticle,
     required this.idCompania,
     this.idUserTrace = 123,
     this.operation = 'D',
   });
   final int idUserTrace;
   final String operation;
-  final int idUsuario;
+  final int idArticle;
   final int idCompania;
 
   Map<String, dynamic> toJson() {
     return super.toJsonParams({
       'id_user_trace': idUserTrace,
       'operation': operation,
-      'id_usuario': idUsuario,
+      'id_articulo': idArticle,
       'id_compania': idCompania,
     });
   }

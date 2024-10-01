@@ -36,6 +36,15 @@ class ResultFailure extends Failure {
   List<Object?> get props => [message];
 }
 
+class ResultNullFailure extends Failure {
+  ResultNullFailure(this.message);
+
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
+}
+
 class ResultFailureCustom extends Failure {
   ResultFailureCustom(this.message, this.type);
 

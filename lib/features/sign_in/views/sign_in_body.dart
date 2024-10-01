@@ -168,6 +168,8 @@ class SignInBody extends StatelessWidget {
                                 onPressed: () {
                                   final validResult = inherited.valid();
                                   if (validResult.isPassed) {
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
                                     cubit.login(
                                       userName: inherited
                                           .user.textEditingController.text,

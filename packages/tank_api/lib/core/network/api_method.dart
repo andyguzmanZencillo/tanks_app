@@ -71,7 +71,7 @@ class ApiMethod {
     }
   }
 
-  static Future<String> post({
+  static Future<DataResponse> post({
     required Dio dio,
     required Uri uri,
     required Map<String, dynamic> data,
@@ -88,28 +88,25 @@ class ApiMethod {
           .timeout(const Duration(seconds: 2));
 
       final decoded = jsonDecode(response.data!);
-      log(json.toString());
 
-      //final decrypted = decrypt(response.data!);
-      //final decoded = jsonDecode(decrypted);
       log('RESPONSE ${data['Query']} ===> ${jsonEncode(decoded)}');
 
       final result = DataResponse.fromJson(
         decoded as Map<String, dynamic>,
       );
 
-      if (!result.result) throw RequestException();
+      //if (!result.result) throw RequestException();
 
-      final message = result.message ?? '';
+      final message = result.message;
       log('MESSAGE ${data['Query']} ===> $message');
-      return 'sas';
+      return result;
     } on RequestException catch (e, stacktrace) {
       log('EXCEPTION ${data['Query']} ===> $e - $stacktrace');
       throw RequestException();
     } on DioException catch (e, stacktrace) {
       if (e.response?.statusCode == 403) {
         log('EXCEPTION ${e.response?.statusCode} ===> ${e.response}');
-        //log('EXCEPTION ${data['Query']} ===> $e - $stacktrace');
+        log('EXCEPTION ${data['Query']} ===> $e - $stacktrace');
         throw UnauthorizedException();
       } else {
         throw RequestException();

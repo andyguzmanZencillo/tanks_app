@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:failures/failures.dart';
 import 'package:tank_repository/tank_repository.dart';
 
 part 'sign_up_state.dart';
@@ -26,7 +27,21 @@ class SignUpCubit extends Cubit<SignUpState> {
         emit(state.copyWith(status: SignUpStatus.success));
       },
       err: (err) {
-        emit(state.copyWith(status: SignUpStatus.success));
+        if (err is ResultFailure) {
+          emit(
+            state.copyWith(
+              status: SignUpStatus.error,
+              errorMessage: err.message,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              status: SignUpStatus.error,
+              errorMessage: 'Error desconocido',
+            ),
+          );
+        }
       },
     );
   }

@@ -10,18 +10,12 @@ class UserCollection {
     required this.login,
     required this.password,
     required this.name,
-    this.logged = false,
-    this.date,
-    this.id = Isar.autoIncrement,
   });
 
-  final Id id;
-
+  final Id id = Isar.autoIncrement;
   final int idCompany;
   final int idEmployee;
   final String login;
   final String password;
   final String name;
-  bool logged;
-  DateTime? date;
 }

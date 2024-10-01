@@ -1,6 +1,6 @@
 part of 'article_cubit.dart';
 
-enum ArticleStatus { loading, success, error, initial }
+enum ArticleStatus { loading, success, successDelete, error, initial }
 
 class ArticleState extends Equatable {
   const ArticleState({

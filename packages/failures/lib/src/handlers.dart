@@ -40,6 +40,8 @@ Future<Result<T, Failure>> handleExceptionsLocal<T>(
     return Result.ok(result);
   } on DatabaseException {
     return Result.err(DatabaseFailure());
+  } on DataNullException catch (e) {
+    return Result.err(ResultNullFailure(e.message));
   } on Exception catch (e) {
     return Result.err(ResultFailure(e.toString()));
   } catch (e) {

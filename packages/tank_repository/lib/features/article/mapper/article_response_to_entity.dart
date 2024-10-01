@@ -9,6 +9,7 @@ extension ArticleResponseToEntity on ArticleResponse {
       descripcion: descripcion,
       color: color,
       precio: precio,
+      code: 'co',
     );
   }
 }

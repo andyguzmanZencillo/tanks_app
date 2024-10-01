@@ -6,6 +6,10 @@ import 'package:tanks_app/core/widgets/field_custom.dart';
 enum TypeOperation {
   create,
   update,
+  normal,
+  sincronization,
+  sincronizactionsale,
+  about,
 }
 
 class CreateUpdateInherited extends InheritedWidget {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tanks_app/features/drawer/views/drawer_view.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -20,6 +21,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      drawer: DrawerPage(),
       body: Center(
         child: Text('Home'),
       ),

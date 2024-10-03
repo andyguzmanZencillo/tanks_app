@@ -10,4 +10,7 @@ void registerRepositories() {
   sl.registerLazySingleton<ArticleRepository>(ArticleRepository.new);
   sl.registerLazySingleton<SalesCenterRepository>(SalesCenterRepository.new);
   sl.registerLazySingleton<ConsoleRepository>(ConsoleRepository.new);
+  sl.registerLazySingleton<TanksRepository>(TanksRepository.new);
+  sl.registerLazySingleton<CapacityTableRepository>(
+      CapacityTableRepository.new);
 }

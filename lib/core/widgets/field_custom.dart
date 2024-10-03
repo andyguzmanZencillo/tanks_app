@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tank_repository/features/sales_center/entity/sales_center_entity.dart';
 
 class FieldCustom extends StatelessWidget {
   const FieldCustom({
@@ -118,6 +121,31 @@ class ControllerField {
 
   void dispose() {
     _textEditingController.dispose();
+    _focusNode.dispose();
+  }
+}
+
+class ControllerFieldDropdown<T> {
+  ValueExtend _value = const ValueExtend();
+  final _fieldKey = GlobalKey<FormFieldState<ValueExtend>>();
+  final _focusNode = FocusNode();
+
+  GlobalKey<FormFieldState<ValueExtend>> get fieldKey => _fieldKey;
+  FocusNode get focusNode => _focusNode;
+
+  ValueExtend get value => _value;
+  int get id => _value.id;
+
+  void setValue(ValueExtend value) {
+    log('value => $value');
+    _value = value;
+  }
+
+  ValueExtend getValue() {
+    return _value;
+  }
+
+  void dispose() {
     _focusNode.dispose();
   }
 }

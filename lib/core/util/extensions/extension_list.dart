@@ -4,9 +4,12 @@ extension ListViewBuilderExtension<T> on List<T> {
   Widget toListView({
     required Widget Function(BuildContext context, T item, int index)
         itemBuilder,
-    double itemSpacing = 0, // Espacio entre elementos
+    double itemSpacing = 0,
+    bool isWrap = false,
   }) {
     return ListView.builder(
+      //clipBehavior: Clip.none,
+      shrinkWrap: isWrap,
       itemCount: length,
       itemBuilder: (context, index) {
         return Column(

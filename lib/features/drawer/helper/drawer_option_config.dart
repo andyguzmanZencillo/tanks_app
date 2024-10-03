@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tanks_app/features/article/list/views/article_list.dart';
+import 'package:tanks_app/features/capacity_table/list/views/capacity_table_list.dart';
 import 'package:tanks_app/features/console/list/views/console_list.dart';
 import 'package:tanks_app/features/drawer/helper/drawer_option.dart';
 import 'package:tanks_app/features/sales_center/list/views/sales_center_list.dart';
+import 'package:tanks_app/features/tanks/list/views/tanks_list.dart';
 
 enum OptionType {
   order,
@@ -50,6 +52,26 @@ class OptionsConfig {
       type: OptionType.loyaltyProgram,
       name: 'Consolas',
       route: ConsoleListPage(),
+      typeOperation: TypeOperation.normal,
+      icon: Icons.handshake,
+      askShift: true,
+      isActive: true,
+      isPermission: true,
+    ),
+    const Option(
+      type: OptionType.sincronizatioQuery,
+      name: 'Tanques',
+      route: TanksListPage(),
+      typeOperation: TypeOperation.normal,
+      icon: Icons.handshake,
+      askShift: true,
+      isActive: true,
+      isPermission: true,
+    ),
+    const Option(
+      type: OptionType.sincronizatioQuery,
+      name: 'Tabla Aforo',
+      route: CapacityTableListPage(),
       typeOperation: TypeOperation.normal,
       icon: Icons.handshake,
       askShift: true,

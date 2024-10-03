@@ -9,6 +9,7 @@ import 'package:tanks_app/core/util/validator_field/valid.dart';
 import 'package:tanks_app/core/util/validator_field/validator_field.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
 import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
+import 'package:tanks_app/core/widgets/field_custom.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
 import 'package:tanks_app/features/console/create_update/cubit/upsert_console_cubit.dart';
 import 'package:tanks_app/features/console/create_update/views/upsert_console_inherited.dart';
@@ -247,6 +248,22 @@ class UpsertConsoleBody extends StatelessWidget {
                                 icon: const Icon(Icons.link),
                                 labelSingle: false,
                                 controller: inherited.socketField,
+                                validator: (value) => Validator.validation(
+                                  value,
+                                  [
+                                    RequiredValid(
+                                      error: 'Campo Socket requerido',
+                                    ),
+                                  ],
+                                ),
+                                onChanged: (p0) {},
+                                label: 'Socket',
+                              ),
+                              FieldTextCustom(
+                                icon: const Icon(Icons.link),
+                                isPassword: true,
+                                labelSingle: false,
+                                controller: ControllerField(),
                                 validator: (value) => Validator.validation(
                                   value,
                                   [

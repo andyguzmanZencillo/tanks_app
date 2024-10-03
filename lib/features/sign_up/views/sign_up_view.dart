@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
-import 'package:tanks_app/features/article/list/views/article_list.dart';
+import 'package:tanks_app/features/home/views/home_page.dart';
 import 'package:tanks_app/features/sign_up/cubit/sign_up_cubit.dart';
 import 'package:tanks_app/features/sign_up/views/sign_up_body.dart';
 
@@ -42,7 +42,7 @@ class SignUpView extends StatelessWidget {
               title: '¡Exito!',
               onPressed: () {
                 context.pop();
-                context.push(ArticleList.route());
+                context.push(HomePage.route());
               },
               textButton: 'Cerrar',
             ),

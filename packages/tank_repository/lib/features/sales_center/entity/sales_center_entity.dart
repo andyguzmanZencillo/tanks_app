@@ -1,6 +1,16 @@
 import 'package:equatable/equatable.dart';
 
-class SalesCenterEntity extends Equatable {
+class ValueExtend {
+  const ValueExtend({
+    this.id = 0,
+    this.text = '',
+  });
+
+  final int id;
+  final String text;
+}
+
+class SalesCenterEntity extends Equatable implements ValueExtend {
   const SalesCenterEntity({
     required this.idCentroVenta,
     required this.idCompania,
@@ -22,6 +32,7 @@ class SalesCenterEntity extends Equatable {
   final String descripcion;
   final String correo;
 
+  @override
   SalesCenterEntity copyWith({
     int? idCentroVenta,
     int? idCompania,
@@ -46,4 +57,10 @@ class SalesCenterEntity extends Equatable {
         descripcion,
         correo,
       ];
+
+  @override
+  String get text => centroVenta;
+
+  @override
+  int get id => idCentroVenta;
 }

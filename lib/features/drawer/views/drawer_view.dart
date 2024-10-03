@@ -28,66 +28,63 @@ class DrawerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final drawerBloc = context.read<DrawerCubit>();
+    return Drawer(
+      child: Container(
+        padding: const EdgeInsets.only(
+          left: 16,
+        ),
+        color: const Color.fromARGB(255, 37, 37, 37),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            Expanded(
+              child: SizedBox(
+                child: BlocSelector<DrawerCubit, DrawerState, List<Option>>(
+                  selector: (state) {
+                    return state.listOption;
+                  },
+                  builder: (context, list) {
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: list.length,
+                      itemBuilder: (context, index) {
+                        final option = list[index];
+                        return _DrawerButton(
+                          onPressed: () async {
+                            final route = option.route;
+                            if (route != null && context.mounted) {
+                              context.push(
+                                MaterialPageRoute<void>(
+                                  builder: (context) => route,
+                                ),
+                              );
+                            }
 
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 16,
-      ),
-      color: Colors.green,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //const InformationProfile(),
-          const SizedBox(height: 10),
-          //const InformationVersion(),
-          Expanded(
-            child: SizedBox(
-              // width: context.width(.68),
-              child: BlocSelector<DrawerCubit, DrawerState, List<Option>>(
-                selector: (state) {
-                  return state.listOption;
-                },
-                builder: (context, list) {
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: list.length,
-                    itemBuilder: (context, index) {
-                      final option = list[index];
-                      return _DrawerButton(
-                        onPressed: () async {
-                          final route = option.route;
-                          if (route != null && context.mounted) {
-                            context.push(
-                              MaterialPageRoute<void>(
-                                builder: (context) => route,
+                            /*await launchUrl(
+                              Uri.parse(
+                                'https://zencillo.com/powered-by-zencillo/',
                               ),
-                            );
-                          }
-
-                          /*await launchUrl(
-                            Uri.parse(
-                              'https://zencillo.com/powered-by-zencillo/',
-                            ),
-                          );*/
-                        },
-                        title: option.name,
-                        icon: option.icon,
-                        isActive: option.isPermission,
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        height: 1.5,
-                        color: Colors.white.withOpacity(.05),
-                      );
-                    },
-                  );
-                },
+                            );*/
+                          },
+                          title: option.name,
+                          icon: option.icon,
+                          isActive: option.isPermission,
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return Divider(
+                          height: 1.5,
+                          color: Colors.white.withOpacity(.05),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

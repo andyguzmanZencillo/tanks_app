@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:tank_repository/features/features.dart';
 
-class ConsoleEntity extends Equatable {
+class ConsoleEntity extends Equatable implements ValueExtend {
   const ConsoleEntity({
     required this.idConsola,
     required this.idCompania,
@@ -50,4 +51,12 @@ class ConsoleEntity extends Equatable {
         puertoSerial,
         contrasenaIp,
       ];
+
+  @override
+  // TODO: implement text
+  String get text => consola;
+
+  @override
+  // TODO: implement value
+  int get id => idConsola;
 }

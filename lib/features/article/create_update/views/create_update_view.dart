@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/features/article/article.dart';
 import 'package:tank_repository/features/article/entity/article_entity.dart';
+import 'package:tanks_app/core/helpers/dialog_handler/bloc/dialog_handler_bloc.dart';
 import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
 import 'package:tanks_app/core/util/bloc_generics.dart';
 import 'package:tanks_app/core/util/enums/enums.dart';
@@ -56,55 +57,63 @@ class CreateUpdateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dialog = context.read<DialogHandlerCubit>();
+    final dialog = context.read<DialogHandlerBloc>();
     final inherited = CreateUpdateInherited.of(context);
     return BlocListener<CreateUpdateCubit, CreateUpdateState>(
       listener: (context, state) {
         final s = state.articleStatus;
         if (s == UpsertStatus.loading) {
           if (inherited.typeOperation == TypeOperation.create) {
-            dialog.onOpenNotification(
-              message: 'Creando Artículo...',
-              dialogType: DialogType.loading,
+            dialog.add(
+              const OnOpenNotification(
+                message: 'Creando Artículo...',
+                dialogType: DialogType.loading,
+              ),
             );
           } else {
-            dialog.onOpenNotification(
-              message: 'Actualizando Artículo...',
-              dialogType: DialogType.loading,
+            dialog.add(
+              const OnOpenNotification(
+                message: 'Actualizando Artículo...',
+                dialogType: DialogType.loading,
+              ),
             );
           }
         } else if (s == UpsertStatus.error) {
-          dialog.onOpenNotification(
-            dialogData: DialogData(
-              barrierDismissible: false,
-              message: inherited.typeOperation == TypeOperation.create
-                  ? 'Error al crear artículo'
-                  : 'Error al actualizar artículo',
-              title: 'Error',
-              onPressed: () {
-                context.pop();
-              },
-              textButton: 'Cerrar',
+          dialog.add(
+            OnOpenNotification(
+              dialogData: DialogData(
+                barrierDismissible: false,
+                message: inherited.typeOperation == TypeOperation.create
+                    ? 'Error al crear artículo'
+                    : 'Error al actualizar artículo',
+                title: 'Error',
+                onPressed: () {
+                  context.pop();
+                },
+                textButton: 'Cerrar',
+              ),
+              dialogType: DialogType.error,
             ),
-            dialogType: DialogType.error,
           );
         } else if (s == UpsertStatus.success) {
-          dialog.onOpenNotification(
-            dialogData: DialogData(
-              barrierDismissible: false,
-              message: inherited.typeOperation == TypeOperation.create
-                  ? 'Artículo creado exitosamente'
-                  : 'Artículo actualizado exitosamente',
-              title: inherited.typeOperation == TypeOperation.create
-                  ? 'Creación exitosa'
-                  : 'Actualización exitosa',
-              onPressed: () {
-                context.pop();
-                Navigator.pop(context, true);
-              },
-              textButton: 'Cerrar',
+          dialog.add(
+            OnOpenNotification(
+              dialogData: DialogData(
+                barrierDismissible: false,
+                message: inherited.typeOperation == TypeOperation.create
+                    ? 'Artículo creado exitosamente'
+                    : 'Artículo actualizado exitosamente',
+                title: inherited.typeOperation == TypeOperation.create
+                    ? 'Creación exitosa'
+                    : 'Actualización exitosa',
+                onPressed: () {
+                  context.pop();
+                  Navigator.pop(context, true);
+                },
+                textButton: 'Cerrar',
+              ),
+              dialogType: DialogType.success,
             ),
-            dialogType: DialogType.success,
           );
         }
       },

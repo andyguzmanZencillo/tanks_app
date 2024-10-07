@@ -396,3 +396,144 @@ class _FieldTextCustomState extends State<FieldTextCustom> {
     );
   }
 }
+
+class FieldVariation extends StatefulWidget {
+  const FieldVariation({
+    required this.controller,
+    required this.validator,
+    required this.label,
+    required this.icon,
+    this.onChanged,
+    this.onFocusChange,
+    this.isLabelTitle = false,
+    this.showDecoration = true,
+    this.isPassword = false,
+    this.inputFormatters,
+    this.inputType,
+    this.labelSingle = true,
+    this.enable = true,
+    super.key,
+  });
+  final ControllerField controller;
+  final String? Function(String?) validator;
+  final void Function(String)? onChanged;
+  // ignore: avoid_positional_boolean_parameters
+  final void Function(bool, String)? onFocusChange;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextInputType? inputType;
+
+  final String label;
+  final bool isLabelTitle;
+  final bool showDecoration;
+
+  final bool isPassword;
+  final Icon icon;
+
+  final bool labelSingle;
+
+  final bool enable;
+
+  @override
+  State<FieldVariation> createState() => _FieldVariationState();
+}
+
+class _FieldVariationState extends State<FieldVariation> {
+  bool _isPasswordVisible = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        /*Text(
+          widget.label,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),*/
+        FocusScope(
+          onFocusChange: (focus) {
+            if (widget.onFocusChange == null) return;
+            widget.onFocusChange!(focus, widget.controller.getValue());
+          },
+          child: SizedBox(
+            height: 40,
+            child: TextFormField(
+              textAlignVertical: TextAlignVertical.center,
+              obscureText: widget.isPassword ? !_isPasswordVisible : false,
+              keyboardType: widget.inputType,
+              key: widget.controller.fieldKey,
+              validator: widget.validator,
+              readOnly: !widget.enable,
+              inputFormatters: widget.inputFormatters,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: widget.controller.textEditingController,
+              onChanged: widget.onChanged,
+              style: const TextStyle(
+                color: Colors.black,
+              ),
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(10),
+                filled: true,
+                label: Text(
+                  widget.label,
+                ),
+                floatingLabelStyle: const TextStyle(color: Colors.black),
+                fillColor: const Color.fromARGB(255, 233, 235, 236),
+                hintText: widget.labelSingle
+                    ? 'Ingresa tu ${widget.label.toLowerCase()}'
+                    : widget.label,
+                hintStyle: const TextStyle(
+                  color: Color.fromARGB(255, 117, 117, 117),
+                  fontWeight: FontWeight.w400,
+                ),
+                suffixIcon: widget.isPassword
+                    ? GestureDetector(
+                        child: Icon(
+                          _isPasswordVisible
+                              ? Icons.remove_red_eye
+                              : Icons
+                                  .visibility_off, // Cambia el ícono según el estado
+                        ),
+                        onTap: () {
+                          setState(() {
+                            _isPasswordVisible =
+                                !_isPasswordVisible; // Cambia el estado de visibilidad
+                          });
+                        },
+                      )
+                    : null,
+                enabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide.none,
+                ),
+                errorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide.none,
+                ),
+                focusedErrorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide.none,
+                ),
+                errorMaxLines: 1,
+                errorStyle: const TextStyle(
+                  color: Colors.transparent,
+                  fontSize: 0,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

@@ -16,9 +16,9 @@ class SplashView extends StatelessWidget {
       },
       listener: (context, state) {
         if (state.status == AppStatus.loged) {
-          context.push(HomePage.route());
+          context.go(HomePage.route());
         } else if (state.status == AppStatus.noLoged) {
-          context.push(SignInPage.route());
+          context.go(SignInPage.route());
         }
       },
       child: const Scaffold(

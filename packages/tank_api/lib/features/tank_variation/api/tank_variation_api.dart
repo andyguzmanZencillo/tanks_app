@@ -36,6 +36,24 @@ class TankVariationApi extends BaseApi {
     }
   }
 
+  Future<List<TankVariationResponse>> getToSaleCenter(
+    GetTankVariationToSaleCenterRequest getTankVariationRequest,
+  ) async {
+    try {
+      final response = await post(
+        getTankVariationRequest.toJson(),
+      );
+      final list = response.resultSp as List;
+      return list
+          .map(
+            (e) => TankVariationResponse.fromJson(e as Map<String, dynamic>),
+          )
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<String> delete(
     DeleteTankVariationRequest deletehUserRequest,
   ) async {

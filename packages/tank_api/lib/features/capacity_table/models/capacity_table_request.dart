@@ -8,8 +8,7 @@ class InsertCapacityTableRequest extends CapacityTableRequest {
   InsertCapacityTableRequest({
     required this.idCompania,
     required this.idTanque,
-    required this.alturaTanque,
-    required this.volumen,
+    required this.data,
     this.idUserTrace = 123,
     this.operation = 'I',
   });
@@ -19,8 +18,7 @@ class InsertCapacityTableRequest extends CapacityTableRequest {
   final int idCompania;
 
   final int idTanque;
-  final double alturaTanque;
-  final double volumen;
+  final List<CapacityRequest> data;
 
   Map<String, dynamic> toJson() {
     return super.toJsonParams({
@@ -28,9 +26,22 @@ class InsertCapacityTableRequest extends CapacityTableRequest {
       'operation': operation,
       'id_compania': idCompania,
       'id_tanque': idTanque,
+      'data': data.map((e) => e.toJson()).toList(),
+    });
+  }
+}
+
+class CapacityRequest {
+  CapacityRequest({required this.alturaTanque, required this.volumen});
+
+  final double alturaTanque;
+  final double volumen;
+
+  Map<String, dynamic> toJson() {
+    return {
       'altura_tanque': alturaTanque,
       'volumen': volumen,
-    });
+    };
   }
 }
 

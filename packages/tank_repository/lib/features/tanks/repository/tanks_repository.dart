@@ -47,6 +47,39 @@ class TanksRepository {
     });
   }
 
+  Future<Result<List<TanksEntity>, Failure>> getToSaleCenter(int idSaleCenter) {
+    return handleExceptionCompleteToken<List<TanksEntity>>(() async {
+      final request = GetTanksToSaleCenterRequest(
+        idCompania: 1,
+        idCentroVenta: idSaleCenter,
+      );
+      final response = await _api.getToSaleCenter(request);
+      return response
+          .map(
+            (e) => TanksEntity(
+              idTanque: e.idTanque,
+              idCompania: e.idCompania,
+              idCentroVenta: e.idCentroVenta,
+              idArticulo: e.idArticulo,
+              capacidad: e.capacidad,
+              alturaTanque: e.alturaTanque,
+              descripcion: e.descripcion,
+              porcentajeMinimoCombustible: e.porcentajeMinimoCombustible,
+              alturaOffset: e.alturaOffset,
+              factorInicioDescargue: e.factorInicioDescargue,
+              codigo: e.codigo,
+              alturaAguaOffset: e.alturaAguaOffset,
+              offsetInclinacion: e.offsetInclinacion,
+              estado: e.estado,
+              modificable: e.modificable,
+              manejaMm: e.manejaMm,
+              idConsolaTanque: e.idConsolaTanque,
+            ),
+          )
+          .toList();
+    });
+  }
+
   Future<Result<bool, Failure>> saveTanks(
     TanksEntity tanksEntity,
   ) {

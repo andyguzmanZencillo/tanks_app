@@ -71,4 +71,9 @@ extension ExtensionDateTime on DateTime {
     }
     return text;
   }
+
+  String time() {
+    final date = this;
+    return '${date.hour}:${date.minute}:${date.second}';
+  }
 }

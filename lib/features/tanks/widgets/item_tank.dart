@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/tank_repository.dart';
-import 'package:tanks_app/core/util/extensions/extension_context.dart';
-import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
-import 'package:tanks_app/features/tanks/create_update/views/upsert_tanks_page.dart';
-import 'package:tanks_app/features/tanks/delete/widget/delete_dialog.dart';
-import 'package:tanks_app/features/tanks/detail/detail_tank.dart';
-import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
 
 class ItemTank extends StatelessWidget {
-  const ItemTank({required this.tanksEntity, super.key});
+  const ItemTank({
+    required this.tanksEntity,
+    required this.onTap,
+    required this.onTapEdit,
+    required this.onTapDelete,
+    super.key,
+  });
   final TanksEntity tanksEntity;
-
+  final void Function() onTap;
+  final void Function() onTapEdit;
+  final void Function() onTapDelete;
   @override
   Widget build(BuildContext context) {
-    void actionPopUpItemSelected(
+    /* void actionPopUpItemSelected(
       String value,
       TanksEntity salesCenterEntity,
     ) {
@@ -48,18 +49,14 @@ class ItemTank extends StatelessWidget {
           context.read<TanksCubit>().getAll();
         });
       } else {}
-    }
+    }*/
 
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
-        onTap: () {
-          context.pushResult<bool?>(
-            DetailTankView.route(tanksEntity: tanksEntity),
-          );
-        },
+        onTap: onTap,
         titleAlignment: ListTileTitleAlignment.center,
         leading: const CircleAvatar(
           backgroundColor: Color.fromARGB(255, 243, 170, 25),
@@ -77,17 +74,19 @@ class ItemTank extends StatelessWidget {
           icon: const Icon(Icons.more_vert),
           itemBuilder: (context) {
             return [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'edit',
-                child: Text('Editar'),
+                onTap: onTapEdit,
+                child: const Text('Editar'),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'delete',
-                child: Text('Eliminar'),
+                onTap: onTapDelete,
+                child: const Text('Eliminar'),
               ),
             ];
           },
-          onSelected: (v) => actionPopUpItemSelected(v, tanksEntity),
+          //onSelected: (v) => actionPopUpItemSelected(v, tanksEntity),
         ),
       ),
     );

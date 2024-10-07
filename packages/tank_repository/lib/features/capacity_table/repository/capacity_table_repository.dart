@@ -15,44 +15,44 @@ class CapacityTableRepository {
   final CapacityTableApi _api;
   final UserDatabase _userDatabase;
 
-  Future<Result<List<CapacityTableEntity>, Failure>> getAll() {
+  /*Future<Result<List<CapacityTableEntity>, Failure>> getAll() {
     return handleExceptionCompleteToken<List<CapacityTableEntity>>(() async {
       final request = GetCapacityTableRequest(
         idCompania: 1,
       );
       final response = await _api.getAll(request);
+      
       return response
           .map(
             (e) => CapacityTableEntity(
               idTanque: e.idTanque,
-              idCompania: e.idCompania,
+              idCompania: 1,
               idAforo: e.idAforo,
-              alturaTanque: e.alturaTanque,
-              volumen: e.volumen,
+              
               idStaging: DateTime.now().millisecondsSinceEpoch,
             ),
           )
           .toList();
     });
-  }
+  }*/
 
-  Future<Result<List<CapacityTableEntity>, Failure>> getToTank({
+  Future<Result<List<CapacityEntity>, Failure>> getToTank({
     required int idTank,
   }) {
-    return handleExceptionCompleteToken<List<CapacityTableEntity>>(() async {
+    return handleExceptionCompleteToken<List<CapacityEntity>>(() async {
       final request = GetCapacityTableToTankRequest(
         idCompania: 1,
         idTanque: idTank,
       );
       final response = await _api.getToTank(request);
+
       return response
           .map(
-            (e) => CapacityTableEntity(
-              idTanque: e.idTanque,
-              idCompania: e.idCompania,
+            (e) => CapacityEntity(
               idAforo: e.idAforo,
               alturaTanque: e.alturaTanque,
               volumen: e.volumen,
+              idStaging: '0',
             ),
           )
           .toList();
@@ -67,15 +67,21 @@ class CapacityTableRepository {
       final request = InsertCapacityTableRequest(
         idTanque: e.idTanque,
         idCompania: e.idCompania,
-        alturaTanque: e.alturaTanque,
-        volumen: e.volumen,
+        data: e.data
+            .map(
+              (e) => CapacityRequest(
+                alturaTanque: e.alturaTanque,
+                volumen: e.volumen,
+              ),
+            )
+            .toList(),
       );
       final response = await _api.save(request);
       return true;
     });
   }
 
-  Future<Result<bool, Failure>> updateCapacityTable(
+  /*Future<Result<bool, Failure>> updateCapacityTable(
     CapacityTableEntity e,
   ) {
     return handleExceptionCompleteToken<bool>(() async {
@@ -90,7 +96,7 @@ class CapacityTableRepository {
       final response = await _api.update(request);
       return true;
     });
-  }
+  }*/
 
   Future<Result<bool, Failure>> deleteCapacityTable(int idTank) {
     return handleExceptionCompleteToken<bool>(() async {

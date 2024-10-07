@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 extension ContextRouter on BuildContext {
   void go(Route<void> route) {
@@ -11,6 +12,68 @@ extension ContextRouter on BuildContext {
 
   Future<T?> pushResult<T>(Route<T> route) {
     return Navigator.push<T>(this, route);
+  }
+
+  Future<T?> pushCompleteWithProvider<T>({
+    required Widget page,
+    required List<BlocProvider> blocProviders,
+  }) {
+    return Navigator.push<T>(
+      this,
+      MaterialPageRoute<T>(
+        builder: (_) => MultiBlocProvider(
+          providers: blocProviders,
+          child: page,
+        ),
+      ),
+    );
+  }
+
+  Future<T?> pushCompleteWithSingleProvider<T>({
+    required Widget page,
+    required BlocProvider blocProvider,
+  }) {
+    return Navigator.push<T>(
+      this,
+      MaterialPageRoute<T>(
+        builder: (_) => MultiBlocProvider(
+          providers: [blocProvider],
+          child: page,
+        ),
+      ),
+    );
+  }
+
+  Future<T?> pushCompleteWithBloc<T>({
+    required Widget page,
+    // ignore: strict_raw_type
+    required List<BlocBase> blocs,
+  }) {
+    // Convertir cada Bloc en BlocProvider usando BlocProvider.value
+    final blocProviders =
+        blocs.map((bloc) => BlocProvider.value(value: bloc)).toList();
+
+    return Navigator.push<T>(
+      this,
+      MaterialPageRoute<T>(
+        builder: (_) => MultiBlocProvider(
+          providers: blocProviders,
+          child: page,
+        ),
+      ),
+    );
+  }
+
+  Future<T?> pushComplete<T>(
+    BuildContext context,
+    Widget page,
+  ) {
+    return Navigator.push<T>(
+      context,
+      MaterialPageRoute<T>(
+        builder: (_) => page,
+      ),
+    );
   }
 
   void pop() {

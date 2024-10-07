@@ -111,13 +111,13 @@ class DeletehUserRequest extends UserRequest {
 
 class SignInUserRequest extends UserRequest {
   SignInUserRequest({
-    required this.nombre,
+    required this.usuario,
     required this.clave,
     required this.idCompania,
     this.operation = 'S',
   });
   final String operation;
-  final String nombre;
+  final String usuario;
   final String clave;
   final int idCompania;
 
@@ -125,7 +125,7 @@ class SignInUserRequest extends UserRequest {
     return super.toJsonParams({
       'operation': operation,
       'id_compania': idCompania,
-      'nombre': nombre,
+      'usuario': usuario,
       'clave': clave,
     });
   }

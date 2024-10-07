@@ -23,11 +23,21 @@ class UserRepository {
   }) {
     return handleExceptionToken<Unit>(() async {
       final request = SignInUserRequest(
-        nombre: user,
+        usuario: user,
         clave: password,
         idCompania: idCompany,
       );
-      await _api.getUserToSignIn(request);
+      final result = await _api.getUserToSignIn(request);
+
+      await _userDatabase.saveUser(
+        user: UserCollection(
+          idCompany: result.idCompania,
+          idEmployee: result.idUsuario,
+          login: result.usuario,
+          password: result.clave,
+          name: result.nombre,
+        ),
+      );
 
       return unit;
     });
@@ -52,7 +62,7 @@ class UserRepository {
         user: UserCollection(
           idCompany: idCompany,
           idEmployee: result,
-          login: '',
+          login: user,
           password: password,
           name: user,
         ),

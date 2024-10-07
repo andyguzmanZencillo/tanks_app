@@ -160,6 +160,30 @@ class GetTanksRequest extends TanksRequest {
   }
 }
 
+class GetTanksToSaleCenterRequest extends TanksRequest {
+  GetTanksToSaleCenterRequest({
+    required this.idCompania,
+    required this.idCentroVenta,
+    this.idUserTrace = 123,
+    this.operation = 'S',
+  });
+
+  final int idUserTrace;
+  final String operation;
+
+  final int idCompania;
+  final int idCentroVenta;
+
+  Map<String, dynamic> toJson() {
+    return super.toJsonParams({
+      'id_user_trace': idUserTrace,
+      'operation': operation,
+      'id_compania': idCompania,
+      'id_centro_venta': idCentroVenta,
+    });
+  }
+}
+
 class DeleteTanksRequest extends TanksRequest {
   DeleteTanksRequest({
     required this.idTank,

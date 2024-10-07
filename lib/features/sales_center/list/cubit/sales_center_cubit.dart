@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:failures/failures.dart';
 import 'package:tank_repository/features/sales_center/entity/sales_center_entity.dart';
 import 'package:tank_repository/features/sales_center/repository/sales_center_repository.dart';
 
@@ -11,8 +12,8 @@ class SalesCenterCubit extends Cubit<SalesCenterState> {
 
   final SalesCenterRepository salesCenterRepository;
 
-  Future<void> getAll() async {
-    emit(state.copyWith(salesCenterStatus: SalesCenterStatus.success));
+  Future<bool> getAll() async {
+    emit(state.copyWith(salesCenterStatus: SalesCenterStatus.loading));
     final result = await salesCenterRepository.getAll();
     result.when(
       ok: (ok) {
@@ -30,7 +31,26 @@ class SalesCenterCubit extends Cubit<SalesCenterState> {
             salesCenterStatus: SalesCenterStatus.error,
           ),
         );
+
+        if (err is ResultFailure) {
+          emit(
+            state.copyWith(
+              salesCenters: [],
+              salesCenterStatus: SalesCenterStatus.error,
+              messageError: err.message,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              salesCenters: [],
+              salesCenterStatus: SalesCenterStatus.error,
+              messageError: 'Error desconocido',
+            ),
+          );
+        }
       },
     );
+    return result.isOk();
   }
 }

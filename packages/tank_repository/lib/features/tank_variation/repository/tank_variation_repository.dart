@@ -1,9 +1,12 @@
-/*import 'package:failures/failures.dart';
+import 'package:failures/failures.dart';
 import 'package:oxidized/oxidized.dart';
 import 'package:tank_api/tank_api.dart';
 import 'package:tank_database/tank_database.dart';
 import 'package:tank_repository/core/generic_token.dart';
 import 'package:tank_repository/features/tank_variation/entity/tank_variation_entity.dart';
+import 'package:tank_repository/features/tank_variation/map/tank_variation_entity_to_insert_request.dart';
+import 'package:tank_repository/features/tank_variation/map/tank_variation_entity_to_update_request.dart';
+import 'package:tank_repository/features/tank_variation/map/tank_variation_response_to_entity.dart';
 
 class TankVariationRepository {
   TankVariationRepository({
@@ -23,13 +26,26 @@ class TankVariationRepository {
       final response = await _api.getAll(request);
       return response
           .map(
-            (e) => TankVariationEntity(
-              idTanque: e.idTanque,
-              idCompania: e.idCompania,
-              idAforo: e.idAforo,
-              alturaTanque: e.alturaTanque,
-              volumen: e.volumen,
-            ),
+            (e) => e.toEntity(),
+          )
+          .toList();
+    });
+  }
+
+  Future<Result<List<TankVariationEntity>, Failure>> getToSaleCenter({
+    required int idCentroVenta,
+    required DateTime date,
+  }) {
+    return handleExceptionCompleteToken<List<TankVariationEntity>>(() async {
+      final request = GetTankVariationToSaleCenterRequest(
+        idCompania: 1,
+        idCentroVenta: idCentroVenta,
+        date: date,
+      );
+      final response = await _api.getToSaleCenter(request);
+      return response
+          .map(
+            (e) => e.toEntity(),
           )
           .toList();
     });
@@ -40,12 +56,7 @@ class TankVariationRepository {
   ) {
     return handleExceptionCompleteToken<bool>(() async {
       //final user = await _userDatabase.getUser();
-      final request = InsertTankVariationRequest(
-        idTanque: e.idTanque,
-        idCompania: e.idCompania,
-        alturaTanque: e.alturaTanque,
-        volumen: e.volumen,
-      );
+      final request = e.toInsertRequest();
       final response = await _api.save(request);
       return true;
     });
@@ -56,13 +67,7 @@ class TankVariationRepository {
   ) {
     return handleExceptionCompleteToken<bool>(() async {
       //final user = await _userDatabase.getUser();
-      final request = UpdateTankVariationRequest(
-        idTanque: e.idTanque,
-        idCompania: e.idCompania,
-        idAforo: e.idAforo,
-        alturaTanque: e.alturaTanque,
-        volumen: e.volumen,
-      );
+      final request = e.toUpdateRequest();
       final response = await _api.update(request);
       return true;
     });
@@ -72,7 +77,7 @@ class TankVariationRepository {
     return handleExceptionCompleteToken<bool>(() async {
       //final user = await _userDatabase.getUser();
       final request = DeleteTankVariationRequest(
-        idAforo: idTank,
+        idVariacion: idTank,
         idCompania: 1,
       );
       final response = await _api.delete(request);
@@ -80,4 +85,3 @@ class TankVariationRepository {
     });
   }
 }
-*/

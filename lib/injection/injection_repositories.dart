@@ -12,5 +12,13 @@ void registerRepositories() {
   sl.registerLazySingleton<ConsoleRepository>(ConsoleRepository.new);
   sl.registerLazySingleton<TanksRepository>(TanksRepository.new);
   sl.registerLazySingleton<CapacityTableRepository>(
-      CapacityTableRepository.new);
+    CapacityTableRepository.new,
+  );
+  sl.registerLazySingleton<TankVariationRepository>(
+    TankVariationRepository.new,
+  );
+  sl.registerLazySingleton<ConfigRepository>(
+    ConfigRepository.new,
+  );
+  sl.registerLazySingleton<BinnacleRepository>(BinnacleRepository.new);
 }

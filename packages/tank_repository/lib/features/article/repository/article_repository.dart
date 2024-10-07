@@ -17,9 +17,9 @@ class ArticleRepository {
 
   Future<Result<List<ArticleEntity>, Failure>> getArticles() {
     return handleExceptionCompleteToken<List<ArticleEntity>>(() async {
-      //final user = await _userDatabase.getUser();
+      final user = await _userDatabase.getUser();
       final request = GetArticleRequest(
-        idCompania: 1,
+        idCompania: user.idCompany,
       );
       final response = await _api.getArticles(request);
       return response.map((e) => e.toEntity()).toList();
@@ -28,45 +28,45 @@ class ArticleRepository {
 
   Future<Result<bool, Failure>> saveArticle(ArticleEntity articleEntity) {
     return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
+      final user = await _userDatabase.getUser();
       final request = InsertArticleRequest(
-        idCompania: 1,
+        idCompania: user.idCompany,
         articulo: articleEntity.articulo,
         descripcion: articleEntity.descripcion,
         codigoArticulo: articleEntity.code,
         color: articleEntity.color,
         precio: articleEntity.precio,
       );
-      final response = await _api.saveArticle(request);
+      await _api.saveArticle(request);
       return true;
     });
   }
 
   Future<Result<bool, Failure>> updateArticle(ArticleEntity articleEntity) {
     return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
+      final user = await _userDatabase.getUser();
       final request = UpdateArticleRequest(
         idArticulo: articleEntity.idArticulo,
-        idCompania: 1,
+        idCompania: user.idCompany,
         articulo: articleEntity.articulo,
         descripcion: articleEntity.descripcion,
         codigoArticulo: articleEntity.code,
         color: articleEntity.color,
         precio: articleEntity.precio,
       );
-      final response = await _api.updateArticle(request);
+      await _api.updateArticle(request);
       return true;
     });
   }
 
   Future<Result<bool, Failure>> deleteArticle(int idArticle) {
     return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
+      final user = await _userDatabase.getUser();
       final request = DeleteArticleRequest(
         idArticle: idArticle,
-        idCompania: 1,
+        idCompania: user.idCompany,
       );
-      final response = await _api.deleteArticle(request);
+      await _api.deleteArticle(request);
       return true;
     });
   }

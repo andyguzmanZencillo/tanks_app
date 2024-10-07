@@ -1,6 +1,8 @@
 export 'article/article.dart';
+export 'binnacle/binnacle.dart';
 export 'capacity_table/capacity_table.dart';
 export 'company/company.dart';
+export 'config/config.dart';
 export 'console/console.dart';
 export 'sales_center/sales_center.dart';
 export 'tank_variation/tank_variation.dart';

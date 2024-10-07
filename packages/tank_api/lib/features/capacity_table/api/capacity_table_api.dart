@@ -18,7 +18,7 @@ class CapacityTableApi extends BaseApi {
     }
   }
 
-  Future<List<CapacityTableResponse>> getAll(
+  Future<List<CapacityResponse>> getAll(
     GetCapacityTableRequest getCapacityTableRequest,
   ) async {
     try {
@@ -28,7 +28,7 @@ class CapacityTableApi extends BaseApi {
       final list = response.resultSp as List;
       return list
           .map(
-            (e) => CapacityTableResponse.fromJson(e as Map<String, dynamic>),
+            (e) => CapacityResponse.fromJson(e as Map<String, dynamic>),
           )
           .toList();
     } catch (e) {
@@ -36,7 +36,7 @@ class CapacityTableApi extends BaseApi {
     }
   }
 
-  Future<List<CapacityTableResponse>> getToTank(
+  Future<List<CapacityResponse>> getToTank(
     GetCapacityTableToTankRequest getCapacityTableToTankRequest,
   ) async {
     try {
@@ -46,7 +46,7 @@ class CapacityTableApi extends BaseApi {
       final list = response.resultSp as List;
       return list
           .map(
-            (e) => CapacityTableResponse.fromJson(e as Map<String, dynamic>),
+            (e) => CapacityResponse.fromJson(e as Map<String, dynamic>),
           )
           .toList();
     } catch (e) {

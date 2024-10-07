@@ -123,4 +123,23 @@ class UpsertTanksCubit extends Cubit<UpsertTanksState> {
       },
     );
   }
+
+  Future<void> functionState(
+    Future<(bool, String?)> Function() function,
+  ) async {
+    emit(state.copyWith(prepareStatus: PrepareStatus.loading));
+
+    final result = await function();
+
+    if (result.$1) {
+      emit(state.copyWith(prepareStatus: PrepareStatus.success));
+    } else {
+      emit(
+        state.copyWith(
+          prepareStatus: PrepareStatus.error,
+          errorMessage: result.$2,
+        ),
+      );
+    }
+  }
 }

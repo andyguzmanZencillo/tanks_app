@@ -10,6 +10,7 @@ class DropdownCustom extends StatefulWidget {
     required this.label,
     required this.isLabelTitle,
     required this.showDecoration,
+    this.hint,
     this.value,
     super.key,
   });
@@ -19,6 +20,7 @@ class DropdownCustom extends StatefulWidget {
   final ControllerFieldDropdown<ValueExtend> controller;
   final String? Function(ValueExtend?) validator;
   final String label;
+  final String? hint;
   final bool isLabelTitle;
   final bool showDecoration;
 
@@ -59,14 +61,14 @@ class _DropdownCustomState extends State<DropdownCustom> {
           focusNode: widget.controller.focusNode,
           validator: widget.validator,
           value: selectedValue, // Establece el valor seleccionado
-          hint: const Text('Seleccione un item'),
+          hint: Text(widget.hint ?? 'Seleccione un item'),
           icon: const Icon(Icons.arrow_drop_down),
           style: const TextStyle(color: Colors.black),
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             filled: true,
-            fillColor: Color.fromARGB(255, 233, 235, 236),
-            hintText: 'Seleccione un item',
-            border: OutlineInputBorder(
+            fillColor: const Color.fromARGB(255, 233, 235, 236),
+            hintText: widget.hint ?? 'Seleccione un item',
+            border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide.none,
             ),

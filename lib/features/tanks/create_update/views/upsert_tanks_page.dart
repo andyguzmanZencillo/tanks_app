@@ -1,22 +1,22 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/features/article/entity/article_entity.dart';
 import 'package:tank_repository/tank_repository.dart';
-import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
 import 'package:tanks_app/core/util/bloc_generics.dart';
-import 'package:tanks_app/core/util/enums/enums.dart';
-import 'package:tanks_app/core/util/extensions/extension_context.dart';
+import 'package:tanks_app/core/util/full_widget_generics.dart';
 import 'package:tanks_app/core/util/validator_field/valid.dart';
 import 'package:tanks_app/core/util/validator_field/validator_field.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
-import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
 import 'package:tanks_app/features/article/list/cubit/article_cubit.dart';
 import 'package:tanks_app/features/console/list/cubit/console_cubit.dart';
 import 'package:tanks_app/features/sales_center/list/cubit/sales_center_cubit.dart';
 import 'package:tanks_app/features/sign_in/widgets/field_auth.dart';
 import 'package:tanks_app/features/tanks/create_update/cubit/upsert_tanks_cubit.dart';
+import 'package:tanks_app/features/tanks/create_update/helpers/upsert_tanks_listener.dart';
 import 'package:tanks_app/features/tanks/create_update/views/upsert_tanks_inherited.dart';
 import 'package:tanks_app/features/tanks/create_update/widgets/dropdown.dart';
 import 'package:tanks_app/injection/injection.dart';
@@ -24,20 +24,20 @@ import 'package:tanks_app/injection/injection.dart';
 class UpsertTanksPage extends StatelessWidget {
   const UpsertTanksPage({
     required this.typeOperation,
-    this.consoleEntity = const TanksEntity.empty(),
+    this.tanksEntity = const TanksEntity.empty(),
     super.key,
   });
   final TypeOperation typeOperation;
-  final TanksEntity consoleEntity;
+  final TanksEntity tanksEntity;
 
   static Route<bool?> route({
     required TypeOperation typeOperation,
-    TanksEntity consoleEntity = const TanksEntity.empty(),
+    TanksEntity tanksEntity = const TanksEntity.empty(),
   }) {
     return MaterialPageRoute<bool?>(
       builder: (context) => UpsertTanksPage(
         typeOperation: typeOperation,
-        consoleEntity: consoleEntity,
+        tanksEntity: tanksEntity,
       ),
     );
   }
@@ -46,7 +46,7 @@ class UpsertTanksPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return UpsertTanksInherited(
       typeOperation: typeOperation,
-      tanksEntity: consoleEntity,
+      tanksEntity: tanksEntity,
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -73,60 +73,39 @@ class UpsertTanksView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dialog = context.read<DialogHandlerCubit>();
-    final inherited = UpsertTanksInherited.of(context);
-    return BlocListener<UpsertTanksCubit, UpsertTanksState>(
-      listener: (context, state) {
-        final s = state.upsertStatus;
-        if (s == UpsertStatus.loading) {
-          if (inherited.typeOperation == TypeOperation.create) {
-            dialog.onOpenNotification(
-              message: 'Creando tanques',
-              dialogType: DialogType.loading,
-            );
-          } else {
-            dialog.onOpenNotification(
-              message: 'Actualizando tanques',
-              dialogType: DialogType.loading,
-            );
-          }
-        } else if (s == UpsertStatus.error) {
-          dialog.onOpenNotification(
-            dialogData: DialogData(
-              barrierDismissible: false,
-              message: inherited.typeOperation == TypeOperation.create
-                  ? state.errorMessage ?? 'Error al crear tanques'
-                  : state.errorMessage ?? 'Error al actualizar tanques',
-              title: 'Error',
-              onPressed: () {
-                context.pop();
-              },
-              textButton: 'Cerrar',
-            ),
-            dialogType: DialogType.error,
-          );
-        } else if (s == UpsertStatus.success) {
-          dialog.onOpenNotification(
-            dialogData: DialogData(
-              barrierDismissible: false,
-              message: inherited.typeOperation == TypeOperation.create
-                  ? 'Tanque creado exitosamente'
-                  : 'Tanque actualizado exitosamente',
-              title: inherited.typeOperation == TypeOperation.create
-                  ? 'Creación exitosa'
-                  : 'Actualización exitosa',
-              onPressed: () {
-                context.pop();
-                Navigator.pop(context, true);
-              },
-              textButton: 'Cerrar',
-            ),
-            dialogType: DialogType.success,
-          );
-        }
-      },
-      child: const UpsertTanksBody(),
+    return MultiBlocListener(
+      listeners: [
+        DialogListener.upsertTank(),
+        DialogListener.upsertTankPrepare(),
+      ],
+      child: FullWidgetGeneric(
+        onInit: () async {
+          await _initializeCubits(context);
+        },
+        onDispose: () {},
+        child: const UpsertTanksBody(),
+      ),
     );
+  }
+
+  Future<void> _initializeCubits(BuildContext context) async {
+    final upsert = context.read<UpsertTanksCubit>();
+    final consoleCubit = context.read<ConsoleCubit>();
+    final salesCenterCubit = context.read<SalesCenterCubit>();
+    final articleCubit = context.read<ArticleCubit>();
+    await upsert.functionState(() async {
+      if (!await consoleCubit.getAll()) {
+        return (false, 'Error al obtener la lista de consolas');
+      }
+      if (!await salesCenterCubit.getAll()) {
+        return (false, 'Error al obtener la lista de centros de venta');
+      }
+      if (!await articleCubit.getArticles()) {
+        return (false, 'Error al obtener la lista de articulos');
+      }
+
+      return (true, null);
+    });
   }
 }
 

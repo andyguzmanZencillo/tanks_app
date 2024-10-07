@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tanks_app/core/app/cubit/app_cubit.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
+import 'package:tanks_app/core/helpers/dialog_handler/bloc/dialog_handler_bloc.dart';
 import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
+import 'package:tanks_app/core/helpers/dialog_handler/widgets/dialog_handler.dart';
 import 'package:tanks_app/core/helpers/notify_dialog_handler/cubit/notify_dialog_handler_cubit.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
-import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
 import 'package:tanks_app/features/splash/splash.dart';
 import 'package:tanks_app/injection/injection.dart';
 
@@ -27,7 +28,7 @@ class AppView extends StatelessWidget {
           create: (context) => NotifyDialogHandlerCubit(),
         ),
         BlocProvider(
-          create: (context) => DialogHandlerCubit(),
+          create: (context) => DialogHandlerBloc(),
         ),
       ],
       child: const AppBody(),

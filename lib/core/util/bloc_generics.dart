@@ -75,3 +75,32 @@ class BlocContext<B extends BlocBase<S>, S> extends StatelessWidget {
     return builder(context, bloc);
   }
 }
+
+abstract class BaseState {}
+
+class BaseInitial extends BaseState {}
+
+class BaseLoading extends BaseState {}
+
+class BaseSuccess extends BaseState {}
+
+class BaseError extends BaseState {
+  BaseError(this.message);
+  final String message;
+}
+
+abstract class BaseBloc<T extends BaseState> extends Cubit<T> {
+  BaseBloc(super.initialState);
+
+  void showLoading() {
+    emit(BaseLoading() as T);
+  }
+
+  void showError(String message) {
+    emit(BaseError(message) as T);
+  }
+
+  void showSuccess() {
+    emit(BaseSuccess() as T);
+  }
+}

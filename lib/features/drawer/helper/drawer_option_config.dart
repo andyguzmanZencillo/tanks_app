@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tanks_app/features/article/list/views/article_list.dart';
-import 'package:tanks_app/features/capacity_table/list/views/capacity_table_list.dart';
+import 'package:tanks_app/features/binnacle/list/views/binnacle_list_page.dart';
+import 'package:tanks_app/features/config/list/views/config_list_body.dart';
 import 'package:tanks_app/features/console/list/views/console_list.dart';
 import 'package:tanks_app/features/drawer/helper/drawer_option.dart';
 import 'package:tanks_app/features/sales_center/list/views/sales_center_list.dart';
+import 'package:tanks_app/features/tank_variation/list/views/tank_variation_list.dart';
 import 'package:tanks_app/features/tanks/list/views/tanks_list.dart';
 
 enum OptionType {
@@ -69,9 +71,29 @@ class OptionsConfig {
       isPermission: true,
     ),
     const Option(
-      type: OptionType.sincronizatioQuery,
-      name: 'Tabla Aforo',
-      route: CapacityTableListPage(),
+      type: OptionType.syncSale,
+      name: 'Variacion Tanque',
+      route: TankVariationListPage(),
+      typeOperation: TypeOperation.normal,
+      icon: Icons.handshake,
+      askShift: true,
+      isActive: true,
+      isPermission: true,
+    ),
+    const Option(
+      type: OptionType.configuration,
+      name: 'Configuración',
+      route: ConfigListPage(),
+      typeOperation: TypeOperation.normal,
+      icon: Icons.handshake,
+      askShift: true,
+      isActive: true,
+      isPermission: true,
+    ),
+    const Option(
+      type: OptionType.configuration,
+      name: 'Bitacora',
+      route: BinnacleListPage(),
       typeOperation: TypeOperation.normal,
       icon: Icons.handshake,
       askShift: true,

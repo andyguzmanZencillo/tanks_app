@@ -9,7 +9,7 @@ class ConsoleCubit extends Cubit<ConsoleState> {
 
   final ConsoleRepository consoleRepository;
 
-  Future<void> getAll() async {
+  Future<bool> getAll() async {
     emit(state.copyWith(consoleStatus: ConsoleStatus.success));
     final result = await consoleRepository.getAll();
     result.when(
@@ -30,5 +30,6 @@ class ConsoleCubit extends Cubit<ConsoleState> {
         );
       },
     );
+    return result.isOk();
   }
 }

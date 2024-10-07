@@ -36,6 +36,25 @@ class TanksApi extends BaseApi {
     }
   }
 
+  Future<List<TanksResponse>> getToSaleCenter(
+    GetTanksToSaleCenterRequest getTanksRequest,
+  ) async {
+    try {
+      final response = await post(
+        getTanksRequest.toJson(),
+      );
+      if (!response.result) throw ResultException(response.message);
+      final list = response.resultSp as List;
+      return list
+          .map(
+            (e) => TanksResponse.fromJson(e as Map<String, dynamic>),
+          )
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<String> delete(
     DeleteTanksRequest deletehUserRequest,
   ) async {

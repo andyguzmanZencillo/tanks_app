@@ -35,10 +35,10 @@ class MultiChannelAlertProcessor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dialogCubit = context.read<DialogHandlerCubit>();
+    final dialogCubit = context.read<DialogHandlerBloc>();
     return MultiBlocListener(
       listeners: [
-        BlocListener<DialogHandlerCubit, DialogHandlerState>(
+        BlocListener<DialogHandlerBloc, DialogHandlerState>(
           listenWhen: (previous, current) {
             return current.closeManually;
           },
@@ -48,62 +48,28 @@ class MultiChannelAlertProcessor extends StatelessWidget {
             }
           },
         ),
-        BlocListener<DialogHandlerCubit, DialogHandlerState>(
+        BlocListener<DialogHandlerBloc, DialogHandlerState>(
           listenWhen: (previous, current) {
-            return current.dialogState == DialogState.open;
+            if (previous != current) {
+              if (previous.dialogState != current.dialogState) {
+                return current.dialogState == DialogState.open;
+              }
+            }
+            return false;
           },
           listener: (context, state) {
-            final dialogData = state.dialogData;
-            final message = state.message;
-            final status = state.dialogType;
-
-            if (status == DialogType.loading) {
+            if (state.dialogState == DialogState.open) {
               showDialog<void>(
                 barrierDismissible: false,
                 context: context,
                 builder: (context) {
-                  return DialogText(
-                    text: message,
+                  return BlocProvider.value(
+                    value: dialogCubit,
+                    child: const DialogHandler(),
                   );
                 },
               ).then((s) {
-                dialogCubit.changeStateDialog(DialogState.close);
-              });
-            } else if (status == DialogType.success) {
-              showDialog<void>(
-                barrierDismissible: false,
-                context: context,
-                builder: (context) {
-                  return DialogManagment.good(
-                    dialogData: dialogData,
-                  );
-                },
-              ).then((s) {
-                dialogCubit.changeStateDialog(DialogState.close);
-              });
-            } else if (status == DialogType.info) {
-              showDialog<void>(
-                barrierDismissible: false,
-                context: context,
-                builder: (context) {
-                  return DialogManagment.info(
-                    dialogData: dialogData,
-                  );
-                },
-              ).then((s) {
-                dialogCubit.changeStateDialog(DialogState.close);
-              });
-            } else if (status == DialogType.error) {
-              showDialog<void>(
-                barrierDismissible: false,
-                context: context,
-                builder: (context) {
-                  return DialogManagment.error(
-                    dialogData: dialogData,
-                  );
-                },
-              ).then((s) {
-                dialogCubit.changeStateDialog(DialogState.close);
+                dialogCubit.add(const ChangeStateDialog(DialogState.close));
               });
             }
           },

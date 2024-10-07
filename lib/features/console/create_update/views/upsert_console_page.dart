@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/tank_repository.dart';
-import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
+import 'package:tanks_app/core/helpers/dialog_handler/bloc/dialog_handler_bloc.dart';
 import 'package:tanks_app/core/util/bloc_generics.dart';
 import 'package:tanks_app/core/util/enums/enums.dart';
-import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/util/validator_field/valid.dart';
 import 'package:tanks_app/core/util/validator_field/validator_field.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
-import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
 import 'package:tanks_app/core/widgets/field_custom.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
 import 'package:tanks_app/features/console/create_update/cubit/upsert_console_cubit.dart';
@@ -55,13 +53,13 @@ class UpsertConsoleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dialog = context.read<DialogHandlerCubit>();
+    final dialog = context.read<DialogHandlerBloc>();
     final inherited = UpsertConsoleInherited.of(context);
     return BlocListener<UpsertConsoleCubit, UpsertConsoleState>(
       listener: (context, state) {
         final s = state.upsertStatus;
         if (s == UpsertStatus.loading) {
-          if (inherited.typeOperation == TypeOperation.create) {
+          /*if (inherited.typeOperation == TypeOperation.create) {
             dialog.onOpenNotification(
               message: 'Creando centro de venta...',
               dialogType: DialogType.loading,
@@ -104,7 +102,7 @@ class UpsertConsoleView extends StatelessWidget {
               textButton: 'Cerrar',
             ),
             dialogType: DialogType.success,
-          );
+          );*/
         }
       },
       child: const UpsertConsoleBody(),

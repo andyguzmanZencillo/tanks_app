@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:failures/failures.dart';
 import 'package:tank_api/core/models/default_response.dart';
 import 'package:tank_api/core/network/api_method.dart';
 import 'package:tank_api/core/network/endpoints.dart';
@@ -37,6 +38,7 @@ class BaseApi {
         ),
         data: data,
       );
+      if (!response.result) throw ResultException(response.message);
       return response;
     } catch (e) {
       rethrow;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tanks_app/core/helpers/dialog_handler/bloc/dialog_handler_bloc.dart';
 import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
@@ -12,41 +13,47 @@ class SignUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dialog = context.read<DialogHandlerCubit>();
+    final dialog = context.read<DialogHandlerBloc>();
     return BlocListener<SignUpCubit, SignUpState>(
       listener: (context, state) {
         final s = state.status;
         if (s == SignUpStatus.loading) {
-          dialog.onOpenNotification(
-            message: 'Registrando...',
-            dialogType: DialogType.loading,
+          dialog.add(
+            const OnOpenNotification(
+              message: 'Registrando usuario...',
+              dialogType: DialogType.loading,
+            ),
           );
         } else if (s == SignUpStatus.error) {
-          dialog.onOpenNotification(
-            dialogData: DialogData(
-              barrierDismissible: false,
-              message: 'Error al registrar',
-              title: 'Error',
-              onPressed: () {
-                context.pop();
-              },
-              textButton: 'Cerrar',
+          dialog.add(
+            OnOpenNotification(
+              dialogData: DialogData(
+                barrierDismissible: false,
+                message: 'Error al registrar',
+                title: 'Error',
+                onPressed: () {
+                  context.pop();
+                },
+                textButton: 'Cerrar',
+              ),
+              dialogType: DialogType.error,
             ),
-            dialogType: DialogType.error,
           );
         } else if (s == SignUpStatus.success) {
-          dialog.onOpenNotification(
-            dialogData: DialogData(
-              barrierDismissible: false,
-              message: 'Registro exitoso!',
-              title: '¡Exito!',
-              onPressed: () {
-                context.pop();
-                context.push(HomePage.route());
-              },
-              textButton: 'Cerrar',
+          dialog.add(
+            OnOpenNotification(
+              dialogData: DialogData(
+                barrierDismissible: false,
+                message: 'Registro exitoso!',
+                title: '¡Exito!',
+                onPressed: () {
+                  context.pop();
+                  context.push(HomePage.route());
+                },
+                textButton: 'Cerrar',
+              ),
+              dialogType: DialogType.success,
             ),
-            dialogType: DialogType.success,
           );
         }
       },

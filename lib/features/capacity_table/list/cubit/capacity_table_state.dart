@@ -5,25 +5,30 @@ enum CapacityTableStatus { loading, success, error, initial }
 class CapacityTableState extends Equatable {
   const CapacityTableState({
     this.tanksStatus = CapacityTableStatus.initial,
-    this.tanks = const [],
-    this.tanksStaging = const [],
+    this.capacityEntitys = const [],
+    this.errorMessage,
   });
   final CapacityTableStatus tanksStatus;
-  final List<CapacityTableEntity> tanks;
-  final List<CapacityTableEntity> tanksStaging;
+  final List<CapacityEntity> capacityEntitys;
+
+  final String? errorMessage;
 
   CapacityTableState copyWith({
     CapacityTableStatus? tanksStatus,
-    List<CapacityTableEntity>? tanks,
-    List<CapacityTableEntity>? tanksStaging,
+    List<CapacityEntity>? capacityEntitys,
+    String? errorMessage,
   }) {
     return CapacityTableState(
       tanksStatus: tanksStatus ?? this.tanksStatus,
-      tanks: tanks ?? this.tanks,
-      tanksStaging: tanksStaging ?? this.tanksStaging,
+      capacityEntitys: capacityEntitys ?? this.capacityEntitys,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
-  List<Object> get props => [tanksStatus, tanks, tanksStaging];
+  List<Object?> get props => [
+        tanksStatus,
+        capacityEntitys,
+        errorMessage,
+      ];
 }

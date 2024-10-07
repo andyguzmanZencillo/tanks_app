@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/features/sales_center/entity/sales_center_entity.dart';
-import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
+import 'package:tanks_app/core/helpers/dialog_handler/bloc/dialog_handler_bloc.dart';
 import 'package:tanks_app/core/util/bloc_generics.dart';
-import 'package:tanks_app/core/util/enums/enums.dart';
-import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/util/validator_field/valid.dart';
 import 'package:tanks_app/core/util/validator_field/validator_field.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
-import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
 import 'package:tanks_app/features/sales_center/create_update/cubit/upsert_sales_center_cubit.dart';
 import 'package:tanks_app/features/sales_center/create_update/views/create_update_sales_center_inherited.dart';
@@ -54,11 +51,11 @@ class CreateUpdateSalesCenterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dialog = context.read<DialogHandlerCubit>();
+    final dialog = context.read<DialogHandlerBloc>();
     final inherited = CreateUpdateSalesCenterInherited.of(context);
     return BlocListener<UpsertSalesCenterCubit, UpsertSalesCenterState>(
       listener: (context, state) {
-        final s = state.createUpdateStatus;
+        /*final s = state.createUpdateStatus;
         if (s == UpsertStatus.loading) {
           if (inherited.typeOperation == TypeOperation.create) {
             dialog.onOpenNotification(
@@ -104,7 +101,7 @@ class CreateUpdateSalesCenterView extends StatelessWidget {
             ),
             dialogType: DialogType.success,
           );
-        }
+        }*/
       },
       child: const CreateUpdateSalesCenterBody(),
     );

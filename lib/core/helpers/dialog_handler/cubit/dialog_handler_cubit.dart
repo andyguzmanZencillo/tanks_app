@@ -1,10 +1,6 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
-
 part 'dialog_handler_state.dart';
 
-class DialogHandlerCubit extends Cubit<DialogHandlerState> {
+/*class DialogHandlerCubit extends Cubit<DialogHandlerState> {
   DialogHandlerCubit() : super(const DialogHandlerState());
 
   void onOpenNotification({
@@ -25,6 +21,7 @@ class DialogHandlerCubit extends Cubit<DialogHandlerState> {
         dialogData: dialogData,
         dialogType: dialogType,
         dialogState: DialogState.open,
+        dialogStateLast: state.dialogState,
         message: message,
         closeManually: false,
       ),
@@ -35,3 +32,4 @@ class DialogHandlerCubit extends Cubit<DialogHandlerState> {
     emit(state.copyWith(dialogState: dialogState));
   }
 }
+*/

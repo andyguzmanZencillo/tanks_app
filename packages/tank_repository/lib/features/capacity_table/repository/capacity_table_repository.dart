@@ -15,33 +15,13 @@ class CapacityTableRepository {
   final CapacityTableApi _api;
   final UserDatabase _userDatabase;
 
-  /*Future<Result<List<CapacityTableEntity>, Failure>> getAll() {
-    return handleExceptionCompleteToken<List<CapacityTableEntity>>(() async {
-      final request = GetCapacityTableRequest(
-        idCompania: 1,
-      );
-      final response = await _api.getAll(request);
-      
-      return response
-          .map(
-            (e) => CapacityTableEntity(
-              idTanque: e.idTanque,
-              idCompania: 1,
-              idAforo: e.idAforo,
-              
-              idStaging: DateTime.now().millisecondsSinceEpoch,
-            ),
-          )
-          .toList();
-    });
-  }*/
-
   Future<Result<List<CapacityEntity>, Failure>> getToTank({
     required int idTank,
   }) {
     return handleExceptionCompleteToken<List<CapacityEntity>>(() async {
+      final user = await _userDatabase.getUser();
       final request = GetCapacityTableToTankRequest(
-        idCompania: 1,
+        idCompania: user.idCompany,
         idTanque: idTank,
       );
       final response = await _api.getToTank(request);
@@ -63,10 +43,10 @@ class CapacityTableRepository {
     CapacityTableEntity e,
   ) {
     return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
+      final user = await _userDatabase.getUser();
       final request = InsertCapacityTableRequest(
         idTanque: e.idTanque,
-        idCompania: e.idCompania,
+        idCompania: user.idCompany,
         data: e.data
             .map(
               (e) => CapacityRequest(
@@ -76,36 +56,19 @@ class CapacityTableRepository {
             )
             .toList(),
       );
-      final response = await _api.save(request);
+      await _api.save(request);
       return true;
     });
   }
 
-  /*Future<Result<bool, Failure>> updateCapacityTable(
-    CapacityTableEntity e,
-  ) {
-    return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
-      final request = UpdateCapacityTableRequest(
-        idTanque: e.idTanque,
-        idCompania: e.idCompania,
-        idAforo: e.idAforo,
-        alturaTanque: e.alturaTanque,
-        volumen: e.volumen,
-      );
-      final response = await _api.update(request);
-      return true;
-    });
-  }*/
-
   Future<Result<bool, Failure>> deleteCapacityTable(int idTank) {
     return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
+      final user = await _userDatabase.getUser();
       final request = DeleteCapacityTableRequest(
         idAforo: idTank,
-        idCompania: 1,
+        idCompania: user.idCompany,
       );
-      final response = await _api.delete(request);
+      await _api.delete(request);
       return true;
     });
   }

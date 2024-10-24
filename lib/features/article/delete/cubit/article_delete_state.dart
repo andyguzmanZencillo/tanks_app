@@ -1,23 +1,26 @@
 part of 'article_delete_cubit.dart';
 
-enum DeleteArticleStatus { loading, success, error, initial }
-
 class ArticleDeleteState extends Equatable {
   const ArticleDeleteState({
-    this.deleteArticleStatus = DeleteArticleStatus.initial,
+    this.deleteStatus = DeleteStatus.initial,
+    this.errorMessage,
   });
-  final DeleteArticleStatus deleteArticleStatus;
+  final DeleteStatus deleteStatus;
+  final String? errorMessage;
 
   ArticleDeleteState copyWith({
-    DeleteArticleStatus? deleteArticleStatus,
+    DeleteStatus? deleteStatus,
+    String? errorMessage,
   }) {
     return ArticleDeleteState(
-      deleteArticleStatus: deleteArticleStatus ?? this.deleteArticleStatus,
+      deleteStatus: deleteStatus ?? this.deleteStatus,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
-  List<Object> get props => [
-        deleteArticleStatus,
+  List<Object?> get props => [
+        deleteStatus,
+        errorMessage,
       ];
 }

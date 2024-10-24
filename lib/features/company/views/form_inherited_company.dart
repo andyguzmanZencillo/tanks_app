@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:tanks_app/core/widgets/field_custom.dart';
+import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 
 class CreateArticleFormInherited extends InheritedWidget {
   CreateArticleFormInherited({

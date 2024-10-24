@@ -7,59 +7,43 @@ import 'package:tank_repository/features/article/entity/article_entity.dart';
 import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/util/bloc_generics.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
-import 'package:tanks_app/core/util/validator_field/valid.dart';
-import 'package:tanks_app/core/util/validator_field/validator_field.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
+import 'package:tanks_app/core/widgets/form/text_field_custom_pro.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
-import 'package:tanks_app/features/article/list/cubit/article_cubit.dart';
+import 'package:tanks_app/features/article/list/cubit/article_list_cubit.dart';
 import 'package:tanks_app/features/console/list/cubit/console_cubit.dart';
 import 'package:tanks_app/features/sales_center/list/cubit/sales_center_cubit.dart';
-import 'package:tanks_app/features/sign_in/widgets/field_auth.dart';
 import 'package:tanks_app/features/tanks/create_update/cubit/upsert_tanks_cubit.dart';
 import 'package:tanks_app/features/tanks/create_update/helpers/upsert_tanks_listener.dart';
 import 'package:tanks_app/features/tanks/create_update/views/upsert_tanks_inherited.dart';
 import 'package:tanks_app/features/tanks/create_update/widgets/dropdown.dart';
+import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
 import 'package:tanks_app/injection/injection.dart';
 
 class UpsertTanksPage extends StatelessWidget {
   const UpsertTanksPage({
     required this.typeOperation,
-    this.tanksEntity = const TanksEntity.empty(),
     super.key,
   });
   final TypeOperation typeOperation;
-  final TanksEntity tanksEntity;
-
-  static Route<bool?> route({
-    required TypeOperation typeOperation,
-    TanksEntity tanksEntity = const TanksEntity.empty(),
-  }) {
-    return MaterialPageRoute<bool?>(
-      builder: (context) => UpsertTanksPage(
-        typeOperation: typeOperation,
-        tanksEntity: tanksEntity,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return UpsertTanksInherited(
       typeOperation: typeOperation,
-      tanksEntity: tanksEntity,
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (context) => sl<UpsertTanksCubit>(),
           ),
           BlocProvider(
-            create: (context) => sl<SalesCenterCubit>()..getAll(),
+            create: (context) => sl<SalesCenterCubit>(),
           ),
           BlocProvider(
-            create: (context) => sl<ConsoleCubit>()..getAll(),
+            create: (context) => sl<ConsoleCubit>(),
           ),
           BlocProvider(
-            create: (context) => sl<ArticleCubit>()..getArticles(),
+            create: (context) => sl<ArticleListCubit>(),
           ),
         ],
         child: const UpsertTanksView(),
@@ -92,7 +76,7 @@ class UpsertTanksView extends StatelessWidget {
     final upsert = context.read<UpsertTanksCubit>();
     final consoleCubit = context.read<ConsoleCubit>();
     final salesCenterCubit = context.read<SalesCenterCubit>();
-    final articleCubit = context.read<ArticleCubit>();
+    final articleCubit = context.read<ArticleListCubit>();
     await upsert.functionState(() async {
       if (!await consoleCubit.getAll()) {
         return (false, 'Error al obtener la lista de consolas');
@@ -115,15 +99,13 @@ class UpsertTanksBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final inherited = UpsertTanksInherited.of(context);
+    final tanksCubit = context.read<TanksCubit>();
 
     final isCreate = inherited.typeOperation == TypeOperation.create;
     final isUpdate = inherited.typeOperation == TypeOperation.update;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-      ),
+      appBar: AppBar(),
       resizeToAvoidBottomInset: true,
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: BlocContext<UpsertTanksCubit, UpsertTanksState>(
         builder: (context, cubit) {
           return CustomScrollView(
@@ -152,7 +134,8 @@ class UpsertTanksBody extends StatelessWidget {
                     ),
                     Expanded(
                       child: Container(
-                        padding: const EdgeInsets.all(20),
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 10),
                         decoration: const BoxDecoration(
                           //color: Color.fromARGB(52, 29, 29, 29),
                           borderRadius: BorderRadius.only(
@@ -165,13 +148,10 @@ class UpsertTanksBody extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
                               BlocSelector<SalesCenterCubit, SalesCenterState,
                                   List<SalesCenterEntity>>(
                                 selector: (state) {
-                                  return state.salesCenters;
+                                  return state.list;
                                 },
                                 builder: (context, state) {
                                   if (state.isEmpty) {
@@ -183,7 +163,8 @@ class UpsertTanksBody extends StatelessWidget {
                                     itemDefault = state.firstWhereOrNull(
                                       (element) =>
                                           element.idCentroVenta ==
-                                          inherited.tanksEntity.idCentroVenta,
+                                          tanksCubit
+                                              .state.selected.idCentroVenta,
                                     );
                                   }
 
@@ -203,10 +184,10 @@ class UpsertTanksBody extends StatelessWidget {
                                   );
                                 },
                               ),
-                              BlocSelector<ArticleCubit, ArticleState,
+                              BlocSelector<ArticleListCubit, ArticleListState,
                                   List<ArticleEntity>>(
                                 selector: (state) {
-                                  return state.articles;
+                                  return state.list;
                                 },
                                 builder: (context, state) {
                                   if (state.isEmpty) {
@@ -219,7 +200,7 @@ class UpsertTanksBody extends StatelessWidget {
                                     articleEntity = state.firstWhereOrNull(
                                       (element) =>
                                           element.idArticulo ==
-                                          inherited.tanksEntity.idArticulo,
+                                          tanksCubit.state.selected.idArticulo,
                                     );
                                   }
                                   return DropdownCustom(
@@ -241,7 +222,7 @@ class UpsertTanksBody extends StatelessWidget {
                               BlocSelector<ConsoleCubit, ConsoleState,
                                   List<ConsoleEntity>>(
                                 selector: (state) {
-                                  return state.consoles;
+                                  return state.list;
                                 },
                                 builder: (context, state) {
                                   if (state.isEmpty) {
@@ -254,7 +235,8 @@ class UpsertTanksBody extends StatelessWidget {
                                     consoleEntity = state.firstWhereOrNull(
                                       (element) =>
                                           element.idConsola ==
-                                          inherited.tanksEntity.idConsolaTanque,
+                                          tanksCubit
+                                              .state.selected.idConsolaTanque,
                                     );
                                   }
 
@@ -274,80 +256,25 @@ class UpsertTanksBody extends StatelessWidget {
                                   );
                                 },
                               ),
-                              FieldAuth2(
-                                icon: const Icon(Icons.scale),
-                                labelSingle: false,
-                                controller: inherited
-                                    .capacidadField, // Cambiar a capacidadField
-                                validator: (value) => Validator.validation(
-                                  value,
-                                  [
-                                    RequiredValid(
-                                      error: 'Campo Capacidad requerido',
-                                    ),
-                                  ],
-                                ),
+                              TextFieldCustomPro(
+                                controller: inherited.capacidadField,
                                 label: 'Capacidad',
                               ),
-                              FieldAuth2(
-                                icon: const Icon(Icons.height),
-                                labelSingle: false,
-                                controller: inherited
-                                    .alturaTanqueField, // Cambiar a alturaTanqueField
-                                validator: (value) => Validator.validation(
-                                  value,
-                                  [
-                                    RequiredValid(
-                                      error: 'Campo Altura Tanque requerido',
-                                    ),
-                                  ],
-                                ),
+                              TextFieldCustomPro(
+                                controller: inherited.alturaTanqueField,
                                 label: 'Altura Tanque',
                               ),
-                              FieldAuth2(
-                                icon: const Icon(Icons.description),
-                                labelSingle: false,
-                                controller:
-                                    inherited.descripcionField, // Mantener
-                                validator: (value) => Validator.validation(
-                                  value,
-                                  [
-                                    RequiredValid(
-                                      error: 'Campo Descripción requerido',
-                                    ),
-                                  ],
-                                ),
+                              TextFieldCustomPro(
+                                controller: inherited.descripcionField,
                                 label: 'Descripción',
                               ),
-                              FieldAuth2(
-                                icon: const Icon(Icons.percent),
-                                labelSingle: false,
-                                controller: inherited
-                                    .porcentajeMinimoCombustibleField, // Cambiar a porcentajeMinimoCombustibleField
-                                validator: (value) => Validator.validation(
-                                  value,
-                                  [
-                                    RequiredValid(
-                                      error:
-                                          'Campo Porcentaje Mínimo Combustible requerido',
-                                    ),
-                                  ],
-                                ),
+                              TextFieldCustomPro(
+                                controller:
+                                    inherited.porcentajeMinimoCombustibleField,
                                 label: 'Porcentaje Mínimo Combustible',
                               ),
-                              FieldAuth2(
-                                icon: const Icon(Icons.height),
-                                labelSingle: false,
-                                controller: inherited
-                                    .alturaOffsetField, // Cambiar a alturaOffsetField
-                                validator: (value) => Validator.validation(
-                                  value,
-                                  [
-                                    RequiredValid(
-                                      error: 'Campo Altura Offset requerido',
-                                    ),
-                                  ],
-                                ),
+                              TextFieldCustomPro(
+                                controller: inherited.alturaOffsetField,
                                 label: 'Altura Offset',
                               ),
                               const SizedBox(
@@ -389,7 +316,7 @@ class UpsertTanksBody extends StatelessWidget {
                                       );
                                     } else {
                                       cubit.update(
-                                        tanksEntity: inherited.tanksEntity,
+                                        tanksEntity: tanksCubit.state.selected,
                                         idCentroVenta: inherited.saleCenter.id,
                                         idArticulo: inherited.article.id,
                                         capacidad:
@@ -419,8 +346,8 @@ class UpsertTanksBody extends StatelessWidget {
                                 },
                                 text: inherited.typeOperation ==
                                         TypeOperation.create
-                                    ? 'Crear Consola'
-                                    : 'Actualizar Consola',
+                                    ? 'Crear Tanque'
+                                    : 'Actualizar Tanque',
                               ),
                             ],
                           ),

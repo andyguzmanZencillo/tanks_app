@@ -11,7 +11,7 @@ class TanksCubit extends Cubit<TanksState> {
   final TanksRepository consoleRepository;
 
   void changeSelected(TanksEntity tanksEntity) {
-    emit(state.copyWith(tankSelected: tanksEntity));
+    emit(state.copyWith(selected: tanksEntity));
   }
 
   Future<void> getAll() async {
@@ -21,7 +21,8 @@ class TanksCubit extends Cubit<TanksState> {
       ok: (ok) {
         emit(
           state.copyWith(
-            tanks: ok,
+            list: ok,
+            listCopy: ok,
             tanksStatus: TanksStatus.success,
           ),
         );
@@ -29,7 +30,8 @@ class TanksCubit extends Cubit<TanksState> {
       err: (err) {
         emit(
           state.copyWith(
-            tanks: [],
+            list: [],
+            listCopy: [],
             tanksStatus: TanksStatus.error,
           ),
         );
@@ -44,7 +46,8 @@ class TanksCubit extends Cubit<TanksState> {
       ok: (ok) {
         emit(
           state.copyWith(
-            tanks: ok,
+            list: ok,
+            listCopy: ok,
             tanksStatus: TanksStatus.success,
           ),
         );
@@ -55,13 +58,15 @@ class TanksCubit extends Cubit<TanksState> {
             state.copyWith(
               tanksStatus: TanksStatus.error,
               messageError: err.message,
-              tanks: [],
+              list: [],
+              listCopy: [],
             ),
           );
         } else {
           emit(
             state.copyWith(
-              tanks: [],
+              list: [],
+              listCopy: [],
               tanksStatus: TanksStatus.error,
             ),
           );
@@ -69,5 +74,17 @@ class TanksCubit extends Cubit<TanksState> {
       },
     );
     return result.isOk();
+  }
+
+  void search(String text) {
+    final listCopy = [...state.listCopy];
+    final listSearh = listCopy
+        .where(
+          (element) =>
+              element.descripcion.toLowerCase().contains(text.toLowerCase()),
+        )
+        .toList();
+
+    emit(state.copyWith(list: listSearh));
   }
 }

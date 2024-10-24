@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/util/extensions/extension_list.dart';
+import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
+import 'package:tanks_app/core/widgets/form/text_field_custom_pro.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
+import 'package:tanks_app/features/article/list/views/article_list_body.dart';
 import 'package:tanks_app/features/tanks/create_update/views/upsert_tanks_page.dart';
 import 'package:tanks_app/features/tanks/detail/views/detail_tank.dart';
 import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
@@ -57,7 +60,11 @@ class TanksListBody extends StatelessWidget {
     final tanskCubit = context.read<TanksCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tanques'),
+        title: const Text(
+          'Tanques',
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
       body: Padding(
@@ -65,47 +72,33 @@ class TanksListBody extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                context
-                    .pushResult<bool?>(
-                  UpsertTanksPage.route(
-                    typeOperation: TypeOperation.create,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: TextFieldCustomPro(
+                    controller: ControllerField(),
+                    label: 'Buscar...',
+                    isLabelTitle: false,
+                    onChanged: tanskCubit.search,
                   ),
-                )
-                    .then((value) {
-                  if (value == null || value == false) {
-                    return;
-                  }
-                  context.read<TanksCubit>().getAll();
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 243, 170, 25),
-                padding: const EdgeInsets.symmetric(
-                  //vertical: 15,
-                  horizontal: 20,
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                const SizedBox(
+                  width: 10,
                 ),
-              ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Crear tanque',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
+                AddButton(
+                  onPressed: () {
+                    context.pushContext(
+                      BlocProvider.value(
+                        value: tanskCubit,
+                        child: const UpsertTanksPage(
+                          typeOperation: TypeOperation.create,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
             const SizedBox(
               height: 10,
@@ -113,7 +106,7 @@ class TanksListBody extends StatelessWidget {
             Expanded(
               child: BlocBuilder<TanksCubit, TanksState>(
                 builder: (context, state) {
-                  final list = state.tanks;
+                  final list = state.list;
                   return list.toListView(
                     itemSpacing: 10,
                     itemBuilder: (context, item, index) {
@@ -126,19 +119,11 @@ class TanksListBody extends StatelessWidget {
                           );
                         },
                         onTapEdit: () {
-                          context
-                              .pushResult<bool?>(
-                            UpsertTanksPage.route(
+                          context.pushComplete(
+                            const UpsertTanksPage(
                               typeOperation: TypeOperation.update,
-                              tanksEntity: item,
                             ),
-                          )
-                              .then((value) {
-                            if (value == null || value == false) {
-                              return;
-                            }
-                            context.read<TanksCubit>().getAll();
-                          });
+                          );
                         },
                         onTapDelete: () {},
                       );

@@ -34,7 +34,7 @@ class InsertTankVariationRequest extends TankVariationRequest {
   final int idCompania;
 
   final int idTanque;
-  final String fechaZ;
+  final DateTime fechaZ;
   final double saldoInicial;
   final double comprasFacturas;
   final double descargue;
@@ -111,7 +111,7 @@ class UpdateTankVariationRequest extends TankVariationRequest {
 
   final int idVariacion;
   final int idTanque;
-  final String fechaZ;
+  final DateTime fechaZ;
   final double saldoInicial;
   final double comprasFacturas;
   final double descargue;
@@ -201,6 +201,69 @@ class GetTankVariationToSaleCenterRequest extends TankVariationRequest {
       'id_compania': idCompania,
       'id_centro_venta': idCentroVenta,
       'fecha_z': date.toIso8601String(),
+    });
+  }
+}
+
+class GetTankVariationToSaleCenterDateRequest extends TankVariationRequest {
+  GetTankVariationToSaleCenterDateRequest({
+    required this.idCompania,
+    required this.idCentroVenta,
+    required this.dateInit,
+    required this.dateFinal,
+    this.idUserTrace = 123,
+    this.operation = 'S',
+  });
+
+  final int idUserTrace;
+  final String operation;
+
+  final int idCompania;
+  final int idCentroVenta;
+  final DateTime dateInit;
+  final DateTime dateFinal;
+
+  Map<String, dynamic> toJson() {
+    return super.toJsonParams({
+      'id_user_trace': idUserTrace,
+      'operation': operation,
+      'id_compania': idCompania,
+      'id_centro_venta': idCentroVenta,
+      'fecha_z_inicial': dateInit.toIso8601String(),
+      'fecha_z_final': dateFinal.toIso8601String(),
+    });
+  }
+}
+
+class GetTankVariationToSaleCenterTankDateRequest extends TankVariationRequest {
+  GetTankVariationToSaleCenterTankDateRequest({
+    required this.idCompania,
+    required this.idCentroVenta,
+    required this.idTanque,
+    required this.dateInit,
+    required this.dateFinal,
+    this.idUserTrace = 123,
+    this.operation = 'S',
+  });
+
+  final int idUserTrace;
+  final String operation;
+
+  final int idCompania;
+  final int idTanque;
+  final int idCentroVenta;
+  final DateTime dateInit;
+  final DateTime dateFinal;
+
+  Map<String, dynamic> toJson() {
+    return super.toJsonParams({
+      'id_user_trace': idUserTrace,
+      'operation': operation,
+      'id_compania': idCompania,
+      'id_centro_venta': idCentroVenta,
+      'id_tanque': idTanque,
+      'fecha_z_inicial': dateInit.toIso8601String(),
+      'fecha_z_final': dateFinal.toIso8601String(),
     });
   }
 }

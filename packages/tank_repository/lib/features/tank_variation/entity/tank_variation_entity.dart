@@ -28,7 +28,7 @@ class TankVariationEntity extends Equatable {
       : idVariacion = 0,
         idCompania = 0,
         idTanque = 0,
-        fechaZ = '',
+        fechaZ = null,
         saldoInicial = 0.0,
         comprasFacturas = 0.0,
         descargue = 0.0,
@@ -49,7 +49,7 @@ class TankVariationEntity extends Equatable {
   final int idVariacion;
   final int idCompania;
   final int idTanque;
-  final String fechaZ;
+  final DateTime? fechaZ;
   final double saldoInicial;
   final double comprasFacturas;
   final double descargue;
@@ -72,7 +72,7 @@ class TankVariationEntity extends Equatable {
     int? idVariacion,
     int? idCompania,
     int? idTanque,
-    String? fechaZ,
+    DateTime? fechaZ,
     double? saldoInicial,
     double? comprasFacturas,
     double? descargue,

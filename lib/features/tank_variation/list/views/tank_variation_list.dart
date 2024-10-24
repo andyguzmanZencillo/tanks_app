@@ -2,12 +2,14 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/tank_repository.dart';
+import 'package:tanks_app/core/app/themes/app_colors.dart';
 import 'package:tanks_app/core/helpers/notify_dialog_handler/cubit/notify_dialog_handler_cubit.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/util/extensions/extension_list.dart';
+import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
-import 'package:tanks_app/core/widgets/field_custom.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
+import 'package:tanks_app/features/article/list/views/article_list_body.dart';
 import 'package:tanks_app/features/sales_center/list/cubit/sales_center_cubit.dart';
 import 'package:tanks_app/features/tank_variation/create_update/views/upsert_tank_variation_page.dart';
 import 'package:tanks_app/features/tank_variation/list/cubit/tank_variation_cubit.dart';
@@ -54,7 +56,7 @@ class TankVariationListView extends StatelessWidget {
       listeners: [
         TankVariationListener.salesCenter(),
         TankVariationListener.tanks(),
-        TankVariationListener.upsertTankVariation(),
+        TankVariationListener.tankVariation(),
       ],
       child: FullWidgetGeneric(
         onInit: () {
@@ -73,14 +75,18 @@ class TankVariationListBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controllerDate = ControllerFieldDatePicker();
-    final controllerDrp = ControllerFieldDropdown<ValueExtend>();
+    final controllerDrp = ControllerFieldDropdown();
     final cubit = context.read<TankVariationCubit>();
     final tankCubit = context.read<TanksCubit>();
     final notification = context.read<NotifyDialogHandlerCubit>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Variación de tanques'),
+        title: const Text(
+          'Variación de tanques',
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
       body: Padding(
@@ -89,12 +95,13 @@ class TankVariationListBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: BlocSelector<SalesCenterCubit, SalesCenterState,
                       List<SalesCenterEntity>>(
                     selector: (state) {
-                      return state.salesCenters;
+                      return state.list;
                     },
                     builder: (context, state) {
                       if (state.isEmpty) {
@@ -122,7 +129,7 @@ class TankVariationListBody extends StatelessWidget {
                   width: 10,
                 ),
                 SizedBox(
-                  width: 110,
+                  width: 100,
                   child: DatePickerCustom(
                     value: DateTime.now(),
                     label: 'Seleccione fecha',
@@ -140,8 +147,7 @@ class TankVariationListBody extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                SearchButton(
-                  height: 64,
+                SearchButtonPro(
                   onPressed: () async {
                     if (controllerDate.getValue().isAfter(DateTime.now())) {
                       notification.onNotification(
@@ -178,7 +184,7 @@ class TankVariationListBody extends StatelessWidget {
             Expanded(
               child: BlocSelector<TanksCubit, TanksState, List<TanksEntity>>(
                 selector: (state) {
-                  return state.tanks;
+                  return state.list;
                 },
                 builder: (context, tanks) {
                   return BlocSelector<TankVariationCubit, TankVariationState,
@@ -255,56 +261,27 @@ class ItemTankVariation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*void actionPopUpItemSelected(
-      String value,
-      TankVariationEntity salesCenterEntity,
-    ) {
-      if (value == 'edit') {
-        context
-            .pushResult<bool?>(
-          UpsertTankVariationPage.route(
-            typeOperation: TypeOperation.update,
-            consoleEntity: consoleEntity,
-          ),
-        )
-            .then((value) {
-          if (value == null || value == false) {
-            return;
-          }
-          context.read<SalesCenterCubit>().getAll();
-        });
-      } else if (value == 'delete') {
-        showDialog<bool>(
-          barrierDismissible: false,
-          context: context,
-          builder: (BuildContext context) {
-            return DeleteTankVariationDialog(
-              consoleEntity: salesCenterEntity,
-            );
-          },
-        ).then((value) {
-          if (value == null || value == false) {
-            return;
-          }
-          context.read<SalesCenterCubit>().getAll();
-        });
-      } else {}
-    }
-*/
-    return Card(
-      shape: RoundedRectangleBorder(
+    return Container(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
+        color: BlueStoneColors.blueStone200,
       ),
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.center,
         leading: const CircleAvatar(
-          backgroundColor: Color.fromARGB(255, 243, 170, 25),
+          backgroundColor: BlueStoneColors.blueStone600,
           child: Icon(
-            Icons.art_track,
+            Icons.oil_barrel_sharp,
             color: Colors.white,
           ),
         ),
-        title: Text(tanksEntity.text),
+        title: Text(
+          tanksEntity.text,
+          style: const TextStyle(
+            fontWeight: FontWeight.w500,
+            color: BlueStoneColors.blueStone950,
+          ),
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -316,32 +293,52 @@ class ItemTankVariation extends StatelessWidget {
             ),
             if (consoleEntity != null)
               Container(
-                padding: const EdgeInsets.all(5),
+                padding:
+                    const EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 5),
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 113, 156, 73),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: BlueStoneColors.blueStone800,
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
-                child: const Text(
-                  'Variación',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13,
-                  ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Variación registrada',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Icon(
+                      Icons.check_box_outlined,
+                      color: Colors.white,
+                    ),
+                  ],
                 ),
               ),
             if (consoleEntity == null)
               Container(
-                padding: const EdgeInsets.all(5),
+                padding:
+                    const EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 5),
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 187, 76, 42),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Color.fromARGB(255, 161, 72, 56),
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
-                child: const Text(
-                  'Sin Variación',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13,
-                  ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Variación no registrada',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Icon(
+                      Icons.close_outlined,
+                      color: Colors.white,
+                    ),
+                  ],
                 ),
               ),
           ],

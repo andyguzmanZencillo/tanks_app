@@ -8,15 +8,19 @@ class ConsoleCubit extends Cubit<ConsoleState> {
   ConsoleCubit(this.consoleRepository) : super(const ConsoleState());
 
   final ConsoleRepository consoleRepository;
+  void onChangedSelected(ConsoleEntity consoleEntity) {
+    emit(state.copyWith(selected: consoleEntity));
+  }
 
   Future<bool> getAll() async {
-    emit(state.copyWith(consoleStatus: ConsoleStatus.success));
+    emit(state.copyWith(consoleStatus: ConsoleStatus.loading));
     final result = await consoleRepository.getAll();
     result.when(
       ok: (ok) {
         emit(
           state.copyWith(
-            consoles: ok,
+            list: ok,
+            listCopy: ok,
             consoleStatus: ConsoleStatus.success,
           ),
         );
@@ -24,12 +28,25 @@ class ConsoleCubit extends Cubit<ConsoleState> {
       err: (err) {
         emit(
           state.copyWith(
-            consoles: [],
+            list: [],
+            listCopy: [],
             consoleStatus: ConsoleStatus.error,
           ),
         );
       },
     );
     return result.isOk();
+  }
+
+  void search(String text) {
+    final listCopy = [...state.listCopy];
+    final listSearh = listCopy
+        .where(
+          (element) =>
+              element.consola.toLowerCase().contains(text.toLowerCase()),
+        )
+        .toList();
+
+    emit(state.copyWith(list: listSearh));
   }
 }

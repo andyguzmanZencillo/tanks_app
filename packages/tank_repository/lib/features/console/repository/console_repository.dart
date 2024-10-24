@@ -44,9 +44,9 @@ class ConsoleRepository {
     ConsoleEntity consoleEntity,
   ) {
     return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
+      final user = await _userDatabase.getUser();
       final request = InsertConsoleRequest(
-        idCompania: consoleEntity.idCompania,
+        idCompania: user.idCompany,
         console: consoleEntity.consola,
         description: consoleEntity.descripcion,
         idConsoleTankProtocol: consoleEntity.idConsolaTanqueProtocolo,

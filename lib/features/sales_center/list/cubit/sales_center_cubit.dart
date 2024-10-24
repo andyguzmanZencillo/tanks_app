@@ -12,6 +12,10 @@ class SalesCenterCubit extends Cubit<SalesCenterState> {
 
   final SalesCenterRepository salesCenterRepository;
 
+  void changeSelected(SalesCenterEntity selected) {
+    emit(state.copyWith(selected: selected));
+  }
+
   Future<bool> getAll() async {
     emit(state.copyWith(salesCenterStatus: SalesCenterStatus.loading));
     final result = await salesCenterRepository.getAll();
@@ -19,38 +23,46 @@ class SalesCenterCubit extends Cubit<SalesCenterState> {
       ok: (ok) {
         emit(
           state.copyWith(
-            salesCenters: ok,
+            list: ok,
+            listCopy: ok,
             salesCenterStatus: SalesCenterStatus.success,
           ),
         );
       },
       err: (err) {
-        emit(
-          state.copyWith(
-            salesCenters: [],
-            salesCenterStatus: SalesCenterStatus.error,
-          ),
-        );
-
         if (err is ResultFailure) {
           emit(
             state.copyWith(
-              salesCenters: [],
+              list: [],
+              listCopy: [],
               salesCenterStatus: SalesCenterStatus.error,
-              messageError: err.message,
+              errorMessage: err.message,
             ),
           );
         } else {
           emit(
             state.copyWith(
-              salesCenters: [],
+              list: [],
+              listCopy: [],
               salesCenterStatus: SalesCenterStatus.error,
-              messageError: 'Error desconocido',
+              errorMessage: 'Error desconocido',
             ),
           );
         }
       },
     );
     return result.isOk();
+  }
+
+  void search(String text) {
+    final listCopy = [...state.listCopy];
+    final listSearh = listCopy
+        .where(
+          (element) =>
+              element.centroVenta.toLowerCase().contains(text.toLowerCase()),
+        )
+        .toList();
+
+    emit(state.copyWith(list: listSearh));
   }
 }

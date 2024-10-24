@@ -64,13 +64,32 @@ extension ContextRouter on BuildContext {
     );
   }
 
-  Future<T?> pushComplete<T>(
-    BuildContext context,
+  void pushContext(Widget child) {
+    Navigator.push(
+      this,
+      MaterialPageRoute<void>(
+        builder: (context) => child,
+      ),
+    );
+  }
+
+  void goComplete(
     Widget page,
   ) {
-    return Navigator.push<T>(
-      context,
-      MaterialPageRoute<T>(
+    Navigator.pushReplacement(
+      this,
+      MaterialPageRoute<void>(
+        builder: (_) => page,
+      ),
+    );
+  }
+
+  void pushComplete(
+    Widget page,
+  ) {
+    Navigator.push(
+      this,
+      MaterialPageRoute<void>(
         builder: (_) => page,
       ),
     );

@@ -7,7 +7,7 @@ extension MapperTankVariationEntityToRequest on TankVariationEntity {
       idVariacion: idVariacion,
       idCompania: idCompania,
       idTanque: idTanque,
-      fechaZ: fechaZ,
+      fechaZ: fechaZ ?? DateTime.now(),
       saldoInicial: saldoInicial,
       comprasFacturas: comprasFacturas,
       descargue: descargue,

@@ -28,7 +28,7 @@ class DetailTankView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tanksCubit = context.read<TanksCubit>();
-    final tankEntity = tanksCubit.state.tankSelected;
+    final tankEntity = tanksCubit.state.selected;
     return BlocProvider(
       create: (context) =>
           sl<CapacityTableCubit>()..getToTank(tankEntity.idTanque),
@@ -60,7 +60,7 @@ class DetailTankBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BlocSelector<TanksCubit, TanksState, TanksEntity>(
-              selector: (state) => state.tankSelected,
+              selector: (state) => state.selected,
               builder: (c, tanksEntity) {
                 return Column(
                   children: [

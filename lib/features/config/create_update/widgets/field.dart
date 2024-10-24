@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tanks_app/core/util/form/controllers/controllers.dart';
+import 'package:tanks_app/core/util/form/validator_field/valid.dart';
+import 'package:tanks_app/core/util/form/validator_field/validator_field.dart';
 import 'package:tanks_app/core/util/formaters/formaters.dart';
-import 'package:tanks_app/core/util/validator_field/valid.dart';
-import 'package:tanks_app/core/util/validator_field/validator_field.dart';
-import 'package:tanks_app/core/widgets/field_custom.dart';
 import 'package:tanks_app/features/sign_in/widgets/field_auth.dart';
 
 class FieldVariationTank extends StatelessWidget {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tanks_app/core/widgets/field_custom.dart';
+import 'package:flutter/services.dart';
+import 'package:tanks_app/core/util/form/controllers/controllers.dart';
+import 'package:tanks_app/core/util/form/validator_field/valid.dart';
 
 class SignUpInherited extends InheritedWidget {
   SignUpInherited({
@@ -10,10 +12,29 @@ class SignUpInherited extends InheritedWidget {
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
 
-  final idCompany = ControllerField();
-  final user = ControllerField();
-  final name = ControllerField();
-  final password = ControllerField();
+  final idCompany = ControllerField(
+    inputFormatters: [
+      FilteringTextInputFormatter.digitsOnly,
+    ],
+    validators: [
+      RequiredValid(error: 'Campo requerido'),
+    ],
+  );
+  final user = ControllerField(
+    validators: [
+      RequiredValid(error: 'Campo requerido'),
+    ],
+  );
+  final name = ControllerField(
+    validators: [
+      RequiredValid(error: 'Campo requerido'),
+    ],
+  );
+  final password = ControllerField(
+    validators: [
+      RequiredValid(error: 'Campo requerido'),
+    ],
+  );
 
   final formKey = GlobalKey<FormState>();
 

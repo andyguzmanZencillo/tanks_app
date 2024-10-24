@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:tank_repository/features/sales_center/entity/sales_center_entity.dart';
 
-class ArticleEntity extends Equatable implements ValueExtend {
+class ArticleEntity extends Equatable implements ValueExtend<ArticleEntity> {
   const ArticleEntity({
     required this.idArticulo,
     required this.articulo,
@@ -61,4 +61,8 @@ class ArticleEntity extends Equatable implements ValueExtend {
   @override
   // TODO: implement value
   int get id => idArticulo;
+
+  @override
+  // TODO: implement value
+  ArticleEntity? get value => this;
 }

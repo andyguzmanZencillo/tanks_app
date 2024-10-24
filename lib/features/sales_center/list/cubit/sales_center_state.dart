@@ -5,29 +5,39 @@ enum SalesCenterStatus { loading, success, error, initial }
 class SalesCenterState extends Equatable {
   const SalesCenterState({
     this.salesCenterStatus = SalesCenterStatus.initial,
-    this.salesCenters = const [],
-    this.messageError,
+    this.list = const [],
+    this.listCopy = const [],
+    this.selected = const SalesCenterEntity.empty(),
+    this.errorMessage,
   });
   final SalesCenterStatus salesCenterStatus;
-  final List<SalesCenterEntity> salesCenters;
-  final String? messageError;
+  final List<SalesCenterEntity> list;
+  final List<SalesCenterEntity> listCopy;
+  final SalesCenterEntity selected;
+  final String? errorMessage;
 
   SalesCenterState copyWith({
     SalesCenterStatus? salesCenterStatus,
-    List<SalesCenterEntity>? salesCenters,
-    String? messageError,
+    List<SalesCenterEntity>? list,
+    List<SalesCenterEntity>? listCopy,
+    SalesCenterEntity? selected,
+    String? errorMessage,
   }) {
     return SalesCenterState(
       salesCenterStatus: salesCenterStatus ?? this.salesCenterStatus,
-      salesCenters: salesCenters ?? this.salesCenters,
-      messageError: messageError ?? this.messageError,
+      list: list ?? this.list,
+      listCopy: listCopy ?? this.listCopy,
+      errorMessage: errorMessage ?? errorMessage,
+      selected: selected ?? this.selected,
     );
   }
 
   @override
   List<Object?> get props => [
         salesCenterStatus,
-        salesCenters,
-        messageError,
+        list,
+        listCopy,
+        errorMessage,
+        selected,
       ];
 }

@@ -61,9 +61,12 @@ class ConfigListBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<ConfigCubit>();
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Configuraciones'),
+        title: const Text(
+          'Configuraciones',
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
       body: Padding(

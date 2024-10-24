@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tanks_app/features/sign_in/cubit/sign_in_cubit.dart';
-import 'package:tanks_app/features/sign_in/views/sign_in_inherited.dart';
+import 'package:tanks_app/features/sign_in/helper/sign_in_inherited.dart';
 import 'package:tanks_app/features/sign_in/views/sign_in_view.dart';
 import 'package:tanks_app/injection/injection.dart';
 

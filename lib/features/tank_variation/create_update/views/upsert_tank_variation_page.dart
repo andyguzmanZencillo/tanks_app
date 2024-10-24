@@ -39,7 +39,7 @@ class UpsertTankVariationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final tankCubit = context.read<TanksCubit>();
     final tankVariationCubit = context.read<TankVariationCubit>();
-    final idTank = tankCubit.state.tankSelected.idTanque;
+    final idTank = tankCubit.state.selected.idTanque;
     return MultiBlocProvider(
       providers: [
         BlocProvider(

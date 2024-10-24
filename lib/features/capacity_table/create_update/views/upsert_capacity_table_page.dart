@@ -129,7 +129,7 @@ class UpsertCapacityTableBody extends StatelessWidget {
                 ButtonCustom(
                   onPressed: () {
                     upsertCapacityCubit.create(
-                      idTanque: tanksCubit.state.tankSelected.idTanque,
+                      idTanque: tanksCubit.state.selected.idTanque,
                     );
                   },
                   text: 'Guardar Aforos',

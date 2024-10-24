@@ -1,49 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tank_repository/features/article/article.dart';
-import 'package:tank_repository/features/article/entity/article_entity.dart';
-import 'package:tanks_app/core/helpers/dialog_handler/bloc/dialog_handler_bloc.dart';
-import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
 import 'package:tanks_app/core/util/bloc_generics.dart';
-import 'package:tanks_app/core/util/enums/enums.dart';
-import 'package:tanks_app/core/util/extensions/extension_context.dart';
-import 'package:tanks_app/core/util/formaters/formaters.dart';
-import 'package:tanks_app/core/util/validator_field/valid.dart';
-import 'package:tanks_app/core/util/validator_field/validator_field.dart';
+import 'package:tanks_app/core/util/full_widget_generics.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
-import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
+import 'package:tanks_app/core/widgets/form/colo_picker_text_field.dart';
+import 'package:tanks_app/core/widgets/form/text_field_custom_pro.dart';
 import 'package:tanks_app/features/article/create_update/cubit/create_update_cubit.dart';
+import 'package:tanks_app/features/article/create_update/helpers/upsert_article_listener.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
-import 'package:tanks_app/features/sign_in/widgets/field_auth.dart';
+import 'package:tanks_app/features/article/list/cubit/article_list_cubit.dart';
 import 'package:tanks_app/injection/injection.dart';
 
 class CreateUpdatePage extends StatelessWidget {
   const CreateUpdatePage({
     required this.typeOperation,
-    this.articleEntity = const ArticleEntity.empty(),
     super.key,
   });
   final TypeOperation typeOperation;
-  final ArticleEntity articleEntity;
-
-  static Route<bool?> route({
-    required TypeOperation typeOperation,
-    ArticleEntity articleEntity = const ArticleEntity.empty(),
-  }) {
-    return MaterialPageRoute<bool?>(
-      builder: (context) => CreateUpdatePage(
-        typeOperation: typeOperation,
-        articleEntity: articleEntity,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    return CreateUpdateInherited(
+    return UpsertArticleInherited(
       typeOperation: typeOperation,
-      articleEntity: articleEntity,
       child: BlocProvider(
         create: (context) => sl<CreateUpdateCubit>(),
         child: const CreateUpdateView(),
@@ -57,67 +35,26 @@ class CreateUpdateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dialog = context.read<DialogHandlerBloc>();
-    final inherited = CreateUpdateInherited.of(context);
-    return BlocListener<CreateUpdateCubit, CreateUpdateState>(
-      listener: (context, state) {
-        final s = state.articleStatus;
-        if (s == UpsertStatus.loading) {
-          if (inherited.typeOperation == TypeOperation.create) {
-            dialog.add(
-              const OnOpenNotification(
-                message: 'Creando Artículo...',
-                dialogType: DialogType.loading,
-              ),
-            );
-          } else {
-            dialog.add(
-              const OnOpenNotification(
-                message: 'Actualizando Artículo...',
-                dialogType: DialogType.loading,
-              ),
-            );
+    final articleListCubit = context.read<ArticleListCubit>();
+    final inherited = UpsertArticleInherited.of(context);
+    return MultiBlocListener(
+      listeners: [
+        UpsertArticleListener.article(),
+        UpsertArticleListener.event(
+          success: () {
+            context.read<ArticleListCubit>().getArticles();
+          },
+        ),
+      ],
+      child: FullWidgetGeneric(
+        onInit: () {
+          if (inherited.typeOperation == TypeOperation.update) {
+            inherited.setData(articleListCubit.state.selected);
           }
-        } else if (s == UpsertStatus.error) {
-          dialog.add(
-            OnOpenNotification(
-              dialogData: DialogData(
-                barrierDismissible: false,
-                message: inherited.typeOperation == TypeOperation.create
-                    ? 'Error al crear artículo'
-                    : 'Error al actualizar artículo',
-                title: 'Error',
-                onPressed: () {
-                  context.pop();
-                },
-                textButton: 'Cerrar',
-              ),
-              dialogType: DialogType.error,
-            ),
-          );
-        } else if (s == UpsertStatus.success) {
-          dialog.add(
-            OnOpenNotification(
-              dialogData: DialogData(
-                barrierDismissible: false,
-                message: inherited.typeOperation == TypeOperation.create
-                    ? 'Artículo creado exitosamente'
-                    : 'Artículo actualizado exitosamente',
-                title: inherited.typeOperation == TypeOperation.create
-                    ? 'Creación exitosa'
-                    : 'Actualización exitosa',
-                onPressed: () {
-                  context.pop();
-                  Navigator.pop(context, true);
-                },
-                textButton: 'Cerrar',
-              ),
-              dialogType: DialogType.success,
-            ),
-          );
-        }
-      },
-      child: const CreateUpdateBody(),
+        },
+        onDispose: () {},
+        child: const CreateUpdateBody(),
+      ),
     );
   }
 }
@@ -127,7 +64,8 @@ class CreateUpdateBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final inherited = CreateUpdateInherited.of(context);
+    final inherited = UpsertArticleInherited.of(context);
+    final listArticleCubit = context.read<ArticleListCubit>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -150,7 +88,7 @@ class CreateUpdateBody extends StatelessWidget {
                         children: [
                           Text(
                             inherited.typeOperation == TypeOperation.create
-                                ? 'Creación de un artículo'
+                                ? 'Registro de un artículo'
                                 : 'Actualización de artículo',
                             style: const TextStyle(
                               fontSize: 25,
@@ -164,7 +102,6 @@ class CreateUpdateBody extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(20),
                         decoration: const BoxDecoration(
-                          //color: Color.fromARGB(52, 29, 29, 29),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30),
@@ -178,94 +115,24 @@ class CreateUpdateBody extends StatelessWidget {
                               const SizedBox(
                                 height: 20,
                               ),
-                              FieldAuth2(
-                                icon: const Icon(Icons.factory),
-                                labelSingle: false,
+                              TextFieldCustomPro(
                                 controller: inherited.nameArticle,
-                                validator: (value) => Validator.validation(
-                                  value,
-                                  [
-                                    RequiredValid(
-                                      error: 'Campo nombre artículo requerido',
-                                    ),
-                                  ],
-                                ),
-                                onChanged: (p0) {},
                                 label: 'Nombre Artículo',
                               ),
-                              FieldAuth2(
-                                icon: const Icon(Icons.factory),
+                              TextFieldCustomPro(
                                 controller: inherited.description,
-                                validator: (value) => Validator.validation(
-                                  value,
-                                  [
-                                    RequiredValid(
-                                      error:
-                                          'Campo del ID compañia requerido...',
-                                    ),
-                                  ],
-                                ),
-                                onChanged: (p0) {},
                                 label: 'Descripción',
-                                labelSingle: false,
                               ),
-                              FieldAuth2(
-                                icon: const Icon(Icons.factory),
+                              TextFieldCustomPro(
                                 controller: inherited.codeArticle,
-                                validator: (value) => Validator.validation(
-                                  value,
-                                  [
-                                    RequiredValid(
-                                      error:
-                                          'Campo del ID compañia requerido...',
-                                    ),
-                                  ],
-                                ),
-                                onChanged: (p0) {},
                                 label: 'Codigo Artículo',
-                                labelSingle: false,
                               ),
-                              FieldAuth2(
-                                icon: const Icon(Icons.factory),
+                              ColorPickerTextField(
                                 controller: inherited.color,
-                                validator: (value) => Validator.validation(
-                                  value,
-                                  [
-                                    RequiredValid(
-                                      error:
-                                          'Campo del ID compañia requerido...',
-                                    ),
-                                  ],
-                                ),
-                                onChanged: (p0) {},
-                                label: 'Color',
-                                labelSingle: false,
                               ),
-                              FieldAuth2(
-                                icon: const Icon(Icons.factory),
+                              TextFieldCustomPro(
                                 controller: inherited.price,
-                                validator: (value) => Validator.validation(
-                                  value,
-                                  [
-                                    RequiredValid(
-                                      error:
-                                          'Campo del ID compañia requerido...',
-                                    ),
-                                  ],
-                                ),
-                                onChanged: (p0) {},
                                 label: 'Precio',
-                                inputFormatters: [
-                                  //FilteringTextInputFormatter.digitsOnly,
-                                  DecimalTextInputFormatter(decimalRange: 3),
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp(r'^\d+\.?\d{0,3}'),
-                                  ),
-                                  FilteringTextInputFormatter.deny(
-                                    RegExp(r'\s'),
-                                  ),
-                                ],
-                                labelSingle: false,
                               ),
                               const SizedBox(
                                 height: 10,
@@ -277,20 +144,17 @@ class CreateUpdateBody extends StatelessWidget {
                                     if (inherited.typeOperation ==
                                         TypeOperation.create) {
                                       cubit.createArticle(
-                                        name: inherited.nameArticle
-                                            .textEditingController.text,
-                                        description: inherited.description
-                                            .textEditingController.text,
-                                        code: inherited.codeArticle
-                                            .textEditingController.text,
-                                        color: inherited
-                                            .color.textEditingController.text,
-                                        price: inherited
-                                            .price.textEditingController.text,
+                                        name: inherited.nameArticle.getValue(),
+                                        description:
+                                            inherited.description.getValue(),
+                                        code: inherited.codeArticle.getValue(),
+                                        color: inherited.color.getValue(),
+                                        price: inherited.price.getValue(),
                                       );
                                     } else {
                                       cubit.updateArticle(
-                                        articleEntity: inherited.articleEntity,
+                                        articleEntity:
+                                            listArticleCubit.state.selected,
                                         name: inherited.nameArticle
                                             .textEditingController.text,
                                         description: inherited.description
@@ -307,7 +171,7 @@ class CreateUpdateBody extends StatelessWidget {
                                 },
                                 text: inherited.typeOperation ==
                                         TypeOperation.create
-                                    ? 'Crear Artículo'
+                                    ? 'Registrar Artículo'
                                     : 'Actualizar Artículo',
                               ),
                             ],

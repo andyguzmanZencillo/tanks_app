@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tank_repository/tank_repository.dart';
-import 'package:tanks_app/core/widgets/field_custom.dart';
+import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
 
 class UpsertConfigInherited extends InheritedWidget {

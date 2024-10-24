@@ -1,112 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:tanks_app/features/article/list/views/article_list.dart';
+import 'package:tanks_app/features/article/list/views/article_list_page.dart';
 import 'package:tanks_app/features/binnacle/list/views/binnacle_list_page.dart';
 import 'package:tanks_app/features/config/list/views/config_list_body.dart';
 import 'package:tanks_app/features/console/list/views/console_list.dart';
 import 'package:tanks_app/features/drawer/helper/drawer_option.dart';
+import 'package:tanks_app/features/profile/perfil/view/perfi_view.dart';
 import 'package:tanks_app/features/sales_center/list/views/sales_center_list.dart';
 import 'package:tanks_app/features/tank_variation/list/views/tank_variation_list.dart';
 import 'package:tanks_app/features/tanks/list/views/tanks_list.dart';
 
 enum OptionType {
-  order,
-  loyaltyProgram,
-  registerConsignment,
-  registerExpense,
-  createClient,
-  createArticle,
-  intercardQuery,
-  sincronizatioQuery,
-  paymentDeposit,
-  inventory,
-  cashClosing,
-  configuration,
-  sync,
-  syncSale,
-  logs,
-  about,
+  article,
+  salecenter,
+  console,
+  tank,
+  tankvariation,
+  config,
+  bitacora,
+  notification,
 }
 
 class OptionsConfig {
   // Lista de opciones estática
   static final List<Option> options = [
     const Option(
-      type: OptionType.order,
-      name: 'Articulos',
-      route: ArticleList(),
-      icon: Icons.edit_note_outlined,
-      askShift: true,
-      typeOperation: TypeOperation.normal,
-      isActive: true,
-      isPermission: true,
+      type: OptionType.article,
+      name: 'Perfil',
+      route: PerfilPage(),
+      icon: Icons.person, // Ícono de inventario para artículos
     ),
     const Option(
-      type: OptionType.loyaltyProgram,
+      type: OptionType.article,
+      name: 'Artículos',
+      route: ArticleListPage(),
+      icon: Icons.inventory_2, // Ícono de inventario para artículos
+    ),
+    const Option(
+      type: OptionType.salecenter,
       name: 'Centros de venta',
       route: SalesCenterListPage(),
-      typeOperation: TypeOperation.normal,
-      icon: Icons.handshake,
-      askShift: true,
-      isActive: true,
-      isPermission: true,
+      icon: Icons.store, // Ícono de tienda para centros de venta
     ),
     const Option(
-      type: OptionType.loyaltyProgram,
+      type: OptionType.console,
       name: 'Consolas',
       route: ConsoleListPage(),
-      typeOperation: TypeOperation.normal,
-      icon: Icons.handshake,
-      askShift: true,
-      isActive: true,
-      isPermission: true,
+      icon: Icons.dashboard, // Ícono de consola de videojuegos para consolas
     ),
     const Option(
-      type: OptionType.sincronizatioQuery,
+      type: OptionType.tank,
       name: 'Tanques',
       route: TanksListPage(),
-      typeOperation: TypeOperation.normal,
-      icon: Icons.handshake,
-      askShift: true,
-      isActive: true,
-      isPermission: true,
+      icon: Icons.oil_barrel, // Ícono de barril de aceite para tanques
     ),
     const Option(
-      type: OptionType.syncSale,
-      name: 'Variacion Tanque',
+      type: OptionType.tankvariation,
+      name: 'Variación Tanque',
       route: TankVariationListPage(),
-      typeOperation: TypeOperation.normal,
-      icon: Icons.handshake,
-      askShift: true,
-      isActive: true,
-      isPermission: true,
+      icon: Icons
+          .compare_arrows, // Ícono de flechas cruzadas para variación de tanques
     ),
     const Option(
-      type: OptionType.configuration,
+      type: OptionType.config,
       name: 'Configuración',
       route: ConfigListPage(),
-      typeOperation: TypeOperation.normal,
-      icon: Icons.handshake,
-      askShift: true,
-      isActive: true,
-      isPermission: true,
+      icon: Icons.settings, // Ícono de configuración
     ),
     const Option(
-      type: OptionType.configuration,
-      name: 'Bitacora',
+      type: OptionType.bitacora,
+      name: 'Bitácora',
       route: BinnacleListPage(),
-      typeOperation: TypeOperation.normal,
-      icon: Icons.handshake,
-      askShift: true,
-      isActive: true,
-      isPermission: true,
+      icon: Icons.book, // Ícono de libro para bitácora
     ),
   ];
-
-  static void toggleOptionActive(OptionType type) {
-    final index = options.indexWhere((option) => option.type == type);
-    if (index != -1) {
-      options[index] =
-          options[index].copyWith(isActive: !options[index].isActive);
-    }
-  }
 }

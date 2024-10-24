@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tanks_app/core/app/themes/app_colors.dart';
 
 class ButtonCustom extends StatelessWidget {
   const ButtonCustom({
@@ -18,8 +19,7 @@ class ButtonCustom extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor:
-              backgroundColor ?? const Color.fromARGB(255, 243, 170, 25),
+          backgroundColor: backgroundColor ?? BlueStoneColors.blueStone700,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

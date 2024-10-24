@@ -7,7 +7,9 @@ import 'package:tanks_app/core/helpers/dialog_handler/bloc/dialog_handler_bloc.d
 import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
 import 'package:tanks_app/core/helpers/dialog_handler/widgets/dialog_handler.dart';
 import 'package:tanks_app/core/helpers/notify_dialog_handler/cubit/notify_dialog_handler_cubit.dart';
+import 'package:tanks_app/core/helpers/user_device/cubit/user_device_cubit.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
+import 'package:tanks_app/features/session/session_cubit.dart';
 import 'package:tanks_app/features/splash/splash.dart';
 import 'package:tanks_app/injection/injection.dart';
 
@@ -30,6 +32,8 @@ class AppView extends StatelessWidget {
         BlocProvider(
           create: (context) => DialogHandlerBloc(),
         ),
+        BlocProvider(create: (context) => sl<SessionCubit>()),
+        BlocProvider(create: (context) => sl<UserDeviceCubit>()),
       ],
       child: const AppBody(),
     );

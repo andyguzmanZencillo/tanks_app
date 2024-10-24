@@ -9,20 +9,12 @@ class Option extends Equatable {
     required this.type,
     required this.name,
     required this.icon,
-    required this.askShift,
-    required this.isActive,
-    required this.typeOperation,
-    required this.isPermission,
     this.route,
   });
   final OptionType type;
   final String name;
   final Widget? route;
   final IconData icon;
-  final bool askShift;
-  final bool isActive;
-  final bool isPermission;
-  final TypeOperation typeOperation;
 
   Option copyWith({
     OptionType? type,
@@ -39,10 +31,6 @@ class Option extends Equatable {
       name: name ?? this.name,
       route: route ?? this.route,
       icon: icon ?? this.icon,
-      askShift: askShift ?? this.askShift,
-      isActive: isActive ?? this.isActive,
-      typeOperation: typeOperation ?? this.typeOperation,
-      isPermission: isPermission ?? this.isPermission,
     );
   }
 
@@ -52,10 +40,5 @@ class Option extends Equatable {
         name,
         route,
         icon,
-        askShift,
-        isActive,
-        isActive,
-        typeOperation,
-        isPermission,
       ];
 }

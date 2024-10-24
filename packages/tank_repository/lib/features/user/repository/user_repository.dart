@@ -5,6 +5,7 @@ import 'package:tank_api/features/user/models/user_request.dart';
 import 'package:tank_database/tank_database.dart';
 import 'package:tank_repository/core/generic_token.dart';
 import 'package:tank_repository/features/user/entities/user_entity.dart';
+import 'package:tank_repository/features/user/mappers/user_collection_to_entity.dart';
 
 class UserRepository {
   UserRepository({
@@ -15,6 +16,21 @@ class UserRepository {
 
   final UserApi _api;
   final UserDatabase _userDatabase;
+
+  Future<Result<UserEntity, Failure>> getUser() {
+    return handleExceptionsLocal<UserEntity>(() async {
+      final collection = await _userDatabase.getUser();
+
+      return collection.toEntity();
+    });
+  }
+
+  Future<Result<Unit, Failure>> removeUser() {
+    return handleExceptionsLocal<Unit>(() async {
+      await _userDatabase.clear();
+      return unit;
+    });
+  }
 
   Future<Result<Unit, Failure>> signIn({
     required int idCompany,

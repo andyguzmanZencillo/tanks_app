@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tanks_app/core/app/themes/app_colors.dart';
 
 class CustomElevateButton extends StatelessWidget {
   const CustomElevateButton({
@@ -21,7 +22,7 @@ class CustomElevateButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 243, 170, 25),
+          backgroundColor: BlueStoneColors.blueStone700,
           padding: const EdgeInsets.symmetric(
             //vertical: 15,
             horizontal: 20,

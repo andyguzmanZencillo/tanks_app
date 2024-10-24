@@ -21,4 +21,7 @@ void registerRepositories() {
     ConfigRepository.new,
   );
   sl.registerLazySingleton<BinnacleRepository>(BinnacleRepository.new);
+  sl.registerLazySingleton<UserDeviceRepository>(UserDeviceRepository.new);
+
+  sl.registerLazySingleton<NotificationRepository>(NotificationRepository.new);
 }

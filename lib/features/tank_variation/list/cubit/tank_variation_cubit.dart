@@ -40,4 +40,95 @@ class TankVariationCubit extends Cubit<TankVariationState> {
       },
     );
   }
+
+  Future<void> getAll(int idSaleCenter, DateTime date) async {
+    emit(state.copyWith(consoleStatus: TankVariationStatus.loading));
+    final result = await consoleRepository.getToSaleCenter(
+      idCentroVenta: idSaleCenter,
+      date: date,
+    );
+    //await Future<dynamic>.delayed(const Duration(seconds: 3));
+    result.when(
+      ok: (ok) {
+        emit(
+          state.copyWith(
+            consoles: ok,
+            consoleStatus: TankVariationStatus.success,
+          ),
+        );
+      },
+      err: (err) {
+        emit(
+          state.copyWith(
+            consoles: [],
+            consoleStatus: TankVariationStatus.error,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> getToSaleCenterDate(
+    int idSaleCenter,
+    DateTime dateInit,
+    DateTime dateFinal,
+  ) async {
+    emit(state.copyWith(consoleStatus: TankVariationStatus.loading));
+    final result = await consoleRepository.getToSaleCenterDate(
+      idCentroVenta: idSaleCenter,
+      dateInit: dateInit,
+      dateFinal: dateFinal,
+    );
+    result.when(
+      ok: (ok) {
+        emit(
+          state.copyWith(
+            consoles: ok,
+            consoleStatus: TankVariationStatus.success,
+          ),
+        );
+      },
+      err: (err) {
+        emit(
+          state.copyWith(
+            consoles: [],
+            consoleStatus: TankVariationStatus.error,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> getToSaleCenterTankDate({
+    required int idCentroVenta,
+    required int idTanque,
+    required DateTime dateInit,
+    required DateTime dateFinal,
+  }) async {
+    emit(state.copyWith(consoleStatus: TankVariationStatus.loading));
+    final result = await consoleRepository.getToSaleCenterTankDate(
+      idCentroVenta: idCentroVenta,
+      idTanque: idTanque,
+      dateInit: dateInit,
+      dateFinal: dateFinal,
+    );
+    result.when(
+      ok: (ok) {
+        emit(
+          state.copyWith(
+            consoles: ok,
+            consoleStatus: TankVariationStatus.success,
+          ),
+        );
+      },
+      err: (err) {
+        emit(
+          state.copyWith(
+            consoles: [],
+            consoleStatus: TankVariationStatus.error,
+          ),
+        );
+      },
+    );
+  }
 }

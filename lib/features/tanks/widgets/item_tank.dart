@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tank_repository/tank_repository.dart';
+import 'package:tanks_app/core/app/themes/app_colors.dart';
 
 class ItemTank extends StatelessWidget {
   const ItemTank({
@@ -15,59 +16,44 @@ class ItemTank extends StatelessWidget {
   final void Function() onTapDelete;
   @override
   Widget build(BuildContext context) {
-    /* void actionPopUpItemSelected(
-      String value,
-      TanksEntity salesCenterEntity,
-    ) {
-      if (value == 'edit') {
-        context
-            .pushResult<bool?>(
-          UpsertTanksPage.route(
-            typeOperation: TypeOperation.update,
-            consoleEntity: salesCenterEntity,
-          ),
-        )
-            .then((value) {
-          if (value == null || value == false) {
-            return;
-          }
-          context.read<TanksCubit>().getAll();
-        });
-      } else if (value == 'delete') {
-        showDialog<bool>(
-          barrierDismissible: false,
-          context: context,
-          builder: (BuildContext context) {
-            return DeleteTanksDialog(
-              consoleEntity: salesCenterEntity,
-            );
-          },
-        ).then((value) {
-          if (value == null || value == false) {
-            return;
-          }
-          context.read<TanksCubit>().getAll();
-        });
-      } else {}
-    }*/
-
-    return Card(
-      shape: RoundedRectangleBorder(
+    return Container(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
+        color: BlueStoneColors.blueStone200,
       ),
       child: ListTile(
         onTap: onTap,
         titleAlignment: ListTileTitleAlignment.center,
         leading: const CircleAvatar(
-          backgroundColor: Color.fromARGB(255, 243, 170, 25),
+          backgroundColor: BlueStoneColors.blueStone600,
           child: Icon(
-            Icons.art_track,
+            Icons.oil_barrel,
             color: Colors.white,
           ),
         ),
-        title: Text(tanksEntity.codigo.toString()),
-        subtitle: Text(
+        title: Text(
           tanksEntity.descripcion,
+          style: const TextStyle(
+            color: BlueStoneColors.blueStone950,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Capacidad: ${tanksEntity.capacidad}',
+              style: const TextStyle(
+                color: BlueStoneColors.blueStone900,
+              ),
+            ),
+            Text(
+              'Altura Tanque: ${tanksEntity.alturaTanque}',
+              style: const TextStyle(
+                color: BlueStoneColors.blueStone900,
+              ),
+            ),
+          ],
         ),
         isThreeLine: true,
         trailing: PopupMenuButton(

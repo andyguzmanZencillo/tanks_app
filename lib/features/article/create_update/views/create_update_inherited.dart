@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tank_repository/features/article/article.dart';
-import 'package:tank_repository/features/article/entity/article_entity.dart';
-import 'package:tanks_app/core/widgets/field_custom.dart';
+import 'package:tanks_app/core/util/form/controllers/controllers.dart';
+import 'package:tanks_app/core/util/form/validator_field/valid.dart';
+import 'package:tanks_app/core/util/formaters/formaters.dart';
 
 enum TypeOperation {
   create,
@@ -12,38 +14,73 @@ enum TypeOperation {
   about,
 }
 
-class CreateUpdateInherited extends InheritedWidget {
-  CreateUpdateInherited({
+class UpsertArticleInherited extends InheritedWidget {
+  UpsertArticleInherited({
     required super.child,
     required this.typeOperation,
-    this.articleEntity = const ArticleEntity.empty(),
     super.key,
-  }) {
-    if (typeOperation == TypeOperation.update) {
-      nameArticle.textEditingController.text = articleEntity.articulo;
-      description.textEditingController.text = articleEntity.descripcion;
-      codeArticle.textEditingController.text = articleEntity.code;
-      color.textEditingController.text = articleEntity.color;
-      price.textEditingController.text = articleEntity.precio.toString();
-    }
-  }
+  });
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
 
   final TypeOperation typeOperation;
-  final ArticleEntity articleEntity;
 
-  final nameArticle = ControllerField();
-  final description = ControllerField();
-  final codeArticle = ControllerField();
-  final color = ControllerField();
-  final price = ControllerField();
+  final nameArticle = ControllerField(
+    validators: [
+      RequiredValid(
+        error: 'Campo nombre artículo requerido',
+      ),
+    ],
+  );
+
+  final description = ControllerField(
+    validators: [
+      RequiredValid(
+        error: 'Campo descripción requerida',
+      ),
+    ],
+  );
+
+  final codeArticle = ControllerField(
+    validators: [
+      RequiredValid(
+        error: 'Campo código artículo requerido',
+      ),
+    ],
+  );
+
+  final color = ControllerField(
+    validators: [
+      RequiredValid(
+        error: 'Campo color requerido',
+      ),
+    ],
+  );
+
+  final price = ControllerField(
+    validators: [
+      RequiredValid(
+        error: 'Campo precio requerido',
+      ),
+    ],
+    inputFormatters: [
+      //FilteringTextInputFormatter.digitsOnly,
+      DecimalTextInputFormatter(decimalRange: 3),
+      FilteringTextInputFormatter.allow(
+        RegExp(r'^\d+\.?\d{0,3}'),
+      ),
+      FilteringTextInputFormatter.deny(
+        RegExp(r'\s'),
+      ),
+    ],
+  );
+
   final formKey = GlobalKey<FormState>();
 
-  static CreateUpdateInherited of(BuildContext context) {
+  static UpsertArticleInherited of(BuildContext context) {
     final result =
-        context.dependOnInheritedWidgetOfExactType<CreateUpdateInherited>();
+        context.dependOnInheritedWidgetOfExactType<UpsertArticleInherited>();
     assert(result != null, 'No LicenseFormInherited found in context');
     return result!;
   }
@@ -54,6 +91,14 @@ class CreateUpdateInherited extends InheritedWidget {
     codeArticle.dispose();
     color.dispose();
     price.dispose();
+  }
+
+  void setData(ArticleEntity articleEntity) {
+    nameArticle.setValue(articleEntity.articulo);
+    description.setValue(articleEntity.descripcion);
+    codeArticle.setValue(articleEntity.code);
+    color.setValue(articleEntity.color);
+    price.setValue(articleEntity.precio.toString());
   }
 
   void clear() {

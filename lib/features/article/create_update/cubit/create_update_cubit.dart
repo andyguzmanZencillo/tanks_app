@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:failures/failures.dart';
 import 'package:tank_repository/features/article/entity/article_entity.dart';
 import 'package:tank_repository/features/article/repository/article_repository.dart';
 import 'package:tanks_app/core/util/enums/enums.dart';
@@ -17,7 +18,7 @@ class CreateUpdateCubit extends Cubit<CreateUpdateState> {
     required String color,
     required String price,
   }) async {
-    emit(state.copyWith(articleStatus: UpsertStatus.loading));
+    emit(state.copyWith(upsertStatus: UpsertStatus.loading));
     final result = await articleRepository.saveArticle(
       ArticleEntity(
         idArticulo: 0,
@@ -31,10 +32,24 @@ class CreateUpdateCubit extends Cubit<CreateUpdateState> {
 
     result.when(
       ok: (ok) {
-        emit(state.copyWith(articleStatus: UpsertStatus.success));
+        emit(state.copyWith(upsertStatus: UpsertStatus.success));
       },
       err: (err) {
-        emit(state.copyWith(articleStatus: UpsertStatus.error));
+        if (err is ResultFailure) {
+          emit(
+            state.copyWith(
+              upsertStatus: UpsertStatus.error,
+              errorMessage: err.message,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              upsertStatus: UpsertStatus.error,
+              errorMessage: 'Error desconocido',
+            ),
+          );
+        }
       },
     );
   }
@@ -47,7 +62,7 @@ class CreateUpdateCubit extends Cubit<CreateUpdateState> {
     required String color,
     required String price,
   }) async {
-    emit(state.copyWith(articleStatus: UpsertStatus.loading));
+    emit(state.copyWith(upsertStatus: UpsertStatus.loading));
     final result = await articleRepository.updateArticle(
       articleEntity.copyWith(
         articulo: name,
@@ -60,10 +75,24 @@ class CreateUpdateCubit extends Cubit<CreateUpdateState> {
 
     result.when(
       ok: (ok) {
-        emit(state.copyWith(articleStatus: UpsertStatus.success));
+        emit(state.copyWith(upsertStatus: UpsertStatus.success));
       },
       err: (err) {
-        emit(state.copyWith(articleStatus: UpsertStatus.error));
+        if (err is ResultFailure) {
+          emit(
+            state.copyWith(
+              upsertStatus: UpsertStatus.error,
+              errorMessage: err.message,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              upsertStatus: UpsertStatus.error,
+              errorMessage: 'Error desconocido',
+            ),
+          );
+        }
       },
     );
   }

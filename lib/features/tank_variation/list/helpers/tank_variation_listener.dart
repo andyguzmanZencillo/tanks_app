@@ -7,8 +7,7 @@ import 'package:tanks_app/features/tank_variation/list/cubit/tank_variation_cubi
 import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
 
 class TankVariationListener {
-  static BlocListener<TankVariationCubit, TankVariationState>
-      upsertTankVariation() {
+  static BlocListener<TankVariationCubit, TankVariationState> tankVariation() {
     return BlocListener<TankVariationCubit, TankVariationState>(
       listenWhen: (previous, current) =>
           previous.consoleStatus != current.consoleStatus,
@@ -50,13 +49,33 @@ class TankVariationListener {
     );
   }
 
+  static BlocListener<SalesCenterCubit, SalesCenterState> event({
+    void Function()? loading,
+    void Function()? success,
+    void Function()? error,
+  }) {
+    return BlocListener<SalesCenterCubit, SalesCenterState>(
+      listenWhen: (previous, current) =>
+          previous.salesCenterStatus != current.salesCenterStatus,
+      listener: (context, state) {
+        if (state.salesCenterStatus == SalesCenterStatus.loading) {
+          loading?.call();
+        } else if (state.salesCenterStatus == SalesCenterStatus.error) {
+          error?.call();
+        } else if (state.salesCenterStatus == SalesCenterStatus.success) {
+          success?.call();
+        }
+      },
+    );
+  }
+
   static BlocListener<SalesCenterCubit, SalesCenterState> salesCenter() {
     return BlocListener<SalesCenterCubit, SalesCenterState>(
       listenWhen: (previous, current) =>
           previous.salesCenterStatus != current.salesCenterStatus,
       listener: (context, state) {
         final status = state.salesCenterStatus;
-        final message = state.messageError;
+        final message = state.errorMessage;
         if (status == SalesCenterStatus.loading) {
           showDialog<void>(
             barrierDismissible: false,

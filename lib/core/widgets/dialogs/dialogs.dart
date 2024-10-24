@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tanks_app/core/app/themes/app_colors.dart';
 import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
 
@@ -108,7 +109,7 @@ class DialogText extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const CircularProgressIndicator(
-                    color: Color.fromARGB(255, 243, 170, 25),
+                    color: BlueStoneColors.blueStone600,
                   ),
                   const SizedBox(
                     width: 20,
@@ -158,7 +159,7 @@ class DialogTextBackground extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const CircularProgressIndicator(
-                  color: Color.fromARGB(255, 243, 170, 25),
+                  color: BlueStoneColors.blueStone600,
                 ),
                 const SizedBox(
                   width: 20,
@@ -326,13 +327,13 @@ class GoodDialog extends StatelessWidget {
       icon: const Icon(
         Icons.task_alt,
         size: 50,
-        color: Colors.green,
+        color: BlueStoneColors.blueStone600,
       ),
       title: Text(
         dialogData.title,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
-          color: Colors.green,
+          color: BlueStoneColors.blueStone600,
         ),
         textAlign: TextAlign.center,
       ),
@@ -347,7 +348,7 @@ class GoodDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         ButtonCustom(
-          backgroundColor: Colors.green,
+          backgroundColor: BlueStoneColors.blueStone600,
           text: dialogData.textButton,
           onPressed: dialogData.onPressed ?? () {},
         ),
@@ -375,7 +376,7 @@ class GoodDialogBackground extends StatelessWidget {
     // Establecer colores según el tipo de diálogo
     if (dialogType == DialogType.success) {
       backgroundColor = Colors.white;
-      iconColor = Colors.green;
+      iconColor = BlueStoneColors.blueStone600;
     } else {
       backgroundColor = Colors.red[50]!;
       iconColor = Colors.red;

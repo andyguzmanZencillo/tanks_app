@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:failures/failures.dart';
 import 'package:tank_repository/features/sales_center/sales_center.dart';
 import 'package:tanks_app/core/util/enums/enums.dart';
 
@@ -31,7 +32,21 @@ class UpsertSalesCenterCubit extends Cubit<UpsertSalesCenterState> {
         emit(state.copyWith(createUpdateStatus: UpsertStatus.success));
       },
       err: (err) {
-        emit(state.copyWith(createUpdateStatus: UpsertStatus.error));
+        if (err is ResultFailure) {
+          emit(
+            state.copyWith(
+              createUpdateStatus: UpsertStatus.error,
+              errorMessage: err.message,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              createUpdateStatus: UpsertStatus.error,
+              errorMessage: 'Error desconocido',
+            ),
+          );
+        }
       },
     );
   }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit.dart';
+import 'package:tanks_app/core/util/enums/enums.dart';
 import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
 import 'package:tanks_app/features/console/delete/cubit/delete_console_cubit.dart';
-import 'package:tanks_app/features/sales_center/delete/cubit/delete_sales_center_cubit.dart';
 import 'package:tanks_app/injection/injection.dart';
 
 class DeleteConsoleDialog extends StatelessWidget {

@@ -2,20 +2,26 @@ part of 'create_update_cubit.dart';
 
 class CreateUpdateState extends Equatable {
   const CreateUpdateState({
-    this.articleStatus = UpsertStatus.initial,
+    this.upsertStatus = UpsertStatus.initial,
+    this.errorMessage,
   });
-  final UpsertStatus articleStatus;
+
+  final UpsertStatus upsertStatus;
+  final String? errorMessage;
 
   CreateUpdateState copyWith({
-    UpsertStatus? articleStatus,
+    UpsertStatus? upsertStatus,
+    String? errorMessage,
   }) {
     return CreateUpdateState(
-      articleStatus: articleStatus ?? this.articleStatus,
+      upsertStatus: upsertStatus ?? this.upsertStatus,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
-  List<Object> get props => [
-        articleStatus,
+  List<Object?> get props => [
+        upsertStatus,
+        errorMessage,
       ];
 }

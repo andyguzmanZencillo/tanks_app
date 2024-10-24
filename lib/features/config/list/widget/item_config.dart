@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tank_repository/features/config/entity/config_entity.dart';
+import 'package:tanks_app/core/app/themes/app_colors.dart';
 
 class ItemConfig extends StatelessWidget {
   const ItemConfig({
@@ -14,31 +15,44 @@ class ItemConfig extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
+    return Container(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
+        color: BlueStoneColors.blueStone200,
       ),
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.center,
         leading: const CircleAvatar(
-          backgroundColor: Color.fromARGB(255, 243, 170, 25),
+          backgroundColor: BlueStoneColors.blueStone600,
           child: Icon(
             Icons.settings,
             color: Colors.white,
           ),
         ),
-        title: Text('N°: ${configEntity.idConfiguracion}'),
+        title: Text(
+          'N°: ${configEntity.idConfiguracion}',
+          style: const TextStyle(
+            fontWeight: FontWeight.w500,
+            color: BlueStoneColors.blueStone950,
+          ),
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Hora incio Zeta: ${configEntity.horaInicioZeta}',
+              style: const TextStyle(
+                color: BlueStoneColors.blueStone900,
+              ),
             ),
             const SizedBox(
-              height: 10,
+              height: 5,
             ),
             Text(
               'Hora fin Zeta: ${configEntity.horaFinZeta}',
+              style: const TextStyle(
+                color: BlueStoneColors.blueStone900,
+              ),
             ),
           ],
         ),

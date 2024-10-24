@@ -7,23 +7,7 @@ class AppBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tanques',
-      theme: ThemeData(
-        primaryColor: AppColors.primary,
-        scaffoldBackgroundColor: AppColors.background,
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: AppColors.textPrimary),
-          bodyMedium: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: AppColors.primary,
-          iconTheme: IconThemeData(
-            color: Colors.black,
-          ),
-          titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
-        ),
-      ),
+      theme: blueStoneTheme, // Aquí aplicamos el tema personalizado
       home: const MultiChannelAlertProcessor(child: SplashView()),
     );
   }

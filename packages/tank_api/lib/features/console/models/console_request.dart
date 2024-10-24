@@ -62,7 +62,7 @@ class UpdateConsoleRequest extends ConsoleRequest {
     required this.portSerial,
     required this.passWordIp,
     this.idUserTrace = 123,
-    this.operation = 'I',
+    this.operation = 'U',
   });
 
   final int idUserTrace;

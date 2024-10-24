@@ -1,28 +1,39 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tank_repository/features/sales_center/sales_center.dart';
+import 'package:tank_repository/features/features.dart';
+import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/util/enums/enums.dart';
 
 part 'upsert_console_states.dart';
 
 class UpsertConsoleCubit extends Cubit<UpsertConsoleState> {
-  UpsertConsoleCubit(this.salesCenterRepository)
+  UpsertConsoleCubit(this.consoleRepository)
       : super(const UpsertConsoleState());
-  final SalesCenterRepository salesCenterRepository;
+  final ConsoleRepository consoleRepository;
 
   Future<void> create({
-    required String centroVenta,
+    required String consola,
     required String descripcion,
-    required String correo,
+    required int idConsolaTanqueProtocolo,
+    required String tipo,
+    required String ip,
+    required String socket,
+    required String puertoSerial,
+    required String contrasenaIp,
   }) async {
     emit(state.copyWith(upsertStatus: UpsertStatus.loading));
-    final result = await salesCenterRepository.saveSalesCenter(
-      SalesCenterEntity(
-        idCentroVenta: 0,
+    final result = await consoleRepository.saveConsole(
+      ConsoleEntity(
+        idConsola: 0,
         idCompania: 0,
-        centroVenta: centroVenta,
+        consola: consola,
         descripcion: descripcion,
-        correo: correo,
+        idConsolaTanqueProtocolo: idConsolaTanqueProtocolo,
+        tipo: tipo,
+        ip: ip,
+        socket: socket,
+        puertoSerial: puertoSerial,
+        contrasenaIp: contrasenaIp,
       ),
     );
 
@@ -37,17 +48,27 @@ class UpsertConsoleCubit extends Cubit<UpsertConsoleState> {
   }
 
   Future<void> updateArticle({
-    required SalesCenterEntity salesCenterEntity,
-    required String centroVenta,
+    required ConsoleEntity consoleEntity,
+    required String consola,
     required String descripcion,
-    required String correo,
+    required int idConsolaTanqueProtocolo,
+    required String tipo,
+    required String ip,
+    required String socket,
+    required String puertoSerial,
+    required String contrasenaIp,
   }) async {
     emit(state.copyWith(upsertStatus: UpsertStatus.loading));
-    final result = await salesCenterRepository.updateSalesCenter(
-      salesCenterEntity.copyWith(
-        centroVenta: centroVenta,
+    final result = await consoleRepository.updateConsole(
+      consoleEntity.copyWith(
+        consola: consola,
         descripcion: descripcion,
-        correo: correo,
+        idConsolaTanqueProtocolo: idConsolaTanqueProtocolo,
+        tipo: tipo,
+        ip: ip,
+        socket: socket,
+        puertoSerial: puertoSerial,
+        contrasenaIp: contrasenaIp,
       ),
     );
 

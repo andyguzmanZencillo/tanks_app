@@ -1,62 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:tank_repository/tank_repository.dart';
-import 'package:tanks_app/core/widgets/field_custom.dart';
+import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
 
 class UpsertTanksInherited extends InheritedWidget {
   UpsertTanksInherited({
     required super.child,
     required this.typeOperation,
-    this.tanksEntity = const TanksEntity.empty(),
     super.key,
-  }) {
-    if (typeOperation == TypeOperation.update) {
-      capacidadField.setValue(tanksEntity.capacidad.toString());
-      alturaTanqueField.setValue(tanksEntity.alturaTanque.toString());
-      descripcionField.setValue(tanksEntity.descripcion);
-      porcentajeMinimoCombustibleField
-          .setValue(tanksEntity.porcentajeMinimoCombustible.toString());
-      alturaOffsetField.setValue(tanksEntity.alturaOffset.toString());
-      factorInicioDescargueField
-          .setValue(tanksEntity.factorInicioDescargue.toString());
-      codigoField.setValue(tanksEntity.codigo.toString());
-      alturaAguaOffsetField.setValue(tanksEntity.alturaAguaOffset.toString());
-      offsetInclinacionField.setValue(tanksEntity.offsetInclinacion.toString());
-      estadoField.setValue(tanksEntity.estado.toString());
-      modificableField.setValue(tanksEntity.modificable.toString());
-      manejaMmField.setValue(tanksEntity.manejaMm.toString());
-    }
-    /*.setValue(
-      const SalesCenterEntity.empty().copyWith(centroVenta: 'asdasd'),
-    );*/
-  }
-
+  });
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
 
   final TypeOperation typeOperation;
-  final TanksEntity tanksEntity;
 
   // Campos relacionados con TanksEntity
-  final ControllerField capacidadField = ControllerField();
-  final ControllerField alturaTanqueField = ControllerField();
-  final ControllerField descripcionField = ControllerField();
-  final ControllerField porcentajeMinimoCombustibleField = ControllerField();
-  final ControllerField alturaOffsetField = ControllerField();
-  final ControllerField factorInicioDescargueField = ControllerField();
-  final ControllerField codigoField = ControllerField();
-  final ControllerField alturaAguaOffsetField = ControllerField();
-  final ControllerField offsetInclinacionField = ControllerField();
-  final ControllerField estadoField = ControllerField();
-  final ControllerField modificableField = ControllerField();
-  final ControllerField manejaMmField = ControllerField();
+  final capacidadField = ControllerField();
+  final alturaTanqueField = ControllerField();
+  final descripcionField = ControllerField();
+  final porcentajeMinimoCombustibleField = ControllerField();
+  final alturaOffsetField = ControllerField();
+  final factorInicioDescargueField = ControllerField();
+  final codigoField = ControllerField();
+  final alturaAguaOffsetField = ControllerField();
+  final offsetInclinacionField = ControllerField();
+  final estadoField = ControllerField();
+  final modificableField = ControllerField();
+  final manejaMmField = ControllerField();
 
-  final ControllerFieldDropdown<ValueExtend> saleCenter =
-      ControllerFieldDropdown();
-  final ControllerFieldDropdown<ValueExtend> console =
-      ControllerFieldDropdown();
-  final ControllerFieldDropdown<ValueExtend> article =
-      ControllerFieldDropdown();
+  final saleCenter = ControllerFieldDropdown();
+  final console = ControllerFieldDropdown();
+  final article = ControllerFieldDropdown();
 
   final formKey = GlobalKey<FormState>();
 
@@ -65,6 +39,23 @@ class UpsertTanksInherited extends InheritedWidget {
         context.dependOnInheritedWidgetOfExactType<UpsertTanksInherited>();
     assert(result != null, 'No UpsertTanksInherited found in context');
     return result!;
+  }
+
+  void setData(TanksEntity tanksEntity) {
+    capacidadField.setValue(tanksEntity.capacidad.toString());
+    alturaTanqueField.setValue(tanksEntity.alturaTanque.toString());
+    descripcionField.setValue(tanksEntity.descripcion);
+    porcentajeMinimoCombustibleField
+        .setValue(tanksEntity.porcentajeMinimoCombustible.toString());
+    alturaOffsetField.setValue(tanksEntity.alturaOffset.toString());
+    factorInicioDescargueField
+        .setValue(tanksEntity.factorInicioDescargue.toString());
+    codigoField.setValue(tanksEntity.codigo.toString());
+    alturaAguaOffsetField.setValue(tanksEntity.alturaAguaOffset.toString());
+    offsetInclinacionField.setValue(tanksEntity.offsetInclinacion.toString());
+    estadoField.setValue(tanksEntity.estado.toString());
+    modificableField.setValue(tanksEntity.modificable.toString());
+    manejaMmField.setValue(tanksEntity.manejaMm.toString());
   }
 
   void dispose() {

@@ -10,7 +10,7 @@ extension MapperControllerToEntity on UpsertTankVariationInherited {
       idVariacion: tankVariationEntity.idVariacion,
       idCompania: 1,
       idTanque: 13,
-      fechaZ: DateTime.now().toIso8601String(), //fecha de bsuqueda
+      fechaZ: DateTime.now(), //fecha de bsuqueda
       saldoInicial: saldoInicial.getValue().toDoubleSafe(),
       comprasFacturas: compra.getValue().toDoubleSafe(),
       descargue: descargue.getValue().toDoubleSafe(),

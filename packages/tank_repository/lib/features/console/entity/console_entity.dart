@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:tank_repository/features/features.dart';
 
-class ConsoleEntity extends Equatable implements ValueExtend {
+class ConsoleEntity extends Equatable implements ValueExtend<ConsoleEntity> {
   const ConsoleEntity({
     required this.idConsola,
     required this.idCompania,
@@ -53,10 +53,39 @@ class ConsoleEntity extends Equatable implements ValueExtend {
       ];
 
   @override
-  // TODO: implement text
   String get text => consola;
 
   @override
-  // TODO: implement value
   int get id => idConsola;
+
+  @override
+  ConsoleEntity? get value => this;
+
+  // Método copyWith añadido
+  ConsoleEntity copyWith({
+    int? idConsola,
+    int? idCompania,
+    String? consola,
+    String? descripcion,
+    int? idConsolaTanqueProtocolo,
+    String? tipo,
+    String? ip,
+    String? socket,
+    String? puertoSerial,
+    String? contrasenaIp,
+  }) {
+    return ConsoleEntity(
+      idConsola: idConsola ?? this.idConsola,
+      idCompania: idCompania ?? this.idCompania,
+      consola: consola ?? this.consola,
+      descripcion: descripcion ?? this.descripcion,
+      idConsolaTanqueProtocolo:
+          idConsolaTanqueProtocolo ?? this.idConsolaTanqueProtocolo,
+      tipo: tipo ?? this.tipo,
+      ip: ip ?? this.ip,
+      socket: socket ?? this.socket,
+      puertoSerial: puertoSerial ?? this.puertoSerial,
+      contrasenaIp: contrasenaIp ?? this.contrasenaIp,
+    );
+  }
 }

@@ -29,7 +29,16 @@ dependencies:
   uuid: ^4.5.1
   fluentui_system_icons: ^1.1.259
   const_date_time: ^1.1.0
-  syncfusion_flutter_charts: ^27.1.51
+  fl_chart: ^0.66.0
+  kdgaugeview: ^1.0.5
+  percent_indicator: ^4.2.3
+  dropdown_button2: ^2.3.9
+  flutter_colorpicker: ^1.1.0
+  firebase_messaging: ^15.1.0
+  firebase_core: ^3.4.0
+  flutter_local_notifications: ^17.2.3
+  device_info_plus: ^10.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -42,3 +51,4 @@ flutter:
 
   assets:
     - assets/lottie/
+    - assets/img/

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 
 class TestCustomDatePickerField extends FormField<DateTime> {
   TestCustomDatePickerField({
@@ -108,58 +109,67 @@ class _DatePickerCustomState extends State<DatePickerCustom> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.isLabelTitle)
-          Text(
-            widget.label,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        const SizedBox(height: 5),
-        GestureDetector(
-          onTap: () => _selectDate(context),
-          child: InputDecorator(
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: const Color.fromARGB(255, 233, 235, 236),
-              hintText: widget.hint ?? 'Seleccione una fecha',
-              border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                borderSide: BorderSide.none,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (widget.isLabelTitle) ...[
+            Text(
+              widget.label,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
               ),
-              errorText: widget.validator(selectedDate),
             ),
-            child: Text(
-              selectedDate != null
-                  ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-                  : widget.hint ?? 'Seleccione una fecha',
-              style: const TextStyle(color: Colors.black),
-            ),
+            const SizedBox(height: 5),
+          ],
+          Stack(
+            children: [
+              Container(
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: const [
+                    BoxShadow(
+                      blurRadius: 16,
+                      color: Colors.black12,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () => _selectDate(context),
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    filled: true,
+                    contentPadding: EdgeInsets.zero,
+                    fillColor: const Color.fromARGB(255, 255, 255, 255),
+                    hintText: widget.hint ?? 'Seleccione una fecha',
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide.none,
+                    ),
+                    errorText: widget.validator(selectedDate),
+                  ),
+                  child: Center(
+                    child: Text(
+                      selectedDate != null
+                          ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
+                          : widget.hint ?? 'Seleccione una fecha',
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
-  }
-}
-
-class ControllerFieldDatePicker {
-  ControllerFieldDatePicker();
-  DateTime date = DateTime.now();
-  final GlobalKey<FormFieldState<DateTime>> fieldKey =
-      GlobalKey<FormFieldState<DateTime>>();
-  final FocusNode focusNode = FocusNode();
-
-  void setValue(DateTime value) {
-    date = value;
-  }
-
-  DateTime getValue() {
-    return date;
   }
 }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tank_repository/features/sales_center/entity/sales_center_entity.dart';
-import 'package:tanks_app/core/widgets/field_custom.dart';
+import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 
-class DropdownCustom extends StatefulWidget {
+class DropdownCustom<T> extends StatefulWidget {
   const DropdownCustom({
     required this.items,
     required this.controller,
@@ -15,26 +15,26 @@ class DropdownCustom extends StatefulWidget {
     super.key,
   });
 
-  final ValueExtend? value;
-  final List<ValueExtend> items;
-  final ControllerFieldDropdown<ValueExtend> controller;
-  final String? Function(ValueExtend?) validator;
+  final ValueExtend<T>? value;
+  final List<ValueExtend<T>> items;
+  final ControllerFieldDropdown<T> controller;
+  final String? Function(ValueExtend<T>?) validator;
   final String label;
   final String? hint;
   final bool isLabelTitle;
   final bool showDecoration;
 
   @override
-  State<DropdownCustom> createState() => _DropdownCustomState();
+  State<DropdownCustom<T>> createState() => _DropdownCustomState();
 }
 
-class _DropdownCustomState extends State<DropdownCustom> {
-  ValueExtend? selectedValue;
+class _DropdownCustomState<T> extends State<DropdownCustom<T>> {
+  ValueExtend<T>? selectedValue;
 
   @override
   void initState() {
     super.initState();
-    selectedValue = widget.value; // Inicializar el valor seleccionado
+    selectedValue = widget.value;
     if (widget.value != null) {
       widget.controller.setValue(widget.value!);
     }
@@ -42,52 +42,85 @@ class _DropdownCustomState extends State<DropdownCustom> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.isLabelTitle)
-          Text(
-            widget.label,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (widget.isLabelTitle) ...[
+            Text(
+              widget.label,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+              ),
             ),
+            const SizedBox(height: 5),
+          ],
+          Stack(
+            children: [
+              Container(
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: const [
+                    BoxShadow(
+                      blurRadius: 16,
+                      color: Colors.black12,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                child: DropdownButtonFormField<ValueExtend<T>>(
+                  isExpanded: true,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  key: widget.controller.fieldKey,
+                  focusNode: widget.controller.focusNode,
+                  validator: widget.validator,
+                  value: selectedValue, // Establece el valor seleccionado
+                  hint: Text(widget.hint ?? 'Seleccione un item'),
+                  icon: const Icon(Icons.arrow_drop_down),
+                  style: const TextStyle(color: Colors.black),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(10),
+                    filled: true,
+                    fillColor: const Color.fromARGB(255, 255, 255, 255),
+                    hintText: widget.hint ?? 'Seleccione un item',
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  onChanged: (ValueExtend<T>? newValue) {
+                    setState(() {
+                      selectedValue = newValue;
+                      if (newValue != null) {
+                        widget.controller.setValue(newValue);
+                      }
+                    });
+                  },
+                  items: widget.items.map<DropdownMenuItem<ValueExtend<T>>>(
+                      (ValueExtend<T> item) {
+                    return DropdownMenuItem<ValueExtend<T>>(
+                      value: item,
+                      child: Text(
+                        item.text,
+                        style: const TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ), // Muestra el valor del item
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
           ),
-        const SizedBox(height: 5),
-        DropdownButtonFormField<ValueExtend>(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          key: widget.controller.fieldKey,
-          focusNode: widget.controller.focusNode,
-          validator: widget.validator,
-          value: selectedValue, // Establece el valor seleccionado
-          hint: Text(widget.hint ?? 'Seleccione un item'),
-          icon: const Icon(Icons.arrow_drop_down),
-          style: const TextStyle(color: Colors.black),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: const Color.fromARGB(255, 233, 235, 236),
-            hintText: widget.hint ?? 'Seleccione un item',
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide.none,
-            ),
-          ),
-          onChanged: (ValueExtend? newValue) {
-            setState(() {
-              selectedValue = newValue;
-              if (newValue != null) widget.controller.setValue(newValue);
-            });
-          },
-          items: widget.items
-              .map<DropdownMenuItem<ValueExtend>>((ValueExtend item) {
-            return DropdownMenuItem<ValueExtend>(
-              value: item,
-              child: Text(item.text), // Muestra el valor del item
-            );
-          }).toList(),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

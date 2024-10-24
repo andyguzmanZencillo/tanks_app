@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 
 class TestCustomDatePickerField extends FormField<DateTime> {
   TestCustomDatePickerField({
@@ -144,22 +145,6 @@ class _DatePickerCustomState extends State<DatePickerCustom> {
         ),
       ],
     );
-  }
-}
-
-class ControllerFieldDatePicker {
-  ControllerFieldDatePicker();
-  DateTime date = DateTime.now();
-  final GlobalKey<FormFieldState<DateTime>> fieldKey =
-      GlobalKey<FormFieldState<DateTime>>();
-  final FocusNode focusNode = FocusNode();
-
-  void setValue(DateTime value) {
-    date = value;
-  }
-
-  DateTime getValue() {
-    return date;
   }
 }
 

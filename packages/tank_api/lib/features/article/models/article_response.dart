@@ -8,6 +8,7 @@ class ArticleResponse {
     required this.descripcion,
     required this.color,
     required this.precio,
+    required this.code,
   });
 
   factory ArticleResponse.fromJson(Map<String, dynamic> json) {
@@ -17,7 +18,8 @@ class ArticleResponse {
       articulo: json.get('articulo', ''),
       descripcion: json.get('descripcion', ''),
       color: json.get('color', ''),
-      precio: (json.get('precio', 0) as num).toDouble(),
+      precio: json.get('precio', 0),
+      code: json.get('codigo_articulo', ''),
     );
   }
   final int idArticulo;
@@ -26,4 +28,5 @@ class ArticleResponse {
   final String descripcion;
   final String color;
   final double precio;
+  final String code;
 }

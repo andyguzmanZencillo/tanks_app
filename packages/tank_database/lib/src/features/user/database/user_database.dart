@@ -9,16 +9,6 @@ class UserDatabase {
 
   final Database _database;
 
-  Future<void> saveUsers({
-    required List<UserCollection> users,
-  }) async {
-    try {
-      await _database.clearAndSaveMany<UserCollection>(users);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   Future<void> clearUser({required int id}) async {
     try {
       await _database.clear<UserCollection>(id);
@@ -69,6 +59,14 @@ class UserDatabase {
       return await _database.getById<UserCollection>(1);
     } catch (e) {
       if (e is TypeError) throw NotFoundException();
+      rethrow;
+    }
+  }
+
+  Future<void> clear() async {
+    try {
+      await _database.clear<UserCollection>(1);
+    } catch (e) {
       rethrow;
     }
   }

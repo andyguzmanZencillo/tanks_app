@@ -33,7 +33,7 @@ class TankVariationResponse {
       operation: json.get('operation', ''),
       idCompania: json.get('id_compania', 0),
       idTanque: json.get('id_tanque', 0),
-      fechaZ: json.get('fecha_z', ''),
+      fechaZ: json.get('fecha_z', DateTime.now()),
       saldoInicial: json.get('saldo_inicial', 0),
       comprasFacturas: json.get('compras_facturas', 0),
       descargue: json.get('descargue', 0),
@@ -60,7 +60,7 @@ class TankVariationResponse {
   final String operation;
   final int idCompania;
   final int idTanque;
-  final String fechaZ;
+  final DateTime fechaZ;
   final double saldoInicial;
   final double comprasFacturas;
   final double descargue;

@@ -1,7 +1,7 @@
-import 'package:bloc/bloc.dart';
+/*import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tank_repository/features/sales_center/repository/sales_center_repository.dart';
-import 'package:tanks_app/features/sales_center/delete/cubit/delete_sales_center_cubit.dart';
+import 'package:tanks_app/core/util/enums/enums.dart';
 
 part 'delete_console_state.dart';
 
@@ -36,3 +36,4 @@ class DeleteConsoleCubit extends Cubit<DeleteConsoleState> {
     emit(state.copyWith(deleteStatus: deleteStatus));
   }
 }
+*/

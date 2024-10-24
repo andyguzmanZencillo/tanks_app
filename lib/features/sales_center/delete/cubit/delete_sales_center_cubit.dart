@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tank_repository/features/sales_center/repository/sales_center_repository.dart';
+import 'package:tanks_app/core/util/enums/enums.dart';
 
 part 'delete_sales_center_state.dart';
 

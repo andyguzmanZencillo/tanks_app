@@ -51,6 +51,50 @@ class TankVariationRepository {
     });
   }
 
+  Future<Result<List<TankVariationEntity>, Failure>> getToSaleCenterDate({
+    required int idCentroVenta,
+    required DateTime dateInit,
+    required DateTime dateFinal,
+  }) {
+    return handleExceptionCompleteToken<List<TankVariationEntity>>(() async {
+      final request = GetTankVariationToSaleCenterDateRequest(
+        idCompania: 1,
+        idCentroVenta: idCentroVenta,
+        dateInit: dateInit,
+        dateFinal: dateFinal,
+      );
+      final response = await _api.getToSaleCenterDate(request);
+      return response
+          .map(
+            (e) => e.toEntity(),
+          )
+          .toList();
+    });
+  }
+
+  Future<Result<List<TankVariationEntity>, Failure>> getToSaleCenterTankDate({
+    required int idCentroVenta,
+    required int idTanque,
+    required DateTime dateInit,
+    required DateTime dateFinal,
+  }) {
+    return handleExceptionCompleteToken<List<TankVariationEntity>>(() async {
+      final request = GetTankVariationToSaleCenterTankDateRequest(
+        idCompania: 1,
+        idTanque: idTanque,
+        idCentroVenta: idCentroVenta,
+        dateInit: dateInit,
+        dateFinal: dateFinal,
+      );
+      final response = await _api.getToSaleCenterTankDate(request);
+      return response
+          .map(
+            (e) => e.toEntity(),
+          )
+          .toList();
+    });
+  }
+
   Future<Result<bool, Failure>> saveTankVariation(
     TankVariationEntity e,
   ) {

@@ -1,19 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
 import 'package:tanks_app/features/binnacle/list/cubit/binnacle_cubit.dart';
 import 'package:tanks_app/features/capacity_table/list/cubit/capacity_table_cubit.dart';
 import 'package:tanks_app/features/drawer/views/drawer_view.dart';
 import 'package:tanks_app/features/home/dashboard/cubit/dashboard_cubit.dart';
 import 'package:tanks_app/features/home/dashboard/widgets/info_date.dart';
-import 'package:tanks_app/features/home/widgets/dialog_home.dart';
 import 'package:tanks_app/features/home/widgets/gallons.dart';
 import 'package:tanks_app/features/home/widgets/graft_.dart';
 import 'package:tanks_app/features/home/widgets/percentage_existence.dart';
 import 'package:tanks_app/features/home/widgets/volume.dart';
 import 'package:tanks_app/features/sales_center/list/cubit/sales_center_cubit.dart';
+import 'package:tanks_app/features/sales_center/list/helpers/sales_center_listener.dart';
 import 'package:tanks_app/features/tank_variation/list/cubit/tank_variation_cubit.dart';
-import 'package:tanks_app/features/tank_variation/list/helpers/tank_variation_listener.dart';
 import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
 import 'package:tanks_app/injection/injection.dart';
 
@@ -56,44 +58,41 @@ class HomeViesw extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubitTank = context.read<TanksCubit>();
+    final tankCubit = context.read<TanksCubit>();
     final tankVariationCubit = context.read<TankVariationCubit>();
     final dashBoardCubit = context.read<DashboardCubit>();
     final salesCenterCubit = context.read<SalesCenterCubit>();
     final capacityCubit = context.read<CapacityTableCubit>();
+    final binacleCubit = context.read<BinnacleCubit>();
     return MultiBlocListener(
       listeners: [
-        TankVariationListener.salesCenter(),
-        TankVariationListener.event(
-          success: () {
-            showDialog<bool>(
-              context: context,
-              builder: (context) {
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider.value(value: cubitTank),
-                    BlocProvider.value(value: dashBoardCubit),
-                    BlocProvider.value(value: salesCenterCubit),
-                    BlocProvider.value(value: capacityCubit),
-                    BlocProvider.value(
-                      value: tankVariationCubit,
-                    ),
-                  ],
-                  child: const DialogHome(),
-                );
-              },
-            );
-          },
-        ),
-        //TankVariationListener.tanks(),
-        TankVariationListener.tankVariation(),
+        SalesCenterListener.salesCenter(),
       ],
       child: FullWidgetGeneric(
-        onInit: () {
-          context.read<SalesCenterCubit>().getAll();
-          context.read<BinnacleCubit>().getAll();
+        onInit: () async {
+          if (!(await salesCenterCubit.getAll())) return;
+          final sc = salesCenterCubit.state.selected;
+          if (!(await tankCubit.getToSaleCenter(sc.idCentroVenta))) return;
+          final t = tankCubit.state.selected;
+
+          //----//
+          dashBoardCubit.changeDates(
+            dateInit: DateTime.now(),
+            dateFinal: DateTime.now(),
+          );
+
+          unawaited(dashBoardCubit.getToSaleCenter());
+          unawaited(
+            tankVariationCubit.getBySaleCenterAndTankAndDate(
+              idCentroVenta: sc.idCentroVenta,
+              idTanque: t.idTanque,
+              dateInit: DateTime.now(),
+              dateFinal: DateTime.now(),
+            ),
+          );
+          unawaited(capacityCubit.getToTank(t.idTanque));
+          unawaited(binacleCubit.getByTank(t.idTanque));
         },
-        onDispose: () {},
         child: const HomeBody(),
       ),
     );
@@ -135,25 +134,27 @@ class HomeBody extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              BlocBuilder<DashboardCubit, DashboardState>(
-                builder: (context, state) {
-                  final bitacora = state.list.firstOrNull;
-                  if (bitacora == null) {
-                    return const GallonsWidget(
-                      speed: 70,
-                      maxSpeed: 100,
-                    );
-                  } else {
-                    final maxSpeed = bitacora.saldoInicial +
-                        bitacora.descargue +
-                        bitacora.venta;
+              BlocBuilder<BinnacleCubit, BinnacleState>(
+                builder: (context, s) {
+                  final selected = s.selected;
+                  return BlocBuilder<TankVariationCubit, TankVariationState>(
+                    builder: (context, state) {
+                      if (selected == const BinnacleEntity.empty()) {
+                        return const GallonsWidget(
+                          speed: 70,
+                          maxSpeed: 100,
+                        );
+                      } else {
+                        final maxSpeed = selected.saldo;
 
-                    final speed = bitacora.saldoInicial + bitacora.descargue;
-                    return GallonsWidget(
-                      speed: speed,
-                      maxSpeed: maxSpeed,
-                    );
-                  }
+                        final speed = state.selected.venta;
+                        return GallonsWidget(
+                          speed: speed,
+                          maxSpeed: maxSpeed,
+                        );
+                      }
+                    },
+                  );
                 },
               ),
               const SizedBox(
@@ -163,22 +164,20 @@ class HomeBody extends StatelessWidget {
                 'Porcentage Existencia',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              BlocBuilder<CapacityTableCubit, CapacityTableState>(
+              BlocBuilder<BinnacleCubit, BinnacleState>(
                 builder: (context, state) {
-                  final capacity = state.capacityEntitys;
-                  return BlocBuilder<DashboardCubit, DashboardState>(
+                  final selected = state.selected;
+                  return BlocBuilder<TanksCubit, TanksState>(
                     builder: (context, state) {
-                      final bitacora = state.list.firstOrNull;
-                      if (bitacora == null) {
+                      final tankSelected = state.selected;
+                      if (tankSelected == const TanksEntity.empty()) {
                         return const PercentageExistence(
                           percentage: 20,
                         );
                       }
-                      final volumenGalones = bitacora.inventarioFinalCalculado -
-                          bitacora.venta +
-                          bitacora.descargue;
+                      final volumenGalones = selected.saldo;
 
-                      final volumenMax = capacity.lastOrNull?.volumen ?? 0;
+                      final volumenMax = tankSelected.capacidad;
 
                       final percentage = (volumenGalones * 100) / volumenMax;
                       return PercentageExistence(
@@ -192,23 +191,21 @@ class HomeBody extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              BlocBuilder<CapacityTableCubit, CapacityTableState>(
+              BlocBuilder<BinnacleCubit, BinnacleState>(
                 builder: (context, state) {
-                  final capacity = state.capacityEntitys;
-                  return BlocBuilder<DashboardCubit, DashboardState>(
+                  final capacity = state.list;
+                  return BlocBuilder<TanksCubit, TanksState>(
                     builder: (context, state) {
-                      final bitacora = state.list.firstOrNull;
-                      if (bitacora == null) {
+                      final tankSelected = state.selected;
+                      if (tankSelected == const TanksEntity.empty()) {
                         return const VolumeWidget(
                           volumenGal: 0,
                           volumenMax: 0,
                         );
                       }
-                      final volumenGalones = bitacora.inventarioFinalCalculado -
-                          bitacora.venta +
-                          bitacora.descargue;
+                      final volumenGalones = capacity.firstOrNull?.saldo ?? 0;
 
-                      final volumenMax = capacity.lastOrNull?.volumen ?? 0;
+                      final volumenMax = tankSelected.capacidad;
                       return VolumeWidget(
                         volumenGal: volumenGalones,
                         volumenMax: volumenMax,

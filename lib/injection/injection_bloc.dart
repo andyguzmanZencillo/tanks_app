@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:tanks_app/core/app/app.dart';
+import 'package:tanks_app/core/helpers/token/token_cubit.dart';
 import 'package:tanks_app/core/helpers/user_device/cubit/user_device_cubit.dart';
 import 'package:tanks_app/features/article/create_update/cubit/create_update_cubit.dart';
 import 'package:tanks_app/features/article/delete/cubit/article_delete_cubit.dart';
@@ -36,71 +37,106 @@ import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
 final sl = GetIt.instance;
 
 void registerBloc() {
-  sl.registerFactory<AppCubit>(() => AppCubit(sl()));
-  sl.registerFactory<CompanyCubit>(() => CompanyCubit(sl()));
-  sl.registerFactory<SignInCubit>(() => SignInCubit(sl()));
-  sl.registerFactory<SignUpCubit>(() => SignUpCubit(sl()));
-  sl.registerFactory<ArticleListCubit>(() => ArticleListCubit(sl()));
-  sl.registerFactory<CreateUpdateCubit>(() => CreateUpdateCubit(sl()));
-  sl.registerFactory<ArticleDeleteCubit>(() => ArticleDeleteCubit(sl()));
-
-  //Sale center
-  sl.registerFactory<SalesCenterCubit>(() => SalesCenterCubit(sl()));
+  sl.registerFactory<AppCubit>(
+    () => AppCubit(sl()),
+  );
+  sl.registerFactory<CompanyCubit>(
+    () => CompanyCubit(sl()),
+  );
+  sl.registerFactory<SignInCubit>(
+    () => SignInCubit(sl()),
+  );
+  sl.registerFactory<SignUpCubit>(
+    () => SignUpCubit(sl()),
+  );
+  sl.registerFactory<ArticleListCubit>(
+    () => ArticleListCubit(sl()),
+  );
+  sl.registerFactory<CreateUpdateCubit>(
+    () => CreateUpdateCubit(sl()),
+  );
+  sl.registerFactory<ArticleDeleteCubit>(
+    () => ArticleDeleteCubit(sl()),
+  );
+  sl.registerFactory<SalesCenterCubit>(
+    () => SalesCenterCubit(sl()),
+  );
   sl.registerFactory<UpsertSalesCenterCubit>(
     () => UpsertSalesCenterCubit(sl()),
   );
   sl.registerFactory<DeleteSalesCenterCubit>(
     () => DeleteSalesCenterCubit(sl()),
   );
-  //Console
-  sl.registerFactory<ConsoleCubit>(() => ConsoleCubit(sl()));
+  sl.registerFactory<ConsoleCubit>(
+    () => ConsoleCubit(sl()),
+  );
   sl.registerFactory<UpsertConsoleCubit>(
     () => UpsertConsoleCubit(sl()),
   );
   sl.registerFactory<DeleteConsoleCubit>(
     () => DeleteConsoleCubit(sl()),
   );
-  //Tanques
-  sl.registerFactory<TanksCubit>(() => TanksCubit(sl()));
+  sl.registerFactory<TanksCubit>(
+    () => TanksCubit(sl()),
+  );
   sl.registerFactory<UpsertTanksCubit>(
     () => UpsertTanksCubit(sl()),
   );
   sl.registerFactory<DeleteTanksCubit>(
     () => DeleteTanksCubit(sl()),
   );
-
-  //Aforo
-  sl.registerFactory<CapacityTableCubit>(() => CapacityTableCubit(sl()));
+  sl.registerFactory<CapacityTableCubit>(
+    () => CapacityTableCubit(sl()),
+  );
   sl.registerFactory<UpsertCapacityTableCubit>(
     () => UpsertCapacityTableCubit(sl()),
   );
-  /*sl.registerFactory<DeleteCapacityTableCubit>(
-    () => DeleteCapacityTableCubit(sl()),
-  );*/
-  sl.registerFactory<TankVariationCubit>(() => TankVariationCubit(sl()));
-  sl.registerFactory<UpsertTankVariationCubit>(
-    () => UpsertTankVariationCubit(
-      sl(),
-    ),
+  sl.registerFactory<TankVariationCubit>(
+    () => TankVariationCubit(sl()),
   );
-  sl.registerFactory<ConfigCubit>(() => ConfigCubit(sl()));
-  sl.registerFactory<UpsertConfigCubit>(() => UpsertConfigCubit(sl()));
-  sl.registerFactory<DeleteConfigCubit>(() => DeleteConfigCubit(sl()));
-  sl.registerFactory<BinnacleCubit>(() => BinnacleCubit(sl()));
-
-  sl.registerFactory<DashboardCubit>(() => DashboardCubit(sl()));
-  sl.registerFactory<SessionCubit>(() => SessionCubit(sl()));
+  sl.registerFactory<UpsertTankVariationCubit>(
+    () => UpsertTankVariationCubit(sl()),
+  );
+  sl.registerFactory<ConfigCubit>(
+    () => ConfigCubit(sl()),
+  );
+  sl.registerFactory<UpsertConfigCubit>(
+    () => UpsertConfigCubit(sl()),
+  );
+  sl.registerFactory<DeleteConfigCubit>(
+    () => DeleteConfigCubit(sl()),
+  );
+  sl.registerFactory<BinnacleCubit>(
+    () => BinnacleCubit(sl()),
+  );
+  sl.registerFactory<DashboardCubit>(
+    () => DashboardCubit(sl()),
+  );
+  sl.registerFactory<SessionCubit>(
+    () => SessionCubit(sl()),
+  );
   sl.registerFactory<GetUserNotificationCubit>(
     () => GetUserNotificationCubit(sl()),
   );
-
-  sl.registerFactory<GetUserAlertCubit>(() => GetUserAlertCubit(sl()));
-  sl.registerFactory<PerfilCubit>(() => PerfilCubit(sl()));
-
-  sl.registerFactory<GetAlertCubit>(() => GetAlertCubit(sl()));
-  sl.registerFactory<UserDeviceCubit>(() => UserDeviceCubit(sl()));
-  sl.registerFactory<GetNotificationCubit>(() => GetNotificationCubit(sl()));
+  sl.registerFactory<GetUserAlertCubit>(
+    () => GetUserAlertCubit(sl()),
+  );
+  sl.registerFactory<PerfilCubit>(
+    () => PerfilCubit(sl()),
+  );
+  sl.registerFactory<GetAlertCubit>(
+    () => GetAlertCubit(sl()),
+  );
+  sl.registerFactory<UserDeviceCubit>(
+    () => UserDeviceCubit(sl()),
+  );
+  sl.registerFactory<GetNotificationCubit>(
+    () => GetNotificationCubit(sl()),
+  );
   sl.registerFactory<ConfigNotificationCubit>(
     () => ConfigNotificationCubit(sl()),
+  );
+  sl.registerFactory<TokenCubit>(
+    () => TokenCubit(sl()),
   );
 }

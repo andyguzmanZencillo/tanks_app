@@ -48,6 +48,7 @@ class TanksCubit extends Cubit<TanksState> {
           state.copyWith(
             list: ok,
             listCopy: ok,
+            selected: ok.firstOrNull,
             tanksStatus: TanksStatus.success,
           ),
         );

@@ -7,5 +7,6 @@ export 'notification/notification.dart';
 export 'sales_center/sales_center.dart';
 export 'tank_variation/tank_variation.dart';
 export 'tanks/tanks.dart';
+export 'token/token.dart';
 export 'user/user.dart';
 export 'user_device/user_device.dart';

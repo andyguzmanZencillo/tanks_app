@@ -4,6 +4,7 @@ import 'package:tank_repository/features/sales_center/entity/sales_center_entity
 import 'package:tank_repository/features/tanks/entity/tanks_entity.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
+import 'package:tanks_app/features/binnacle/list/cubit/binnacle_cubit.dart';
 import 'package:tanks_app/features/capacity_table/list/cubit/capacity_table_cubit.dart';
 import 'package:tanks_app/features/home/dashboard/cubit/dashboard_cubit.dart';
 import 'package:tanks_app/features/home/widgets/date_picker_home.dart';
@@ -26,6 +27,7 @@ class DialogHome extends StatelessWidget {
     final tankVariationCubit = context.read<TankVariationCubit>();
     final saleCenterCubit = context.read<SalesCenterCubit>();
     final capacityCubit = context.read<CapacityTableCubit>();
+    final binacleCubit = context.read<BinnacleCubit>();
 
     return AlertDialog(
       backgroundColor: Colors.white,
@@ -198,13 +200,14 @@ class DialogHome extends StatelessWidget {
               );
               dashBoardCubit.getToSaleCenter();
 
-              tankVariationCubit.getToSaleCenterTankDate(
+              tankVariationCubit.getBySaleCenterAndTankAndDate(
                 idCentroVenta: saleCenter.idCentroVenta,
                 idTanque: valueTank.id,
                 dateInit: controllerDateInicial.getValue(),
                 dateFinal: controllerDateFinal.getValue(),
               );
               capacityCubit.getToTank(valueTank.id);
+              binacleCubit.getByTank(valueTank.idTanque);
             }
           },
           style: TextButton.styleFrom(

@@ -169,7 +169,7 @@ class TankVariationListBody extends StatelessWidget {
                       return;
                     }
                     if (await tankCubit.getToSaleCenter(controllerDrp.id)) {
-                      await cubit.getToSaleCenter(
+                      await cubit.getBySaleCenterAndDate(
                         controllerDrp.id,
                         controllerDate.getValue(),
                       );
@@ -190,7 +190,7 @@ class TankVariationListBody extends StatelessWidget {
                   return BlocSelector<TankVariationCubit, TankVariationState,
                       List<TankVariationEntity>>(
                     selector: (state) {
-                      return state.consoles;
+                      return state.list;
                     },
                     builder: (context, tanksVariation) {
                       return tanks.toListView(

@@ -20,4 +20,22 @@ class BinnacleApi extends BaseApi {
       rethrow;
     }
   }
+
+  Future<List<BinnacleResponse>> getByTank(
+    GetBinnacleByTankRequest request,
+  ) async {
+    try {
+      final response = await post(
+        request.toJson(),
+      );
+      final list = response.resultSp as List;
+      return list
+          .map(
+            (e) => BinnacleResponse.fromJson(e as Map<String, dynamic>),
+          )
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

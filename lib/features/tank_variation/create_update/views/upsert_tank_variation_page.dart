@@ -50,7 +50,7 @@ class UpsertTankVariationPage extends StatelessWidget {
         ),
       ],
       child: UpsertTankVariationInherited(
-        tankVariationEntity: tankVariationCubit.state.tankVariationSelected,
+        tankVariationEntity: tankVariationCubit.state.selected,
         typeOperation: typeOperation,
         child: const UpsertTankVariationView(),
       ),

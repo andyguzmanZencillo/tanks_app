@@ -26,10 +26,27 @@ class UserDeviceRepository {
     return handleExceptionCompleteToken<List<UserDeviceEntity>>(() async {
       final user = await _userDatabase.getUser();
       final dispositivo = await getDeviceModel();
-      final request = GetUserDeviceRequest(
+      final request = GetUserDeviceToDeviceRequest(
         idCompania: user.idCompany,
         idUsuario: user.idEmployee,
         dispositivo: dispositivo,
+      );
+      final response = await _api.getUserDeviceToDevice(request);
+      return response
+          .map(
+            (e) => e.toEntity(),
+          )
+          .toList();
+    });
+  }
+
+  Future<Result<List<UserDeviceEntity>, Failure>> getAll() {
+    return handleExceptionCompleteToken<List<UserDeviceEntity>>(() async {
+      final user = await _userDatabase.getUser();
+
+      final request = GetUserDeviceRequest(
+        idCompania: user.idCompany,
+        idUsuario: user.idEmployee,
       );
       final response = await _api.getUserDevice(request);
       return response
@@ -37,6 +54,20 @@ class UserDeviceRepository {
             (e) => e.toEntity(),
           )
           .toList();
+    });
+  }
+
+  Future<Result<Unit, Failure>> deleteItem(int id) {
+    return handleExceptionCompleteToken<Unit>(() async {
+      final user = await _userDatabase.getUser();
+
+      final request = DeleteUserDeviceRequest(
+        idCompania: user.idCompany,
+        idUsuario: user.idEmployee,
+        idUsuarioDispositivo: id,
+      );
+      await _api.deleteUserDevice(request);
+      return unit;
     });
   }
 

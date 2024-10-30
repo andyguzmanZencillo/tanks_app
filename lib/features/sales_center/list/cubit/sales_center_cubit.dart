@@ -25,6 +25,7 @@ class SalesCenterCubit extends Cubit<SalesCenterState> {
           state.copyWith(
             list: ok,
             listCopy: ok,
+            selected: ok.firstOrNull,
             salesCenterStatus: SalesCenterStatus.success,
           ),
         );

@@ -20,59 +20,52 @@ class TankVariationRepository {
 
   Future<Result<List<TankVariationEntity>, Failure>> getAll() {
     return handleExceptionCompleteToken<List<TankVariationEntity>>(() async {
+      final user = await _userDatabase.getUser();
       final request = GetTankVariationRequest(
-        idCompania: 1,
+        idCompania: user.idCompany,
       );
       final response = await _api.getAll(request);
-      return response
-          .map(
-            (e) => e.toEntity(),
-          )
-          .toList();
+      return response.map((e) => e.toEntity()).toList();
     });
   }
 
-  Future<Result<List<TankVariationEntity>, Failure>> getToSaleCenter({
+  Future<Result<List<TankVariationEntity>, Failure>> getBySaleCenterAndDate({
     required int idCentroVenta,
     required DateTime date,
   }) {
     return handleExceptionCompleteToken<List<TankVariationEntity>>(() async {
+      final user = await _userDatabase.getUser();
       final request = GetTankVariationToSaleCenterRequest(
-        idCompania: 1,
+        idCompania: user.idCompany,
         idCentroVenta: idCentroVenta,
         date: date,
       );
-      final response = await _api.getToSaleCenter(request);
-      return response
-          .map(
-            (e) => e.toEntity(),
-          )
-          .toList();
+      final response = await _api.getBySaleCenterAndDate(request);
+      return response.map((e) => e.toEntity()).toList();
     });
   }
 
-  Future<Result<List<TankVariationEntity>, Failure>> getToSaleCenterDate({
+  Future<Result<List<TankVariationEntity>, Failure>>
+      getBySaleCenterAndRangeDate({
     required int idCentroVenta,
     required DateTime dateInit,
     required DateTime dateFinal,
   }) {
     return handleExceptionCompleteToken<List<TankVariationEntity>>(() async {
+      final user = await _userDatabase.getUser();
       final request = GetTankVariationToSaleCenterDateRequest(
-        idCompania: 1,
+        idCompania: user.idCompany,
         idCentroVenta: idCentroVenta,
         dateInit: dateInit,
         dateFinal: dateFinal,
       );
-      final response = await _api.getToSaleCenterDate(request);
-      return response
-          .map(
-            (e) => e.toEntity(),
-          )
-          .toList();
+      final response = await _api.getBySaleCenterAndRangeDate(request);
+      return response.map((e) => e.toEntity()).toList();
     });
   }
 
-  Future<Result<List<TankVariationEntity>, Failure>> getToSaleCenterTankDate({
+  Future<Result<List<TankVariationEntity>, Failure>>
+      getBySaleCenterAndTankAndDate({
     required int idCentroVenta,
     required int idTanque,
     required DateTime dateInit,
@@ -86,46 +79,60 @@ class TankVariationRepository {
         dateInit: dateInit,
         dateFinal: dateFinal,
       );
-      final response = await _api.getToSaleCenterTankDate(request);
-      return response
-          .map(
-            (e) => e.toEntity(),
+      final response = await _api.getBySaleCenterAndTankAndDate(request);
+      return response.map((e) => e.toEntity()).toList();
+    });
+  }
+
+  Future<Result<List<TankVariationEntity>, Failure>> getByTank({
+    required int idTanque,
+  }) {
+    return handleExceptionCompleteToken<List<TankVariationEntity>>(() async {
+      final user = await _userDatabase.getUser();
+      final request = GetTankVariationByTankRequest(
+        idCompania: user.idCompany,
+        idTanque: idTanque,
+      );
+      final response = await _api.getByTank(request);
+      return response.map((e) => e.toEntity()).toList();
+    });
+  }
+
+  Future<Result<Unit, Failure>> save(
+    TankVariationEntity e,
+  ) {
+    return handleExceptionCompleteToken<Unit>(() async {
+      final user = await _userDatabase.getUser();
+
+      final request = e
+          .copyWith(
+            idCompania: user.idCompany,
           )
-          .toList();
+          .toInsertRequest();
+      await _api.save(request);
+      return unit;
     });
   }
 
-  Future<Result<bool, Failure>> saveTankVariation(
+  Future<Result<Unit, Failure>> updateTankVariation(
     TankVariationEntity e,
   ) {
-    return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
-      final request = e.toInsertRequest();
-      final response = await _api.save(request);
-      return true;
-    });
-  }
-
-  Future<Result<bool, Failure>> updateTankVariation(
-    TankVariationEntity e,
-  ) {
-    return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
+    return handleExceptionCompleteToken<Unit>(() async {
       final request = e.toUpdateRequest();
-      final response = await _api.update(request);
-      return true;
+      await _api.update(request);
+      return unit;
     });
   }
 
-  Future<Result<bool, Failure>> deleteTankVariation(int idTank) {
-    return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
+  Future<Result<Unit, Failure>> deleteTankVariation(int idTank) {
+    return handleExceptionCompleteToken<Unit>(() async {
+      final user = await _userDatabase.getUser();
       final request = DeleteTankVariationRequest(
         idVariacion: idTank,
-        idCompania: 1,
+        idCompania: user.idCompany,
       );
-      final response = await _api.delete(request);
-      return true;
+      await _api.delete(request);
+      return unit;
     });
   }
 }

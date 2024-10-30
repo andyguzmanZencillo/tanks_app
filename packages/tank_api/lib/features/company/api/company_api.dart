@@ -32,13 +32,14 @@ class BaseApi {
     try {
       final response = await ApiMethod.post(
         dio: _dio,
-        uri: Uri.http(
+        uri: Uri.https(
           Endpoints.authority,
           Endpoints.command,
         ),
         data: data,
       );
       if (!response.result) throw ResultException(response.message);
+
       return response;
     } catch (e) {
       rethrow;

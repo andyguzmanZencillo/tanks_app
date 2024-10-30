@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tank_repository/tank_repository.dart';
+import 'package:tanks_app/core/util/enums/enums.dart';
 
 part 'tank_variation_state.dart';
 
@@ -10,71 +11,43 @@ class TankVariationCubit extends Cubit<TankVariationState> {
 
   final TankVariationRepository consoleRepository;
 
-  void changeSelected(TankVariationEntity tankVariationEntity) {
-    emit(state.copyWith(tankVariationSelected: tankVariationEntity));
+  void changeSelected(TankVariationEntity selected) {
+    emit(state.copyWith(selected: selected));
   }
 
-  Future<void> getToSaleCenter(int idSaleCenter, DateTime date) async {
-    emit(state.copyWith(consoleStatus: TankVariationStatus.loading));
-    final result = await consoleRepository.getToSaleCenter(
+  Future<void> getBySaleCenterAndDate(int idSaleCenter, DateTime date) async {
+    emit(state.copyWith(status: GeneralStatus.loading));
+    final result = await consoleRepository.getBySaleCenterAndDate(
       idCentroVenta: idSaleCenter,
       date: date,
     );
-    //await Future<dynamic>.delayed(const Duration(seconds: 3));
     result.when(
       ok: (ok) {
         emit(
           state.copyWith(
-            consoles: ok,
-            consoleStatus: TankVariationStatus.success,
+            list: ok,
+            status: GeneralStatus.success,
           ),
         );
       },
       err: (err) {
         emit(
           state.copyWith(
-            consoles: [],
-            consoleStatus: TankVariationStatus.error,
+            list: [],
+            status: GeneralStatus.error,
           ),
         );
       },
     );
   }
 
-  Future<void> getAll(int idSaleCenter, DateTime date) async {
-    emit(state.copyWith(consoleStatus: TankVariationStatus.loading));
-    final result = await consoleRepository.getToSaleCenter(
-      idCentroVenta: idSaleCenter,
-      date: date,
-    );
-    //await Future<dynamic>.delayed(const Duration(seconds: 3));
-    result.when(
-      ok: (ok) {
-        emit(
-          state.copyWith(
-            consoles: ok,
-            consoleStatus: TankVariationStatus.success,
-          ),
-        );
-      },
-      err: (err) {
-        emit(
-          state.copyWith(
-            consoles: [],
-            consoleStatus: TankVariationStatus.error,
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> getToSaleCenterDate(
+  Future<void> getBySaleCenterAndRangeDate(
     int idSaleCenter,
     DateTime dateInit,
     DateTime dateFinal,
   ) async {
-    emit(state.copyWith(consoleStatus: TankVariationStatus.loading));
-    final result = await consoleRepository.getToSaleCenterDate(
+    emit(state.copyWith(status: GeneralStatus.loading));
+    final result = await consoleRepository.getBySaleCenterAndRangeDate(
       idCentroVenta: idSaleCenter,
       dateInit: dateInit,
       dateFinal: dateFinal,
@@ -83,30 +56,30 @@ class TankVariationCubit extends Cubit<TankVariationState> {
       ok: (ok) {
         emit(
           state.copyWith(
-            consoles: ok,
-            consoleStatus: TankVariationStatus.success,
+            list: ok,
+            status: GeneralStatus.success,
           ),
         );
       },
       err: (err) {
         emit(
           state.copyWith(
-            consoles: [],
-            consoleStatus: TankVariationStatus.error,
+            list: [],
+            status: GeneralStatus.error,
           ),
         );
       },
     );
   }
 
-  Future<void> getToSaleCenterTankDate({
+  Future<void> getBySaleCenterAndTankAndDate({
     required int idCentroVenta,
     required int idTanque,
     required DateTime dateInit,
     required DateTime dateFinal,
   }) async {
-    emit(state.copyWith(consoleStatus: TankVariationStatus.loading));
-    final result = await consoleRepository.getToSaleCenterTankDate(
+    emit(state.copyWith(status: GeneralStatus.loading));
+    final result = await consoleRepository.getBySaleCenterAndTankAndDate(
       idCentroVenta: idCentroVenta,
       idTanque: idTanque,
       dateInit: dateInit,
@@ -116,16 +89,46 @@ class TankVariationCubit extends Cubit<TankVariationState> {
       ok: (ok) {
         emit(
           state.copyWith(
-            consoles: ok,
-            consoleStatus: TankVariationStatus.success,
+            list: ok,
+            status: GeneralStatus.success,
           ),
         );
       },
       err: (err) {
         emit(
           state.copyWith(
-            consoles: [],
-            consoleStatus: TankVariationStatus.error,
+            list: [],
+            status: GeneralStatus.error,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> getByTank({
+    required int idCentroVenta,
+    required int idTanque,
+    required DateTime dateInit,
+    required DateTime dateFinal,
+  }) async {
+    emit(state.copyWith(status: GeneralStatus.loading));
+    final result = await consoleRepository.getByTank(
+      idTanque: idTanque,
+    );
+    result.when(
+      ok: (ok) {
+        emit(
+          state.copyWith(
+            list: ok,
+            status: GeneralStatus.success,
+          ),
+        );
+      },
+      err: (err) {
+        emit(
+          state.copyWith(
+            list: [],
+            status: GeneralStatus.error,
           ),
         );
       },

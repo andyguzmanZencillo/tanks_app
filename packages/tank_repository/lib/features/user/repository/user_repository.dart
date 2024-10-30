@@ -65,26 +65,31 @@ class UserRepository {
     required String password,
     required String name,
   }) {
-    return handleExceptionCompleteToken<Unit>(() async {
-      final request = InsertUserRequest(
-        idCompania: idCompany,
-        nombre: name,
-        usuario: user,
-        clave: password,
-      );
-      final result = await _api.insertUser(request);
+    return handleExceptionTokenFirst<Unit>(
+      action: () async {
+        final request = InsertUserRequest(
+          idCompania: idCompany,
+          nombre: name,
+          usuario: user,
+          clave: password,
+        );
+        final result = await _api.insertUser(request);
 
-      await _userDatabase.saveUser(
-        user: UserCollection(
-          idCompany: idCompany,
-          idEmployee: result,
-          login: user,
-          password: password,
-          name: user,
-        ),
-      );
-      return unit;
-    });
+        await _userDatabase.saveUser(
+          user: UserCollection(
+            idCompany: idCompany,
+            idEmployee: result,
+            login: user,
+            password: password,
+            name: user,
+          ),
+        );
+        return unit;
+      },
+      idCompany: idCompany.toString(),
+      user: user,
+      password: password,
+    );
   }
 
   Future<Result<UserEntity, Failure>> verification() {

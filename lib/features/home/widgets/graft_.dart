@@ -141,10 +141,12 @@ class Graft extends StatelessWidget {
         child: BlocSelector<TankVariationCubit, TankVariationState,
             List<TankVariationEntity>>(
           selector: (state) {
-            return state.consoles;
+            return state.list;
           },
           builder: (context, state) {
-            if (state.isEmpty) return const SizedBox.shrink();
+            if (state.isEmpty) {
+              return LineChart(getGraft([], []));
+            }
             final listAgua = state
                 .map(
                   (e) => SalesData(e.fechaZ?.day ?? 0, e.aguaFinal),

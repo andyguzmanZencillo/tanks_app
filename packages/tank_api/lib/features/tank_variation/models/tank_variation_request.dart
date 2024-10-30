@@ -205,6 +205,30 @@ class GetTankVariationToSaleCenterRequest extends TankVariationRequest {
   }
 }
 
+class GetTankVariationByTankRequest extends TankVariationRequest {
+  GetTankVariationByTankRequest({
+    required this.idCompania,
+    required this.idTanque,
+    this.idUserTrace = 123,
+    this.operation = 'S',
+  });
+
+  final int idUserTrace;
+  final String operation;
+
+  final int idCompania;
+  final int idTanque;
+
+  Map<String, dynamic> toJson() {
+    return super.toJsonParams({
+      'id_user_trace': idUserTrace,
+      'operation': operation,
+      'id_compania': idCompania,
+      'id_tanque': idTanque,
+    });
+  }
+}
+
 class GetTankVariationToSaleCenterDateRequest extends TankVariationRequest {
   GetTankVariationToSaleCenterDateRequest({
     required this.idCompania,

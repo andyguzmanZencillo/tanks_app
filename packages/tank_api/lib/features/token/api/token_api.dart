@@ -18,7 +18,7 @@ class TokenApi {
     try {
       final response = await ApiMethod.getToken(
         dio: _dio,
-        uri: Uri.http(
+        uri: Uri.https(
           Endpoints.authority,
           Endpoints.token,
         ),

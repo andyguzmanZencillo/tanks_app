@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
 import 'package:tanks_app/core/util/extensions/extension_date.dart';
+import 'package:tanks_app/features/binnacle/list/cubit/binnacle_cubit.dart';
 import 'package:tanks_app/features/capacity_table/list/cubit/capacity_table_cubit.dart';
 import 'package:tanks_app/features/home/dashboard/cubit/dashboard_cubit.dart';
 import 'package:tanks_app/features/home/widgets/dialog_home.dart';
@@ -22,6 +23,7 @@ class InfoDashBoard extends StatelessWidget {
     final dashBoardCubit = context.read<DashboardCubit>();
     final salesCenterCubit = context.read<SalesCenterCubit>();
     final capacityCubit = context.read<CapacityTableCubit>();
+    final binacleCubit = context.read<BinnacleCubit>();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
@@ -65,6 +67,9 @@ class InfoDashBoard extends StatelessWidget {
                               BlocProvider.value(value: capacityCubit),
                               BlocProvider.value(
                                 value: tankVariationCubit,
+                              ),
+                              BlocProvider.value(
+                                value: binacleCubit,
                               ),
                             ],
                             child: const DialogHome(),

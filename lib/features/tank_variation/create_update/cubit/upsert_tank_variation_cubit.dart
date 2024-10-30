@@ -21,7 +21,7 @@ class UpsertTankVariationCubit extends Cubit<UpsertTankVariationState> {
     required TankVariationEntity tankVariationEntity,
   }) async {
     emit(state.copyWith(upsertStatus: UpsertStatus.loading));
-    final result = await tankVariationRepository.saveTankVariation(
+    final result = await tankVariationRepository.save(
       tankVariationEntity,
     );
     result.when(

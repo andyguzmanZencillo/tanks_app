@@ -53,6 +53,24 @@ class UserDeviceApi extends BaseApi {
       final response = await post(
         request.toJson(),
       );
+      final list = (response.resultSp ?? <dynamic>[]) as List;
+      return list
+          .map(
+            (e) => UserDeviceResponse.fromJson(e as Map<String, dynamic>),
+          )
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<UserDeviceResponse>> getUserDeviceToDevice(
+    GetUserDeviceToDeviceRequest request,
+  ) async {
+    try {
+      final response = await post(
+        request.toJson(),
+      );
       final list = response.resultSp as List;
       return list
           .map(
@@ -106,6 +124,19 @@ class UserDeviceApi extends BaseApi {
     try {
       final response = await post(
         updateArticleRequest.toJson(),
+      );
+      return response.message;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> deleteUserDevice(
+    DeleteUserDeviceRequest request,
+  ) async {
+    try {
+      final response = await post(
+        request.toJson(),
       );
       return response.message;
     } catch (e) {

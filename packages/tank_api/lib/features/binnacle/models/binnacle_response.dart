@@ -32,7 +32,7 @@ class BinnacleResponse {
       saldoAltura: json.get('saldo_altura', 0),
       aguaAltura: json.get('agua_altura', 0),
       volumenReal: json.get('volumen_real', 0),
-      fechaLectura: json.get('fecha_lectura', ''),
+      fechaLectura: json.get('fecha_lectura', DateTime.now()),
       hora: json.get('hora', ''),
     );
   }
@@ -49,6 +49,6 @@ class BinnacleResponse {
   final double saldoAltura;
   final double aguaAltura;
   final double volumenReal;
-  final String fechaLectura;
+  final DateTime fechaLectura;
   final String hora;
 }

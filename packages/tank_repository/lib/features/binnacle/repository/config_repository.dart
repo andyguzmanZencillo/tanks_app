@@ -30,4 +30,20 @@ class BinnacleRepository {
           .toList();
     });
   }
+
+  Future<Result<List<BinnacleEntity>, Failure>> getByTank(int idTanque) {
+    return handleExceptionCompleteToken<List<BinnacleEntity>>(() async {
+      final user = await _userDatabase.getUser();
+      final request = GetBinnacleByTankRequest(
+        idCompania: user.idCompany,
+        idTanque: idTanque,
+      );
+      final response = await _api.getByTank(request);
+      return response
+          .map(
+            (e) => e.toEntity(),
+          )
+          .toList();
+    });
+  }
 }

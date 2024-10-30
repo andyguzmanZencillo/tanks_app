@@ -36,7 +36,7 @@ class TankVariationApi extends BaseApi {
     }
   }
 
-  Future<List<TankVariationResponse>> getToSaleCenter(
+  Future<List<TankVariationResponse>> getBySaleCenterAndDate(
     GetTankVariationToSaleCenterRequest getTankVariationRequest,
   ) async {
     try {
@@ -54,7 +54,25 @@ class TankVariationApi extends BaseApi {
     }
   }
 
-  Future<List<TankVariationResponse>> getToSaleCenterDate(
+  Future<List<TankVariationResponse>> getByTank(
+    GetTankVariationByTankRequest request,
+  ) async {
+    try {
+      final response = await post(
+        request.toJson(),
+      );
+      final list = response.resultSp as List;
+      return list
+          .map(
+            (e) => TankVariationResponse.fromJson(e as Map<String, dynamic>),
+          )
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<TankVariationResponse>> getBySaleCenterAndRangeDate(
     GetTankVariationToSaleCenterDateRequest getTankVariationRequest,
   ) async {
     try {
@@ -72,7 +90,7 @@ class TankVariationApi extends BaseApi {
     }
   }
 
-  Future<List<TankVariationResponse>> getToSaleCenterTankDate(
+  Future<List<TankVariationResponse>> getBySaleCenterAndTankAndDate(
     GetTankVariationToSaleCenterTankDateRequest getTankVariationRequest,
   ) async {
     try {

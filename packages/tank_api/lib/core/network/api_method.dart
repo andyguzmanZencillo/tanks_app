@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:failures/failures.dart';
 import 'package:tank_api/core/encryption/encryption.dart';
+import 'package:tank_api/core/extends/json_extends.dart';
 import 'package:tank_api/core/models/default_response.dart';
 import 'package:tank_api/core/network/api_interceptor.dart';
 import 'package:tank_api/core/storage/secure.dart';
@@ -80,16 +81,18 @@ class ApiMethod {
       log('DATA SEND API ===> ${jsonEncode(data)}');
 
       dio.interceptors.add(TokenInterceptor());
-      final response = await dio
-          .post<String>(
-            uri.toString(),
-            data: jsonEncode(data),
-          )
-          .timeout(const Duration(seconds: 2));
+      final response = await dio.post<String>(
+        uri.toString(),
+        data: jsonEncode(data),
+      ); //.timeout(const Duration(seconds: 2));
 
       final decoded = jsonDecode(response.data!);
 
-      log('RESPONSE ${data['Query']} ===> ${jsonEncode(decoded)}');
+      final query = data.get<Map<String, dynamic>>(
+        'content',
+        {},
+      ).get<Map<String, dynamic>>('content', {}).get('query', '');
+      log('RESPONSE $query ===> ${jsonEncode(decoded)}');
 
       final result = DataResponse.fromJson(
         decoded as Map<String, dynamic>,
@@ -111,6 +114,8 @@ class ApiMethod {
       } else {
         throw RequestException();
       }
+    } catch (e) {
+      throw RequestException();
     }
   }
 }

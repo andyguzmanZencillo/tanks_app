@@ -20,9 +20,48 @@ class BinnacleCubit extends Cubit<BinnacleState> {
     final result = await consoleRepository.getAll();
     result.when(
       ok: (ok) {
+        final list = ok;
+        list.sort((a, b) => b.fechaLectura!.compareTo(a.fechaLectura!));
         emit(
           state.copyWith(
-            list: ok,
+            list: list,
+            selected: list.firstOrNull,
+            generalStatus: GeneralStatus.success,
+          ),
+        );
+      },
+      err: (err) {
+        if (err is ResultFailure) {
+          emit(
+            state.copyWith(
+              list: [],
+              generalStatus: GeneralStatus.error,
+              errorMessage: err.message,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              list: [],
+              generalStatus: GeneralStatus.error,
+              errorMessage: 'Error desconocido',
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> getByTank(int idTanque) async {
+    emit(state.copyWith(generalStatus: GeneralStatus.loading));
+    final result = await consoleRepository.getByTank(idTanque);
+    result.when(
+      ok: (ok) {
+        final list = ok;
+        list.sort((a, b) => b.fechaLectura!.compareTo(a.fechaLectura!));
+        emit(
+          state.copyWith(
+            list: list,
             generalStatus: GeneralStatus.success,
           ),
         );

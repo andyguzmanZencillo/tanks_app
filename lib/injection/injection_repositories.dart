@@ -5,12 +5,24 @@ import 'package:tank_repository/tank_repository.dart';
 final sl = GetIt.instance;
 
 void registerRepositories() {
-  sl.registerLazySingleton<CompanyRepository>(CompanyRepository.new);
-  sl.registerLazySingleton<UserRepository>(UserRepository.new);
-  sl.registerLazySingleton<ArticleRepository>(ArticleRepository.new);
-  sl.registerLazySingleton<SalesCenterRepository>(SalesCenterRepository.new);
-  sl.registerLazySingleton<ConsoleRepository>(ConsoleRepository.new);
-  sl.registerLazySingleton<TanksRepository>(TanksRepository.new);
+  sl.registerLazySingleton<CompanyRepository>(
+    CompanyRepository.new,
+  );
+  sl.registerLazySingleton<UserRepository>(
+    UserRepository.new,
+  );
+  sl.registerLazySingleton<ArticleRepository>(
+    ArticleRepository.new,
+  );
+  sl.registerLazySingleton<SalesCenterRepository>(
+    SalesCenterRepository.new,
+  );
+  sl.registerLazySingleton<ConsoleRepository>(
+    ConsoleRepository.new,
+  );
+  sl.registerLazySingleton<TanksRepository>(
+    TanksRepository.new,
+  );
   sl.registerLazySingleton<CapacityTableRepository>(
     CapacityTableRepository.new,
   );
@@ -20,8 +32,16 @@ void registerRepositories() {
   sl.registerLazySingleton<ConfigRepository>(
     ConfigRepository.new,
   );
-  sl.registerLazySingleton<BinnacleRepository>(BinnacleRepository.new);
-  sl.registerLazySingleton<UserDeviceRepository>(UserDeviceRepository.new);
-
-  sl.registerLazySingleton<NotificationRepository>(NotificationRepository.new);
+  sl.registerLazySingleton<BinnacleRepository>(
+    BinnacleRepository.new,
+  );
+  sl.registerLazySingleton<UserDeviceRepository>(
+    UserDeviceRepository.new,
+  );
+  sl.registerLazySingleton<NotificationRepository>(
+    NotificationRepository.new,
+  );
+  sl.registerLazySingleton<TokenRepository>(
+    TokenRepository.new,
+  );
 }

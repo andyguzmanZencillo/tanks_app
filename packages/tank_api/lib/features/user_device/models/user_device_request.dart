@@ -68,8 +68,8 @@ class UpdateUserDeviceRequest extends UserDeviceRequest {
   }
 }
 
-class GetUserDeviceRequest extends UserDeviceRequest {
-  GetUserDeviceRequest({
+class GetUserDeviceToDeviceRequest extends UserDeviceRequest {
+  GetUserDeviceToDeviceRequest({
     required this.idCompania,
     required this.idUsuario,
     required this.dispositivo,
@@ -91,6 +91,55 @@ class GetUserDeviceRequest extends UserDeviceRequest {
       'id_compania': idCompania,
       'id_usuario': idUsuario,
       'dispositivo': dispositivo,
+    });
+  }
+}
+
+class GetUserDeviceRequest extends UserDeviceRequest {
+  GetUserDeviceRequest({
+    required this.idCompania,
+    required this.idUsuario,
+    this.idUserTrace = 123,
+    this.operation = 'S',
+  });
+
+  final int idUserTrace;
+  final String operation;
+
+  final int idCompania;
+  final int idUsuario;
+
+  Map<String, dynamic> toJson() {
+    return super.toJsonParams({
+      'id_user_trace': idUserTrace,
+      'operation': operation,
+      'id_compania': idCompania,
+      'id_usuario': idUsuario,
+    });
+  }
+}
+
+class DeleteUserDeviceRequest extends UserDeviceRequest {
+  DeleteUserDeviceRequest({
+    required this.idUsuarioDispositivo,
+    required this.idCompania,
+    required this.idUsuario,
+    this.idUserTrace = 123,
+    this.operation = 'D',
+  });
+  final int idUserTrace;
+  final String operation;
+  final int idUsuarioDispositivo;
+  final int idCompania;
+  final int idUsuario;
+
+  Map<String, dynamic> toJson() {
+    return super.toJsonParams({
+      'id_user_trace': idUserTrace,
+      'operation': operation,
+      'id_usuario_dispositivo': idUsuarioDispositivo,
+      'id_usuario': idUsuario,
+      'id_compania': idCompania,
     });
   }
 }

@@ -48,4 +48,24 @@ class ListTanksListener {
       },
     );
   }
+
+  static BlocListener<TanksCubit, TanksState> event({
+    void Function()? loading,
+    void Function()? success,
+    void Function()? error,
+  }) {
+    return BlocListener<TanksCubit, TanksState>(
+      listenWhen: (previous, current) =>
+          previous.tanksStatus != current.tanksStatus,
+      listener: (context, state) {
+        if (state.tanksStatus == TanksStatus.loading) {
+          loading?.call();
+        } else if (state.tanksStatus == TanksStatus.error) {
+          error?.call();
+        } else if (state.tanksStatus == TanksStatus.success) {
+          success?.call();
+        }
+      },
+    );
+  }
 }

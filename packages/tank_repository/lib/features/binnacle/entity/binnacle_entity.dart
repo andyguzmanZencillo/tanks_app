@@ -33,7 +33,7 @@ class BinnacleEntity extends Equatable {
         saldoAltura = 0.0,
         aguaAltura = 0.0,
         volumenReal = 0.0,
-        fechaLectura = '',
+        fechaLectura = null,
         hora = '';
 
   final int idBitacora;
@@ -48,7 +48,7 @@ class BinnacleEntity extends Equatable {
   final double saldoAltura;
   final double aguaAltura;
   final double volumenReal;
-  final String fechaLectura; // O puedes usar DateTime
+  final DateTime? fechaLectura; // O puedes usar DateTime
   final String hora;
 
   @override

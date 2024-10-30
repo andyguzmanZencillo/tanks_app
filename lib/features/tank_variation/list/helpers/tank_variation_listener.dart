@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tanks_app/core/util/enums/enums.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
 import 'package:tanks_app/features/sales_center/list/cubit/sales_center_cubit.dart';
@@ -9,11 +10,10 @@ import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
 class TankVariationListener {
   static BlocListener<TankVariationCubit, TankVariationState> tankVariation() {
     return BlocListener<TankVariationCubit, TankVariationState>(
-      listenWhen: (previous, current) =>
-          previous.consoleStatus != current.consoleStatus,
+      listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
-        final s = state.consoleStatus;
-        if (s == TankVariationStatus.loading) {
+        final s = state.status;
+        if (s == GeneralStatus.loading) {
           showDialog<void>(
             barrierDismissible: false,
             context: context,
@@ -23,7 +23,7 @@ class TankVariationListener {
               );
             },
           );
-        } else if (s == TankVariationStatus.error) {
+        } else if (s == GeneralStatus.error) {
           context.pop();
           /*showDialog<void>(
             barrierDismissible: false,
@@ -42,7 +42,7 @@ class TankVariationListener {
               );
             },
           );*/
-        } else if (s == TankVariationStatus.success) {
+        } else if (s == GeneralStatus.success) {
           context.pop();
         }
       },

@@ -1,34 +1,31 @@
 part of 'tank_variation_cubit.dart';
 
-enum TankVariationStatus { loading, success, error, initial }
-
 class TankVariationState extends Equatable {
   const TankVariationState({
-    this.consoleStatus = TankVariationStatus.initial,
-    this.consoles = const [],
-    this.tankVariationSelected = const TankVariationEntity.empty(),
+    this.status = GeneralStatus.initial,
+    this.list = const [],
+    this.selected = const TankVariationEntity.empty(),
   });
-  final TankVariationStatus consoleStatus;
-  final TankVariationEntity tankVariationSelected;
-  final List<TankVariationEntity> consoles;
+  final GeneralStatus status;
+  final TankVariationEntity selected;
+  final List<TankVariationEntity> list;
 
   TankVariationState copyWith({
-    TankVariationStatus? consoleStatus,
-    List<TankVariationEntity>? consoles,
-    TankVariationEntity? tankVariationSelected,
+    GeneralStatus? status,
+    List<TankVariationEntity>? list,
+    TankVariationEntity? selected,
   }) {
     return TankVariationState(
-      consoleStatus: consoleStatus ?? this.consoleStatus,
-      consoles: consoles ?? this.consoles,
-      tankVariationSelected:
-          tankVariationSelected ?? this.tankVariationSelected,
+      status: status ?? this.status,
+      list: list ?? this.list,
+      selected: selected ?? this.selected,
     );
   }
 
   @override
   List<Object> get props => [
-        consoleStatus,
-        consoles,
-        tankVariationSelected,
+        status,
+        list,
+        selected,
       ];
 }

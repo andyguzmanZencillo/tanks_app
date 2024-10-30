@@ -30,7 +30,7 @@ class InserNotificationMultiRequest extends NotificationMultiRequest {
       'operation': operation,
       'id_usuario': idUsuario,
       'id_alerta': idAlerta,
-      'id_notification': idNotificacion,
+      'id_notificacion': idNotificacion,
       'id_compania': idCompania,
     });
   }

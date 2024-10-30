@@ -51,9 +51,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   await Notifications.instance.init();
 
-  //final token = await FirebaseMessaging.instance.getToken();
+  final token = await FirebaseMessaging.instance.getToken();
 
-  //log('Token: $token');
+  log('Token: $token');
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     log('Got a message whilst in the foreground!');

@@ -5,6 +5,7 @@ import 'package:tanks_app/core/helpers/dialog_handler/cubit/dialog_handler_cubit
 import 'package:tanks_app/core/util/enums/enums.dart';
 import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
 import 'package:tanks_app/features/tanks/delete/cubit/delete_tanks_cubit.dart';
+import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
 import 'package:tanks_app/injection/injection.dart';
 
 class DeleteTanksDialog extends StatelessWidget {
@@ -110,6 +111,7 @@ class DeleteTanksDialog extends StatelessWidget {
                           textButton: 'Cerrar',
                           onPressed: () {
                             Navigator.pop(context, true);
+                            context.read<TanksCubit>().getAll();
                           },
                           barrierDismissible: false,
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tanks_app/core/app/themes/app_colors.dart';
 import 'package:tanks_app/features/capacity_table/create_update/cubit/upsert_capacity_table_cubit.dart';
 import 'package:tanks_app/features/capacity_table/create_update/widgets/dialog_csv.dart';
 import 'package:tanks_app/features/capacity_table/create_update/widgets/dialog_secuence.dart';
@@ -13,11 +14,14 @@ class PopupMenuAdd extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 243, 170, 25),
+        color: BlueStoneColors.blueStone700,
         borderRadius: BorderRadius.circular(8),
       ),
       child: PopupMenuButton(
-        icon: const Icon(Icons.add),
+        icon: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         itemBuilder: (context) {
           return [
             PopupMenuItem(

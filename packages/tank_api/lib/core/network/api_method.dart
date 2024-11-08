@@ -23,7 +23,7 @@ class ApiMethod {
     return Encryption.decrypt(data);
   }
 
-  static Future<String> getToken({
+  static Future<TokenResponse> getToken({
     required Dio dio,
     required Uri uri,
     required Map<String, dynamic> data,
@@ -45,7 +45,7 @@ class ApiMethod {
         decoded as Map<String, dynamic>,
       );
 
-      if (!result.response) throw RequestException();
+      //if (!result.response) throw RequestException();
 
       /*await saveLogger(
         statusCode: response.statusCode ?? 500,
@@ -53,7 +53,7 @@ class ApiMethod {
         title: data['Query'] as String?,
       );*/
       await _secure.write('token', result.token);
-      return result.token;
+      return result;
     } on SocketException {
       throw const SocketException('');
     } on DioException catch (e) {
@@ -76,9 +76,10 @@ class ApiMethod {
     required Dio dio,
     required Uri uri,
     required Map<String, dynamic> data,
+    String? requestName,
   }) async {
     try {
-      log('DATA SEND API ===> ${jsonEncode(data)}');
+      log('DATA SEND API $requestName ===> ${jsonEncode(data)}');
 
       dio.interceptors.add(TokenInterceptor());
       final response = await dio.post<String>(
@@ -88,34 +89,37 @@ class ApiMethod {
 
       final decoded = jsonDecode(response.data!);
 
-      final query = data.get<Map<String, dynamic>>(
-        'content',
-        {},
-      ).get<Map<String, dynamic>>('content', {}).get('query', '');
-      log('RESPONSE $query ===> ${jsonEncode(decoded)}');
+      log('RESPONSE $requestName ===> ${jsonEncode(decoded)}');
+      final map = decoded as Map<String, dynamic>;
 
+      if (map.containsKey('result')) {
+        final r = map
+            .getPro<Map<String, dynamic>>('result', {}).getPro('token', false);
+        if (!r) {
+          throw UnauthorizedException();
+        }
+      }
       final result = DataResponse.fromJson(
-        decoded as Map<String, dynamic>,
+        decoded,
       );
-
       //if (!result.result) throw RequestException();
 
       final message = result.message;
-      log('MESSAGE ${data['Query']} ===> $message');
+      log('MESSAGE $requestName ===> $message');
       return result;
     } on RequestException catch (e, stacktrace) {
-      log('EXCEPTION ${data['Query']} ===> $e - $stacktrace');
+      log('EXCEPTION $requestName ===> $e - $stacktrace');
       throw RequestException();
     } on DioException catch (e, stacktrace) {
       if (e.response?.statusCode == 403) {
         log('EXCEPTION ${e.response?.statusCode} ===> ${e.response}');
-        log('EXCEPTION ${data['Query']} ===> $e - $stacktrace');
+        log('EXCEPTION $requestName ===> $e - $stacktrace');
         throw UnauthorizedException();
       } else {
         throw RequestException();
       }
     } catch (e) {
-      throw RequestException();
+      rethrow;
     }
   }
 }

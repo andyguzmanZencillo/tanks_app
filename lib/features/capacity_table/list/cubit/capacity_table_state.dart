@@ -1,25 +1,23 @@
 part of 'capacity_table_cubit.dart';
 
-enum CapacityTableStatus { loading, success, error, initial }
-
 class CapacityTableState extends Equatable {
   const CapacityTableState({
-    this.tanksStatus = CapacityTableStatus.initial,
+    this.status = GeneralStatus.initial,
     this.capacityEntitys = const [],
     this.errorMessage,
   });
-  final CapacityTableStatus tanksStatus;
+  final GeneralStatus status;
   final List<CapacityEntity> capacityEntitys;
 
   final String? errorMessage;
 
   CapacityTableState copyWith({
-    CapacityTableStatus? tanksStatus,
+    GeneralStatus? status,
     List<CapacityEntity>? capacityEntitys,
     String? errorMessage,
   }) {
     return CapacityTableState(
-      tanksStatus: tanksStatus ?? this.tanksStatus,
+      status: status ?? this.status,
       capacityEntitys: capacityEntitys ?? this.capacityEntitys,
       errorMessage: errorMessage ?? this.errorMessage,
     );
@@ -27,7 +25,7 @@ class CapacityTableState extends Equatable {
 
   @override
   List<Object?> get props => [
-        tanksStatus,
+        status,
         capacityEntitys,
         errorMessage,
       ];

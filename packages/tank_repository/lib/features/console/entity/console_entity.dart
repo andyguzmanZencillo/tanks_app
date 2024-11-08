@@ -9,10 +9,10 @@ class ConsoleEntity extends Equatable implements ValueExtend<ConsoleEntity> {
     required this.descripcion,
     required this.idConsolaTanqueProtocolo,
     required this.tipo,
-    required this.ip,
     required this.socket,
-    required this.puertoSerial,
     required this.contrasenaIp,
+    this.ip,
+    this.puertoSerial,
   });
 
   const ConsoleEntity.empty()
@@ -33,9 +33,9 @@ class ConsoleEntity extends Equatable implements ValueExtend<ConsoleEntity> {
   final String descripcion;
   final int idConsolaTanqueProtocolo;
   final String tipo;
-  final String ip;
+  final String? ip;
   final String socket;
-  final String puertoSerial;
+  final String? puertoSerial;
   final String contrasenaIp;
 
   @override

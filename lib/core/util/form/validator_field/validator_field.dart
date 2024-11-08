@@ -7,6 +7,18 @@ class InputValidators {
     return value != null && value.isNotEmpty;
   }
 
+  static bool isIP(String? value) {
+    if (value == null || value.isEmpty) {
+      return false;
+    }
+    final ipv4Regex = RegExp(r'^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.'
+        r'(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.'
+        r'(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.'
+        r'(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$');
+
+    return ipv4Regex.hasMatch(value);
+  }
+
   static bool isMinLength(String? value, int minLength) {
     return value != null && value.length >= minLength;
   }

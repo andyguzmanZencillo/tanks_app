@@ -80,7 +80,7 @@ void registerBloc() {
     () => TanksCubit(sl()),
   );
   sl.registerFactory<UpsertTanksCubit>(
-    () => UpsertTanksCubit(sl()),
+    () => UpsertTanksCubit(sl(), sl()),
   );
   sl.registerFactory<DeleteTanksCubit>(
     () => DeleteTanksCubit(sl()),

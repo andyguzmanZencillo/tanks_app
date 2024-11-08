@@ -27,12 +27,14 @@ class BaseApi {
 
   final Dio _dio;
   Future<DataResponse> post(
-    Map<String, dynamic> data,
-  ) async {
+    Map<String, dynamic> data, {
+    String? requestName,
+  }) async {
     try {
       final response = await ApiMethod.post(
+        requestName: requestName,
         dio: _dio,
-        uri: Uri.https(
+        uri: Uri.http(
           Endpoints.authority,
           Endpoints.command,
         ),

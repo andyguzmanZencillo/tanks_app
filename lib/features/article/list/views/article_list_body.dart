@@ -34,6 +34,7 @@ class ArticleListBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: TextFieldCustomPro(
@@ -67,44 +68,49 @@ class ArticleListBody extends StatelessWidget {
               child: BlocBuilder<ArticleListCubit, ArticleListState>(
                 builder: (context, state) {
                   final list = state.list;
-                  return list.toListView(
-                    itemSpacing: 10,
-                    itemBuilder: (context, item, index) {
-                      return ItemArticleList(
-                        articleEntity: item,
-                        ontalEdit: () {
-                          articleListCubit.onChangeSelected(item);
-                          context.pushContext(
-                            BlocProvider.value(
-                              value: articleListCubit,
-                              child: const CreateUpdatePage(
-                                typeOperation: TypeOperation.update,
-                              ),
-                            ),
-                          );
-                        },
-                        ontapDelete: () {
-                          articleListCubit.onChangeSelected(item);
-                          showDialog<bool>(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return MultiBlocProvider(
-                                providers: [
-                                  BlocProvider.value(
-                                    value: articleListCubit,
-                                  ),
-                                  BlocProvider.value(
-                                    value: articleDeleteCubit,
-                                  ),
-                                ],
-                                child: const ArticleDeleteDialog(),
-                              );
-                            },
-                          );
-                        },
-                      );
+                  return RefreshIndicator(
+                    onRefresh: () {
+                      return context.read<ArticleListCubit>().getArticles();
                     },
+                    child: list.toListView(
+                      itemSpacing: 10,
+                      itemBuilder: (context, item, index) {
+                        return ItemArticleList(
+                          articleEntity: item,
+                          ontalEdit: () {
+                            articleListCubit.onChangeSelected(item);
+                            context.pushContext(
+                              BlocProvider.value(
+                                value: articleListCubit,
+                                child: const CreateUpdatePage(
+                                  typeOperation: TypeOperation.update,
+                                ),
+                              ),
+                            );
+                          },
+                          ontapDelete: () {
+                            articleListCubit.onChangeSelected(item);
+                            showDialog<bool>(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return MultiBlocProvider(
+                                  providers: [
+                                    BlocProvider.value(
+                                      value: articleListCubit,
+                                    ),
+                                    BlocProvider.value(
+                                      value: articleDeleteCubit,
+                                    ),
+                                  ],
+                                  child: const ArticleDeleteDialog(),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
                   );
                 },
               ),

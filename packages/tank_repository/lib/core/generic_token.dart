@@ -21,11 +21,11 @@ Future<Result<T, Failure>> handleExceptionToken<T>(
       final resultToken = await handleExceptionToken<String>(
         () async {
           final result = await TokenApi().getToken(
-            idCompany: user.idCompany.toString(),
+            idCompany: user.idZencilloCompany.toString(),
             user: user.login,
             password: user.password,
           );
-          return result;
+          return result.token;
         },
         retri: false,
       );
@@ -73,24 +73,24 @@ Future<Result<T, Failure>> handleExceptionTokenFirst<T>({
       final resultToken = await handleExceptionTokenFirst<String>(
         action: () async {
           final result = await TokenApi().getToken(
-            idCompany: '900176',
-            user: 'usuario_prueba',
-            password: 'contrasena_prueba',
+            idCompany: idCompany,
+            user: user,
+            password: password,
           );
-          return result;
+          return result.token;
         },
-        idCompany: '900176',
-        user: 'usuario_prueba',
-        password: 'contrasena_prueba',
+        idCompany: idCompany,
+        user: user,
+        password: password,
         retri: false,
       );
       if (resultToken.isErr()) return resultToken.fail();
 
       return handleExceptionTokenFirst(
         action: action,
-        idCompany: '900176',
-        user: 'usuario_prueba',
-        password: 'contrasena_prueba',
+        idCompany: idCompany,
+        user: user,
+        password: password,
         retri: false,
       );
     } else {
@@ -132,11 +132,11 @@ Future<Result<T, Failure>> handleExceptionCompleteToken<T>(
       final resultToken = await handleExceptionCompleteToken<String>(
         () async {
           final result = await TokenApi().getToken(
-            idCompany: user.idCompany.toString(),
+            idCompany: user.idZencilloCompany.toString(),
             user: user.login,
             password: user.password,
           );
-          return result;
+          return result.token;
         },
         retri: false,
       );

@@ -5,11 +5,13 @@ class TextFieldCustomPro extends StatefulWidget {
   const TextFieldCustomPro({
     required this.controller,
     required this.label,
+    this.title,
     this.onChanged,
     this.onFocusChange,
     this.isPassword = false,
     this.isLabelTitle = true,
     this.inputType,
+    this.maxLength,
     super.key,
   });
   final ControllerField controller;
@@ -17,8 +19,10 @@ class TextFieldCustomPro extends StatefulWidget {
   final void Function({required bool focus})? onFocusChange;
   final TextInputType? inputType;
   final String label;
+  final String? title;
   final bool isPassword;
   final bool isLabelTitle;
+  final int? maxLength;
 
   @override
   State<TextFieldCustomPro> createState() => _TextFieldCustomProState();
@@ -56,9 +60,9 @@ class _TextFieldCustomProState extends State<TextFieldCustomPro> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.isLabelTitle) ...[
+          if (widget.isLabelTitle || widget.title != null) ...[
             Text(
-              widget.label,
+              widget.title ?? widget.label,
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 15,
@@ -91,6 +95,7 @@ class _TextFieldCustomProState extends State<TextFieldCustomPro> {
                   ),
                 ),
                 TextFormField(
+                  maxLength: widget.maxLength,
                   textAlignVertical: TextAlignVertical.center,
                   obscureText: _isPasswordVisible,
                   keyboardType: widget.inputType,
@@ -104,6 +109,7 @@ class _TextFieldCustomProState extends State<TextFieldCustomPro> {
                     color: Colors.black,
                   ),
                   decoration: InputDecoration(
+                    counterText: '',
                     contentPadding: const EdgeInsets.all(10),
                     filled: true,
                     fillColor: const Color.fromARGB(255, 255, 255, 255),

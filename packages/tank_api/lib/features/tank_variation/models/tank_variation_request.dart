@@ -58,7 +58,7 @@ class InsertTankVariationRequest extends TankVariationRequest {
       'operation': operation,
       'id_compania': idCompania,
       'id_tanque': idTanque,
-      'fecha_z': fechaZ,
+      'fecha_z': fechaZ.toString(),
       'saldo_inicial': saldoInicial,
       'compras_facturas': comprasFacturas,
       'descargue': descargue,
@@ -200,7 +200,35 @@ class GetTankVariationToSaleCenterRequest extends TankVariationRequest {
       'operation': operation,
       'id_compania': idCompania,
       'id_centro_venta': idCentroVenta,
-      'fecha_z': date.toIso8601String(),
+      'fecha_z': date.toString(),
+    });
+  }
+}
+
+//case singular, respose to tanks, tansk variation and information last to the register
+class GetTankVariationBySaleCenterAndDate extends TankVariationRequest {
+  GetTankVariationBySaleCenterAndDate({
+    required this.idCompania,
+    required this.idCentroVenta,
+    required this.date,
+    this.idUserTrace = 123,
+    this.operation = 'S',
+  });
+
+  final int idUserTrace;
+  final String operation;
+
+  final int idCompania;
+  final int idCentroVenta;
+  final DateTime date;
+
+  Map<String, dynamic> toJson() {
+    return super.toJsonParams({
+      'id_user_trace': idUserTrace,
+      'operation': operation,
+      'id_compania': idCompania,
+      'id_centro_venta': idCentroVenta,
+      'fecha_z': date.toString(),
     });
   }
 }

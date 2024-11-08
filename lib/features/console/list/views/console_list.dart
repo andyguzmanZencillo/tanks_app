@@ -71,7 +71,11 @@ class ConsoleListBody extends StatelessWidget {
     final deleteCubit = context.read<DeleteConsoleCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Consolas de tanque'),
+        title: const Text(
+          'Consolas de tanques',
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
       body: Padding(
@@ -80,6 +84,7 @@ class ConsoleListBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: TextFieldCustomPro(
@@ -116,40 +121,45 @@ class ConsoleListBody extends StatelessWidget {
               child: BlocBuilder<ConsoleCubit, ConsoleState>(
                 builder: (context, state) {
                   final list = state.list;
-                  return list.toListView(
-                    itemSpacing: 10,
-                    itemBuilder: (context, item, index) {
-                      return ItemConsole(
-                        consoleEntity: item,
-                        onTapDelete: () {
-                          consoleCubit.onChangedSelected(item);
-                          showDialog<bool>(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return MultiBlocProvider(
-                                providers: [
-                                  BlocProvider.value(value: consoleCubit),
-                                  BlocProvider.value(value: deleteCubit),
-                                ],
-                                child: const DeleteConsoleDialog(),
-                              );
-                            },
-                          );
-                        },
-                        onTapEdit: () {
-                          consoleCubit.onChangedSelected(item);
-                          context.pushContext(
-                            BlocProvider.value(
-                              value: consoleCubit,
-                              child: const UpsertConsolePage(
-                                typeOperation: TypeOperation.update,
-                              ),
-                            ),
-                          );
-                        },
-                      );
+                  return RefreshIndicator(
+                    onRefresh: () {
+                      return context.read<ConsoleCubit>().getAll();
                     },
+                    child: list.toListView(
+                      itemSpacing: 10,
+                      itemBuilder: (context, item, index) {
+                        return ItemConsole(
+                          consoleEntity: item,
+                          onTapDelete: () {
+                            consoleCubit.onChangedSelected(item);
+                            showDialog<bool>(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return MultiBlocProvider(
+                                  providers: [
+                                    BlocProvider.value(value: consoleCubit),
+                                    BlocProvider.value(value: deleteCubit),
+                                  ],
+                                  child: const DeleteConsoleDialog(),
+                                );
+                              },
+                            );
+                          },
+                          onTapEdit: () {
+                            consoleCubit.onChangedSelected(item);
+                            context.pushContext(
+                              BlocProvider.value(
+                                value: consoleCubit,
+                                child: const UpsertConsolePage(
+                                  typeOperation: TypeOperation.update,
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
                   );
                 },
               ),

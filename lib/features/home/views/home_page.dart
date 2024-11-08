@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/tank_repository.dart';
+import 'package:tanks_app/core/util/extensions/extension_double.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
 import 'package:tanks_app/features/binnacle/list/cubit/binnacle_cubit.dart';
 import 'package:tanks_app/features/capacity_table/list/cubit/capacity_table_cubit.dart';
@@ -141,7 +142,7 @@ class HomeBody extends StatelessWidget {
                     builder: (context, state) {
                       if (selected == const BinnacleEntity.empty()) {
                         return const GallonsWidget(
-                          speed: 70,
+                          speed: 0,
                           maxSpeed: 100,
                         );
                       } else {
@@ -181,8 +182,7 @@ class HomeBody extends StatelessWidget {
 
                       final percentage = (volumenGalones * 100) / volumenMax;
                       return PercentageExistence(
-                        percentage:
-                            percentage == double.infinity ? 0 : percentage,
+                        percentage: percentage.orZero(),
                       );
                     },
                   );

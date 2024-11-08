@@ -37,26 +37,32 @@ class UserRepository {
     required String user,
     required String password,
   }) {
-    return handleExceptionToken<Unit>(() async {
-      final request = SignInUserRequest(
-        usuario: user,
-        clave: password,
-        idCompania: idCompany,
-      );
-      final result = await _api.getUserToSignIn(request);
+    return handleExceptionTokenFirst<Unit>(
+      idCompany: idCompany.toString(),
+      user: user,
+      password: password,
+      action: () async {
+        final request = SignInUserRequest(
+          usuario: user,
+          clave: password,
+          idCompania: idCompany,
+        );
+        final result = await _api.getUserToSignIn(request);
 
-      await _userDatabase.saveUser(
-        user: UserCollection(
-          idCompany: result.idCompania,
-          idEmployee: result.idUsuario,
-          login: result.usuario,
-          password: result.clave,
-          name: result.nombre,
-        ),
-      );
+        await _userDatabase.saveUser(
+          user: UserCollection(
+            idCompany: result.idCompania,
+            idZencilloCompany: idCompany,
+            idEmployee: result.idUsuario,
+            login: result.usuario,
+            password: result.clave,
+            name: result.nombre,
+          ),
+        );
 
-      return unit;
-    });
+        return unit;
+      },
+    );
   }
 
   Future<Result<Unit, Failure>> signUp({
@@ -78,6 +84,7 @@ class UserRepository {
         await _userDatabase.saveUser(
           user: UserCollection(
             idCompany: idCompany,
+            idZencilloCompany: idCompany,
             idEmployee: result,
             login: user,
             password: password,
@@ -86,9 +93,9 @@ class UserRepository {
         );
         return unit;
       },
-      idCompany: idCompany.toString(),
-      user: user,
-      password: password,
+      idCompany: '121',
+      user: 'Andy',
+      password: '12345',
     );
   }
 

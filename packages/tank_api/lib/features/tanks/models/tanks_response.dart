@@ -37,9 +37,9 @@ class TanksResponse {
       codigo: json.get('codigo', 0),
       alturaAguaOffset: json.get('altura_agua_offset', 0),
       offsetInclinacion: json.get('offset_inclinacion', 0),
-      estado: json.get('estado', false),
-      modificable: json.get('modificable', false),
-      manejaMm: json.get('maneja_mm', false),
+      estado: json.getPro('estado', false),
+      modificable: json.getPro('modificable', false),
+      manejaMm: json.getPro('maneja_mm', false),
     );
   }
   final int idTanque;

@@ -27,18 +27,23 @@ const UserCollectionSchema = CollectionSchema(
       name: r'idEmployee',
       type: IsarType.long,
     ),
-    r'login': PropertySchema(
+    r'idZencilloCompany': PropertySchema(
       id: 2,
+      name: r'idZencilloCompany',
+      type: IsarType.long,
+    ),
+    r'login': PropertySchema(
+      id: 3,
       name: r'login',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'name',
       type: IsarType.string,
     ),
     r'password': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'password',
       type: IsarType.string,
     )
@@ -77,9 +82,10 @@ void _userCollectionSerialize(
 ) {
   writer.writeLong(offsets[0], object.idCompany);
   writer.writeLong(offsets[1], object.idEmployee);
-  writer.writeString(offsets[2], object.login);
-  writer.writeString(offsets[3], object.name);
-  writer.writeString(offsets[4], object.password);
+  writer.writeLong(offsets[2], object.idZencilloCompany);
+  writer.writeString(offsets[3], object.login);
+  writer.writeString(offsets[4], object.name);
+  writer.writeString(offsets[5], object.password);
 }
 
 UserCollection _userCollectionDeserialize(
@@ -91,9 +97,10 @@ UserCollection _userCollectionDeserialize(
   final object = UserCollection(
     idCompany: reader.readLong(offsets[0]),
     idEmployee: reader.readLong(offsets[1]),
-    login: reader.readString(offsets[2]),
-    name: reader.readString(offsets[3]),
-    password: reader.readString(offsets[4]),
+    idZencilloCompany: reader.readLong(offsets[2]),
+    login: reader.readString(offsets[3]),
+    name: reader.readString(offsets[4]),
+    password: reader.readString(offsets[5]),
   );
   return object;
 }
@@ -110,10 +117,12 @@ P _userCollectionDeserializeProp<P>(
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -373,6 +382,62 @@ extension UserCollectionQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'idEmployee',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition>
+      idZencilloCompanyEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'idZencilloCompany',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition>
+      idZencilloCompanyGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'idZencilloCompany',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition>
+      idZencilloCompanyLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'idZencilloCompany',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<UserCollection, UserCollection, QAfterFilterCondition>
+      idZencilloCompanyBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'idZencilloCompany',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -825,6 +890,20 @@ extension UserCollectionQuerySortBy
     });
   }
 
+  QueryBuilder<UserCollection, UserCollection, QAfterSortBy>
+      sortByIdZencilloCompany() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idZencilloCompany', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserCollection, UserCollection, QAfterSortBy>
+      sortByIdZencilloCompanyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idZencilloCompany', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserCollection, UserCollection, QAfterSortBy> sortByLogin() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'login', Sort.asc);
@@ -904,6 +983,20 @@ extension UserCollectionQuerySortThenBy
     });
   }
 
+  QueryBuilder<UserCollection, UserCollection, QAfterSortBy>
+      thenByIdZencilloCompany() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idZencilloCompany', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserCollection, UserCollection, QAfterSortBy>
+      thenByIdZencilloCompanyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idZencilloCompany', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserCollection, UserCollection, QAfterSortBy> thenByLogin() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'login', Sort.asc);
@@ -958,6 +1051,13 @@ extension UserCollectionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<UserCollection, UserCollection, QDistinct>
+      distinctByIdZencilloCompany() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idZencilloCompany');
+    });
+  }
+
   QueryBuilder<UserCollection, UserCollection, QDistinct> distinctByLogin(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -997,6 +1097,13 @@ extension UserCollectionQueryProperty
   QueryBuilder<UserCollection, int, QQueryOperations> idEmployeeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'idEmployee');
+    });
+  }
+
+  QueryBuilder<UserCollection, int, QQueryOperations>
+      idZencilloCompanyProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idZencilloCompany');
     });
   }
 

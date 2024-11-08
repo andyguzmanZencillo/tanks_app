@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tanks_app/core/app/themes/app_colors.dart';
 
 class DetailRow extends StatelessWidget {
   const DetailRow(
@@ -20,7 +21,7 @@ class DetailRow extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: const Color.fromARGB(255, 243, 170, 25),
+            color: BlueStoneColors.blueStone900,
           ),
           const SizedBox(width: 10),
           Text(
@@ -33,11 +34,13 @@ class DetailRow extends StatelessWidget {
           const Spacer(),
           Text(
             value,
-            style: const TextStyle(fontSize: 16),
+            style: const TextStyle(
+              fontSize: 16,
+              color: BlueStoneColors.blueStone600,
+            ),
           ),
         ],
       ),
     );
   }
 }
-// csv borra `todo`

@@ -478,6 +478,7 @@ class _FieldVariationState extends State<FieldVariation> {
                 color: Colors.black,
               ),
               decoration: InputDecoration(
+                enabled: widget.enable,
                 contentPadding: const EdgeInsets.all(10),
                 filled: true,
                 label: Text(
@@ -509,6 +510,10 @@ class _FieldVariationState extends State<FieldVariation> {
                       )
                     : null,
                 enabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide.none,
+                ),
+                disabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   borderSide: BorderSide.none,
                 ),

@@ -17,8 +17,9 @@ class TanksRepository {
 
   Future<Result<List<TanksEntity>, Failure>> getAll() {
     return handleExceptionCompleteToken<List<TanksEntity>>(() async {
+      final user = await _userDatabase.getUser();
       final request = GetTanksRequest(
-        idCompania: 1,
+        idCompania: user.idCompany,
       );
       final response = await _api.getAll(request);
       return response
@@ -49,8 +50,9 @@ class TanksRepository {
 
   Future<Result<List<TanksEntity>, Failure>> getToSaleCenter(int idSaleCenter) {
     return handleExceptionCompleteToken<List<TanksEntity>>(() async {
+      final user = await _userDatabase.getUser();
       final request = GetTanksToSaleCenterRequest(
-        idCompania: 1,
+        idCompania: user.idCompany,
         idCentroVenta: idSaleCenter,
       );
       final response = await _api.getToSaleCenter(request);
@@ -80,13 +82,13 @@ class TanksRepository {
     });
   }
 
-  Future<Result<bool, Failure>> saveTanks(
+  Future<Result<Unit, Failure>> saveTanks(
     TanksEntity tanksEntity,
   ) {
-    return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
+    return handleExceptionCompleteToken<Unit>(() async {
+      final user = await _userDatabase.getUser();
       final request = InsertTanksRequest(
-        idCompania: tanksEntity.idCompania,
+        idCompania: user.idCompany,
         idCentroVenta: tanksEntity.idCentroVenta,
         idArticulo: tanksEntity.idArticulo,
         idConsolaTanque: tanksEntity.idConsolaTanque,
@@ -103,19 +105,19 @@ class TanksRepository {
         modificable: tanksEntity.modificable,
         manejaMm: tanksEntity.manejaMm,
       );
-      final response = await _api.save(request);
-      return true;
+      await _api.save(request);
+      return unit;
     });
   }
 
-  Future<Result<bool, Failure>> updateTanks(
+  Future<Result<Unit, Failure>> updateTanks(
     TanksEntity tanksEntity,
   ) {
-    return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
+    return handleExceptionCompleteToken<Unit>(() async {
+      final user = await _userDatabase.getUser();
       final request = UpdateTanksRequest(
         idTank: tanksEntity.idTanque,
-        idCompania: tanksEntity.idCompania,
+        idCompania: user.idCompany,
         idCentroVenta: tanksEntity.idCentroVenta,
         idArticulo: tanksEntity.idArticulo,
         idConsolaTanque: tanksEntity.idConsolaTanque,
@@ -132,20 +134,20 @@ class TanksRepository {
         modificable: tanksEntity.modificable,
         manejaMm: tanksEntity.manejaMm,
       );
-      final response = await _api.update(request);
-      return true;
+      await _api.update(request);
+      return unit;
     });
   }
 
-  Future<Result<bool, Failure>> deleteTanks(int idTank) {
-    return handleExceptionCompleteToken<bool>(() async {
-      //final user = await _userDatabase.getUser();
+  Future<Result<Unit, Failure>> deleteTanks(int idTank) {
+    return handleExceptionCompleteToken<Unit>(() async {
+      final user = await _userDatabase.getUser();
       final request = DeleteTanksRequest(
         idTank: idTank,
-        idCompania: 1,
+        idCompania: user.idCompany,
       );
-      final response = await _api.delete(request);
-      return true;
+      await _api.delete(request);
+      return unit;
     });
   }
 }

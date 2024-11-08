@@ -14,7 +14,10 @@ class BinnacleListBody extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Bitacoras'),
+        title: const Text(
+          'Bitacoras',
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),

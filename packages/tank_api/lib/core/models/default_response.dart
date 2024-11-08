@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:tank_api/core/extends/json_extends.dart';
+
 class DefaultResponse {
   DefaultResponse({
     required this.response,
@@ -127,18 +129,24 @@ class TokenResponse {
     required this.response,
     required this.message,
     required this.token,
+    required this.error,
   });
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) {
-    final tokenResponseJson = json['token_response'] as Map<String, dynamic>;
+    final tokenResponseJson = json.getPro<Map<String, dynamic>>(
+      'token_response',
+      {},
+    );
     return TokenResponse(
-      response: tokenResponseJson['response'] as bool,
-      message: tokenResponseJson['message'] as String,
-      token: tokenResponseJson['token'] as String,
+      response: tokenResponseJson.getPro('response', false),
+      message: tokenResponseJson.getPro('message', ''),
+      token: tokenResponseJson.getPro('token', ''),
+      error: json.getPro('error', ''),
     );
   }
   final bool response;
   final String message;
+  final String error;
   final String token;
 }
 

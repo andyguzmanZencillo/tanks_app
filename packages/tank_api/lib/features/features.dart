@@ -4,6 +4,7 @@ export 'capacity_table/capacity_table.dart';
 export 'company/company.dart';
 export 'config/config.dart';
 export 'console/console.dart';
+export 'multi_table/multi_table.dart';
 export 'notification/notification.dart';
 export 'sales_center/sales_center.dart';
 export 'tank_variation/tank_variation.dart';

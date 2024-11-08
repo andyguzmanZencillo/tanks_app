@@ -44,4 +44,7 @@ void registerRepositories() {
   sl.registerLazySingleton<TokenRepository>(
     TokenRepository.new,
   );
+  sl.registerLazySingleton<MultiTableRepository>(
+    MultiTableRepository.new,
+  );
 }

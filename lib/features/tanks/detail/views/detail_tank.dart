@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/features/features.dart';
 import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/util/extensions/extension_list.dart';
+import 'package:tanks_app/features/article/list/views/article_list_body.dart';
 import 'package:tanks_app/features/capacity_table/create_update/views/upsert_capacity_table_page.dart';
 import 'package:tanks_app/features/capacity_table/list/cubit/capacity_table_cubit.dart';
-import 'package:tanks_app/features/capacity_table/list/widgets/button_add_capacity.dart';
 import 'package:tanks_app/features/capacity_table/list/widgets/item_capacity_table.dart';
 import 'package:tanks_app/features/tanks/detail/widgets/detail_row.dart';
 import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
@@ -50,8 +50,8 @@ class DetailTankBody extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         title: const Text(
-          'Detalles',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          'Detalles de tanque',
+          style: TextStyle(fontWeight: FontWeight.w500),
         ),
       ),
       body: Padding(
@@ -65,9 +65,9 @@ class DetailTankBody extends StatelessWidget {
                 return Column(
                   children: [
                     DetailRow(
-                      'ID centro de venta:',
-                      tanksEntity.idCentroVenta.toString(),
-                      Icons.store_mall_directory_outlined,
+                      'Descripción:',
+                      tanksEntity.descripcion,
+                      Icons.description_outlined,
                     ),
                     DetailRow(
                       'Capacidad:',
@@ -80,12 +80,7 @@ class DetailTankBody extends StatelessWidget {
                       Icons.height_outlined,
                     ),
                     DetailRow(
-                      'Descripción:',
-                      tanksEntity.descripcion,
-                      Icons.description_outlined,
-                    ),
-                    DetailRow(
-                      'Min. porcentage de combustible:',
+                      '% Min. de combustible:',
                       '${tanksEntity.porcentajeMinimoCombustible}%',
                       Icons.local_fire_department_outlined,
                     ),
@@ -113,7 +108,8 @@ class DetailTankBody extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    ButtonAddCapacity(
+                    GenericButton(
+                      icon: const Icon(Icons.edit),
                       onPressed: () {
                         showModalBottomSheet<bool?>(
                           context: context,

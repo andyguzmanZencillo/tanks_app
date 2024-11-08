@@ -1,4 +1,3 @@
-import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
@@ -158,7 +157,7 @@ class ConfigNotificationBody extends StatelessWidget {
               onPressed: () {
                 final listNoti = getNotificationCubit.state.listSelected;
                 final listAlert = getAlertCubit.state.listSelected;
-                if (listNoti.isEmpty) {
+                /*if (listNoti.isEmpty) {
                   ElegantNotification.error(
                     description: const Text(
                       'Seleccione una o mas notificaciones para registrar.',
@@ -174,7 +173,7 @@ class ConfigNotificationBody extends StatelessWidget {
                     ),
                   ).show(context);
                   return;
-                }
+                }*/
 
                 configNotification.save(
                   idAlerta: listAlert.map((e) => e.idAlerta).toList(),

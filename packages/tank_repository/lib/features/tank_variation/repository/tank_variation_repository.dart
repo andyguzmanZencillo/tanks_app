@@ -4,8 +4,10 @@ import 'package:tank_api/tank_api.dart';
 import 'package:tank_database/tank_database.dart';
 import 'package:tank_repository/core/generic_token.dart';
 import 'package:tank_repository/features/tank_variation/entity/tank_variation_entity.dart';
+import 'package:tank_repository/features/tank_variation/entity/tank_variation_multi_entity.dart';
 import 'package:tank_repository/features/tank_variation/map/tank_variation_entity_to_insert_request.dart';
 import 'package:tank_repository/features/tank_variation/map/tank_variation_entity_to_update_request.dart';
+import 'package:tank_repository/features/tank_variation/map/tank_variation_multi_response_to_entity.dart';
 import 'package:tank_repository/features/tank_variation/map/tank_variation_response_to_entity.dart';
 
 class TankVariationRepository {
@@ -41,6 +43,24 @@ class TankVariationRepository {
         date: date,
       );
       final response = await _api.getBySaleCenterAndDate(request);
+      return response.map((e) => e.toEntity()).toList();
+    });
+  }
+
+  Future<Result<List<TankVariationMultiEntity>, Failure>>
+      getBySaleCenterAndDatePro({
+    required int idCentroVenta,
+    required DateTime date,
+  }) {
+    return handleExceptionCompleteToken<List<TankVariationMultiEntity>>(
+        () async {
+      final user = await _userDatabase.getUser();
+      final request = GetTankVariationBySaleCenterAndDate(
+        idCompania: user.idCompany,
+        idCentroVenta: idCentroVenta,
+        date: date,
+      );
+      final response = await _api.getBySaleCenterAndDatePro(request);
       return response.map((e) => e.toEntity()).toList();
     });
   }

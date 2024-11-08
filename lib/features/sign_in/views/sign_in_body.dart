@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tanks_app/core/util/bloc_generics.dart';
 import 'package:tanks_app/core/util/constans/assets.dart';
-import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
 import 'package:tanks_app/core/widgets/form/text_field_custom_pro.dart';
 import 'package:tanks_app/features/sign_in/cubit/sign_in_cubit.dart';
 import 'package:tanks_app/features/sign_in/helper/sign_in_inherited.dart';
-import 'package:tanks_app/features/sign_up/views/sign_up_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignInBody extends StatelessWidget {
   const SignInBody({super.key});
@@ -20,6 +19,7 @@ class SignInBody extends StatelessWidget {
         builder: (context, cubit) {
           return SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
                   height: 40,
@@ -55,7 +55,6 @@ class SignInBody extends StatelessWidget {
                   child: Form(
                     key: inherited.formKey,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(
                           height: 20,
@@ -96,21 +95,18 @@ class SignInBody extends StatelessWidget {
                         const SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Column(
                           children: [
-                            const Text(
-                              '¿No tiene una cuenta?',
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
                             TextButton(
-                              onPressed: () {
-                                context.push(SignUpPage.route());
+                              onPressed: () async {
+                                await launchUrl(
+                                  Uri.parse(
+                                    'https://zencillo.com/powered-by-zencillo/',
+                                  ),
+                                );
                               },
                               child: const Text(
-                                'Regístrate',
+                                '¿No tiene una cuenta?',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,

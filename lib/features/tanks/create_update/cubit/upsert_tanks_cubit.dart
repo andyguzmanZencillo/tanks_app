@@ -1,52 +1,27 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:failures/failures.dart';
+import 'package:tank_repository/features/article/article.dart';
 import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/util/enums/enums.dart';
 
 part 'upsert_tanks_state.dart';
 
 class UpsertTanksCubit extends Cubit<UpsertTanksState> {
-  UpsertTanksCubit(this.tanksRepository) : super(const UpsertTanksState());
+  UpsertTanksCubit(this.tanksRepository, this.multiTableRepository)
+      : super(const UpsertTanksState());
   final TanksRepository tanksRepository;
+  final MultiTableRepository multiTableRepository;
 
   Future<void> create({
-    required int idCentroVenta,
-    required int idArticulo,
-    required String capacidad,
-    required String alturaTanque,
-    required String descripcion,
-    required String porcentajeMinimoCombustible,
-    required String alturaOffset,
-    required String factorInicioDescargue,
-    required String codigo,
-    required double alturaAguaOffset,
-    required double offsetInclinacion,
-    required bool estado,
-    required bool modificable,
-    required bool manejaMm,
-    required int idConsolaTanque,
+    required TanksEntity tanksEntity,
   }) async {
     emit(state.copyWith(upsertStatus: UpsertStatus.loading));
     final result = await tanksRepository.saveTanks(
-      TanksEntity(
-        idTanque: 0,
-        idCompania: 1,
-        idCentroVenta: idCentroVenta,
-        idArticulo: idArticulo,
-        capacidad: double.parse(capacidad),
-        alturaTanque: double.parse(alturaTanque),
-        descripcion: descripcion,
-        porcentajeMinimoCombustible: double.parse(porcentajeMinimoCombustible),
-        alturaOffset: double.parse(alturaOffset),
-        factorInicioDescargue: double.parse(factorInicioDescargue),
-        codigo: int.parse(codigo),
-        alturaAguaOffset: alturaAguaOffset,
-        offsetInclinacion: offsetInclinacion,
-        estado: estado,
-        modificable: modificable,
-        manejaMm: manejaMm,
-        idConsolaTanque: idConsolaTanque,
+      tanksEntity.copyWith(
+        estado: state.statusCheck,
+        modificable: state.modificable,
+        manejaMm: state.manejaMm,
       ),
     );
 
@@ -77,40 +52,13 @@ class UpsertTanksCubit extends Cubit<UpsertTanksState> {
 
   Future<void> update({
     required TanksEntity tanksEntity,
-    required int idCentroVenta,
-    required int idArticulo,
-    required String capacidad,
-    required String alturaTanque,
-    required String descripcion,
-    required String porcentajeMinimoCombustible,
-    required String alturaOffset,
-    required String factorInicioDescargue,
-    required String codigo,
-    required String alturaAguaOffset,
-    required String offsetInclinacion,
-    required bool estado,
-    required bool modificable,
-    required bool manejaMm,
-    required int idConsolaTanque,
   }) async {
     emit(state.copyWith(upsertStatus: UpsertStatus.loading));
     final result = await tanksRepository.updateTanks(
       tanksEntity.copyWith(
-        idCentroVenta: idCentroVenta,
-        idArticulo: idArticulo,
-        capacidad: double.parse(capacidad),
-        alturaTanque: double.parse(alturaTanque),
-        descripcion: descripcion,
-        porcentajeMinimoCombustible: double.parse(porcentajeMinimoCombustible),
-        alturaOffset: double.parse(alturaOffset),
-        factorInicioDescargue: double.parse(factorInicioDescargue),
-        codigo: int.parse(codigo),
-        alturaAguaOffset: double.parse(alturaAguaOffset),
-        offsetInclinacion: double.parse(offsetInclinacion),
-        estado: estado,
-        modificable: modificable,
-        manejaMm: manejaMm,
-        idConsolaTanque: idConsolaTanque,
+        estado: state.statusCheck,
+        modificable: state.modificable,
+        manejaMm: state.manejaMm,
       ),
     );
 
@@ -124,22 +72,62 @@ class UpsertTanksCubit extends Cubit<UpsertTanksState> {
     );
   }
 
-  Future<void> functionState(
-    Future<(bool, String?)> Function() function,
-  ) async {
+  Future<void> prepareData() async {
     emit(state.copyWith(prepareStatus: PrepareStatus.loading));
+    final result = await multiTableRepository.getAll();
+    result.when(
+      ok: (ok) {
+        emit(
+          state.copyWith(
+            prepareStatus: PrepareStatus.success,
+            articles: ok.articles,
+            consoles: ok.consoles,
+            salesCenters: ok.salesCenter,
+          ),
+        );
+      },
+      err: (err) {
+        if (err is ResultFailure) {
+          emit(
+            state.copyWith(
+              prepareStatus: PrepareStatus.error,
+              errorMessage: err.message,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              prepareStatus: PrepareStatus.error,
+            ),
+          );
+        }
+      },
+    );
+  }
 
-    final result = await function();
+  void changeStatusCheck({required bool check}) {
+    emit(state.copyWith(statusCheck: check));
+  }
 
-    if (result.$1) {
-      emit(state.copyWith(prepareStatus: PrepareStatus.success));
-    } else {
-      emit(
-        state.copyWith(
-          prepareStatus: PrepareStatus.error,
-          errorMessage: result.$2,
-        ),
-      );
-    }
+  void changeModificableCheck({required bool check}) {
+    emit(state.copyWith(modificable: check));
+  }
+
+  void changeManejaMmCheck({required bool check}) {
+    emit(state.copyWith(manejaMm: check));
+  }
+
+  void changeChecks({
+    required bool statusCheck,
+    required bool modificable,
+    required bool manejaMm,
+  }) {
+    emit(
+      state.copyWith(
+        statusCheck: statusCheck,
+        modificable: modificable,
+        manejaMm: manejaMm,
+      ),
+    );
   }
 }

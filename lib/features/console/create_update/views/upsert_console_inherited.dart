@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
@@ -31,27 +32,26 @@ class UpsertConsoleInherited extends InheritedWidget {
     validators: [
       RequiredValid(error: 'Campo requerido'),
     ],
+    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
   );
-  final tipoField = ControllerField(
-    validators: [
-      RequiredValid(error: 'Campo requerido'),
-    ],
-  );
+  final tipoField = ControllerFieldDropdown<String>();
   final ipField = ControllerField(
-    validators: [
+      /*validators: [
       RequiredValid(error: 'Campo requerido'),
-    ],
-  );
+      IPValid(error: 'Formato IP invalido'),
+    ],*/
+      );
   final socketField = ControllerField(
     validators: [
       RequiredValid(error: 'Campo requerido'),
     ],
+    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
   );
   final puertoSerialField = ControllerField(
-    validators: [
+      /*validators: [
       RequiredValid(error: 'Campo requerido'),
-    ],
-  );
+    ],*/
+      );
   final contrasenaIpField = ControllerField(
     validators: [
       RequiredValid(error: 'Campo requerido'),
@@ -72,10 +72,10 @@ class UpsertConsoleInherited extends InheritedWidget {
     descripcionField.setValue(consoleEntity.descripcion);
     idConsolaTanqueProtocoloField
         .setValue(consoleEntity.idConsolaTanqueProtocolo.toString());
-    tipoField.setValue(consoleEntity.tipo);
-    ipField.setValue(consoleEntity.ip);
+    tipoField.setValue(ValueExtend(text: consoleEntity.tipo));
+    ipField.setValue(consoleEntity.ip ?? '');
     socketField.setValue(consoleEntity.socket);
-    puertoSerialField.setValue(consoleEntity.puertoSerial);
+    puertoSerialField.setValue(consoleEntity.puertoSerial ?? '');
     contrasenaIpField.setValue(consoleEntity.contrasenaIp);
   }
 
@@ -94,7 +94,7 @@ class UpsertConsoleInherited extends InheritedWidget {
     consolaField.textEditingController.clear();
     descripcionField.textEditingController.clear();
     idConsolaTanqueProtocoloField.textEditingController.clear();
-    tipoField.textEditingController.clear();
+
     ipField.textEditingController.clear();
     socketField.textEditingController.clear();
     puertoSerialField.textEditingController.clear();

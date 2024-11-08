@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:failures/failures.dart';
 import 'package:tank_repository/tank_repository.dart';
+import 'package:tanks_app/core/util/enums/enums.dart';
 import 'package:uuid/uuid.dart';
 
 part 'capacity_table_state.dart';
@@ -14,13 +16,11 @@ class CapacityTableCubit extends Cubit<CapacityTableState> {
   List<CapacityEntity> get aforos => state.capacityEntitys;
 
   Future<void> getToTank(int idTank) async {
-    //await Future<dynamic>.delayed(const Duration(seconds: 5));
-    emit(state.copyWith(tanksStatus: CapacityTableStatus.loading));
+    emit(state.copyWith(status: GeneralStatus.loading));
     const uuid = Uuid();
 
     final result = await consoleRepository.getToTank(idTank: idTank);
 
-    await Future<dynamic>.delayed(const Duration(seconds: 2));
     result.when(
       ok: (ok) {
         emit(
@@ -29,17 +29,27 @@ class CapacityTableCubit extends Cubit<CapacityTableState> {
               final v4 = uuid.v4();
               return e.copyWith(idStaging: v4);
             }).toList(),
-            tanksStatus: CapacityTableStatus.success,
+            status: GeneralStatus.success,
           ),
         );
       },
       err: (err) {
-        emit(
-          state.copyWith(
-            capacityEntitys: [],
-            tanksStatus: CapacityTableStatus.error,
-          ),
-        );
+        if (err is ResultFailure) {
+          emit(
+            state.copyWith(
+              capacityEntitys: [],
+              status: GeneralStatus.error,
+              errorMessage: err.message,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              capacityEntitys: [],
+              status: GeneralStatus.error,
+            ),
+          );
+        }
       },
     );
   }

@@ -132,7 +132,7 @@ class UpsertCapacityTableBody extends StatelessWidget {
                       idTanque: tanksCubit.state.selected.idTanque,
                     );
                   },
-                  text: 'Guardar Aforos',
+                  text: 'Guardar tabla de Aforo',
                 ),
               ],
             ),

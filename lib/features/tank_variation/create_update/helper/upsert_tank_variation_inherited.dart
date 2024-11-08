@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tank_repository/tank_repository.dart';
+import 'package:tank_repository/features/tank_variation/entity/tank_variation_entity.dart';
+import 'package:tank_repository/features/tank_variation/entity/tank_variation_multi_entity.dart';
+import 'package:tanks_app/core/util/extensions/extension_double.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
 
@@ -8,59 +10,13 @@ class UpsertTankVariationInherited extends InheritedWidget {
   UpsertTankVariationInherited({
     required super.child,
     required this.typeOperation,
-    this.tankVariationEntity = const TankVariationEntity.empty(),
     super.key,
-  }) {
-    if (typeOperation == TypeOperation.update) {
-      // Aquí se liberan los recursos de los controladores
-      saldoFinalAnterior.setValue(
-        tankVariationEntity.inventarioFinalFisico.toString(),
-      );
-      altura.setValue(tankVariationEntity.calibracion.toString());
-      saldoInicial.setValue(tankVariationEntity.saldoInicial.toString());
-
-      //---------- Agua
-      aguanFinalAnterior.setValue(
-        tankVariationEntity.aguaFinal.toString(),
-      );
-      alturaAgua.setValue(
-        tankVariationEntity.inventarioFinalCalculado.toString(),
-      );
-      aguaInicial.setValue(
-        tankVariationEntity.aguaInicial.toString(),
-      );
-
-      // COMPRA
-      compra.setValue(tankVariationEntity.comprasFacturas.toString());
-      factura.setValue(tankVariationEntity.inventarioFinalCalculado.toString());
-      costoPorGin.setValue(tankVariationEntity.calibracion.toString());
-
-      // DESCARGUE
-      medidaInicial.setValue(tankVariationEntity.variacionTotalPorcentaje);
-      saldoInicialVol.setValue(tankVariationEntity.variacionTransitoPorcentaje);
-
-      //----------- Final Descargue
-      medidaFinal.setValue(tankVariationEntity.variacionOperacionalPorcentaje);
-      saldoFinalVol
-          .setValue(tankVariationEntity.variacionOperacionalPorcentaje);
-      descargue.setValue(tankVariationEntity.variacionOperacionalPorcentaje);
-
-      // FINAL
-      alturaFinal.setValue(tankVariationEntity.variacionOperacionalPorcentaje);
-      saldoFinal.setValue(tankVariationEntity.variacionOperacionalPorcentaje);
-
-      //--------- Agua Final
-      alturaAguaFinal
-          .setValue(tankVariationEntity.variacionOperacionalPorcentaje);
-      aguaFinal.setValue(tankVariationEntity.variacionOperacionalPorcentaje);
-    }
-  }
+  });
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
 
   final TypeOperation typeOperation;
-  final TankVariationEntity tankVariationEntity;
 
   //INICIAL
   final saldoFinalAnterior = ControllerField();
@@ -98,6 +54,71 @@ class UpsertTankVariationInherited extends InheritedWidget {
         .dependOnInheritedWidgetOfExactType<UpsertTankVariationInherited>();
     assert(result != null, 'No UpsertConsoleInherited found in context');
     return result!;
+  }
+
+  void setData(TankVariationMultiEntity tankVariationMultEntity) {
+    final tankVariationEntity =
+        tankVariationMultEntity.tankVariation.firstOrNull ??
+            const TankVariationEntity.empty();
+    final tankVariationLastEntity =
+        tankVariationMultEntity.tanksVariationLast.firstOrNull ??
+            const TankVariationLastEntity.empty();
+
+    saldoFinalAnterior.setValue(
+      tankVariationLastEntity.saldoFinal.toSafeString(),
+    );
+    altura.setValue(
+      '',
+    );
+    saldoInicial.setValue(
+      tankVariationEntity.saldoInicial.toString(),
+    );
+
+    aguanFinalAnterior.setValue(
+      tankVariationLastEntity.aguaFinal.toSafeString(),
+    );
+    alturaAgua.setValue(
+      '',
+    );
+    aguaInicial.setValue(
+      tankVariationEntity.aguaInicial.toString(),
+    );
+
+    // COMPRA
+    compra.setValue(tankVariationEntity.comprasFacturas.toString());
+    factura.setValue(tankVariationEntity.inventarioFinalCalculado.toString());
+    costoPorGin.setValue(tankVariationEntity.calibracion.toString());
+
+    // DESCARGUE
+    medidaInicial.setValue('');
+    saldoInicialVol.setValue('');
+
+    //----------- Final Descargue
+    medidaFinal.setValue('');
+    saldoFinalVol.setValue('');
+    descargue.setValue(tankVariationEntity.descargue.toString());
+
+    // FINAL
+    alturaFinal.setValue('');
+    saldoFinal.setValue(tankVariationEntity.saldoFinal.toString());
+
+    //--------- Agua Final
+    alturaAguaFinal.setValue('');
+    aguaFinal.setValue(tankVariationEntity.aguaFinal.toString());
+  }
+
+  void setDataLast() {
+    if (saldoInicial.getValue().isNullOrZero() &&
+        saldoFinal.getValue().isNullOrZero() &&
+        aguaInicial.getValue().isNullOrZero() &&
+        aguaFinal.getValue().isNullOrZero()) {
+      saldoInicial.setValue(
+        saldoFinalAnterior.getValue(),
+      );
+      aguaInicial.setValue(
+        aguanFinalAnterior.getValue(),
+      );
+    }
   }
 
   void dispose() {

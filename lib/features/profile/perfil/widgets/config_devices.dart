@@ -49,6 +49,7 @@ class ConfigDevices extends StatelessWidget {
               if (state.list.isNotEmpty) {
                 return state.list.toListViewItem(
                   isWrap: true,
+                  itemSpacing: 10,
                   itemBuilder: (item) {
                     return Container(
                       decoration: BoxDecoration(

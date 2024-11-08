@@ -1,10 +1,11 @@
-import 'package:collection/collection.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tank_repository/features/tank_variation/entity/tank_variation_multi_entity.dart';
 import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
-import 'package:tanks_app/core/helpers/notify_dialog_handler/cubit/notify_dialog_handler_cubit.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
+import 'package:tanks_app/core/util/extensions/extension_date.dart';
 import 'package:tanks_app/core/util/extensions/extension_list.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
@@ -16,7 +17,6 @@ import 'package:tanks_app/features/tank_variation/list/cubit/tank_variation_cubi
 import 'package:tanks_app/features/tank_variation/list/helpers/tank_variation_listener.dart';
 import 'package:tanks_app/features/tank_variation/list/widget/date_Picker.dart';
 import 'package:tanks_app/features/tanks/create_update/widgets/dropdown.dart';
-import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
 import 'package:tanks_app/injection/injection.dart';
 
 class TankVariationListPage extends StatelessWidget {
@@ -38,9 +38,6 @@ class TankVariationListPage extends StatelessWidget {
         BlocProvider(
           create: (context) => sl<SalesCenterCubit>(),
         ),
-        BlocProvider(
-          create: (context) => sl<TanksCubit>(),
-        ),
       ],
       child: const TankVariationListView(),
     );
@@ -55,7 +52,6 @@ class TankVariationListView extends StatelessWidget {
     return MultiBlocListener(
       listeners: [
         TankVariationListener.salesCenter(),
-        TankVariationListener.tanks(),
         TankVariationListener.tankVariation(),
       ],
       child: FullWidgetGeneric(
@@ -75,10 +71,9 @@ class TankVariationListBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controllerDate = ControllerFieldDatePicker();
-    final controllerDrp = ControllerFieldDropdown();
+    final controllerDrp = ControllerFieldDropdown<SalesCenterEntity>();
     final cubit = context.read<TankVariationCubit>();
-    final tankCubit = context.read<TanksCubit>();
-    final notification = context.read<NotifyDialogHandlerCubit>();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -150,30 +145,29 @@ class TankVariationListBody extends StatelessWidget {
                 SearchButtonPro(
                   onPressed: () async {
                     if (controllerDate.getValue().isAfter(DateTime.now())) {
-                      notification.onNotification(
-                        const NotificationInfo(
-                          NotificationType.error,
-                          message:
-                              'La fecha de busqueda no debe de superar la fecha actual.',
+                      ElegantNotification.error(
+                        description: const Text(
+                          'La fecha de busqueda no debe de superar la fecha actual.',
                         ),
-                      );
+                      ).show(context);
+                      cubit.clearList();
                       return;
                     }
                     if (controllerDrp.getValue().id == 0) {
-                      notification.onNotification(
-                        const NotificationInfo(
-                          NotificationType.error,
-                          message: 'Seleccione un centro de venta.',
+                      ElegantNotification.error(
+                        description: const Text(
+                          'Seleccione un centro de venta.',
                         ),
-                      );
+                      ).show(context);
                       return;
                     }
-                    if (await tankCubit.getToSaleCenter(controllerDrp.id)) {
-                      await cubit.getBySaleCenterAndDate(
-                        controllerDrp.id,
-                        controllerDate.getValue(),
-                      );
-                    }
+                    cubit.changeDateSearch(
+                      controllerDate.getValue().singleDate(),
+                    );
+                    await cubit.getBySaleCenterAndDatePro(
+                      controllerDrp.id,
+                      controllerDate.getValue().singleDate(),
+                    );
                   },
                 ),
               ],
@@ -182,53 +176,48 @@ class TankVariationListBody extends StatelessWidget {
               height: 10,
             ),
             Expanded(
-              child: BlocSelector<TanksCubit, TanksState, List<TanksEntity>>(
+              child: BlocSelector<TankVariationCubit, TankVariationState,
+                  List<TankVariationMultiEntity>>(
                 selector: (state) {
-                  return state.list;
+                  return state.listPro;
                 },
-                builder: (context, tanks) {
-                  return BlocSelector<TankVariationCubit, TankVariationState,
-                      List<TankVariationEntity>>(
-                    selector: (state) {
-                      return state.list;
-                    },
-                    builder: (context, tanksVariation) {
-                      return tanks.toListView(
-                        itemSpacing: 10,
-                        itemBuilder: (context, item, index) {
-                          final tankVariation = tanksVariation.firstWhereOrNull(
-                            (element) => element.idTanque == item.idTanque,
+                builder: (context, tanksVariation) {
+                  return tanksVariation.toListView(
+                    itemSpacing: 10,
+                    itemBuilder: (context, item, index) {
+                      return ItemTankVariation(
+                        tanksEntity: item.tank,
+                        isManual: item.tank.idConsolaTanque != 0,
+                        consoleEntity: item.tankVariation.firstOrNull,
+                        existVariation: item.tankVariation.isNotEmpty,
+                        onTapCreate: () {
+                          cubit.changeSelectedPro(item);
+                          context.pushComplete(
+                            MultiBlocProvider(
+                              providers: [
+                                BlocProvider.value(
+                                  value: cubit,
+                                ),
+                              ],
+                              child: const UpsertTankVariationPage(
+                                typeOperation: TypeOperation.create,
+                              ),
+                            ),
                           );
-                          return ItemTankVariation(
-                            tanksEntity: item,
-                            consoleEntity: tankVariation,
-                            onTapCreate: () {
-                              tankCubit.changeSelected(item);
-                              if (tankVariation != null) {
-                                cubit.changeSelected(tankVariation);
-                              }
-                              context.pushResult(
-                                UpsertTankVariationPage.route(
-                                  tanksCubit: tankCubit,
-                                  tankVariationCubit: cubit,
-                                  typeOperation: TypeOperation.create,
+                        },
+                        onTapUpdate: () {
+                          cubit.changeSelectedPro(item);
+                          context.pushComplete(
+                            MultiBlocProvider(
+                              providers: [
+                                BlocProvider.value(
+                                  value: cubit,
                                 ),
-                              );
-                            },
-                            onTapUpdate: () {
-                              tankCubit.changeSelected(item);
-                              if (tankVariation != null) {
-                                cubit.changeSelected(tankVariation);
-                              }
-                              context.pushResult(
-                                UpsertTankVariationPage.route(
-                                  tankVariationCubit: cubit,
-                                  typeOperation: TypeOperation.update,
-                                  tanksCubit: tankCubit,
-                                ),
-                              );
-                            },
-                            onTapDelete: () {},
+                              ],
+                              child: const UpsertTankVariationPage(
+                                typeOperation: TypeOperation.update,
+                              ),
+                            ),
                           );
                         },
                       );
@@ -249,7 +238,8 @@ class ItemTankVariation extends StatelessWidget {
     required this.tanksEntity,
     required this.onTapCreate,
     required this.onTapUpdate,
-    required this.onTapDelete,
+    required this.existVariation,
+    required this.isManual,
     this.consoleEntity,
     super.key,
   });
@@ -257,7 +247,8 @@ class ItemTankVariation extends StatelessWidget {
   final TanksEntity tanksEntity;
   final void Function() onTapCreate;
   final void Function() onTapUpdate;
-  final void Function() onTapDelete;
+  final bool existVariation;
+  final bool isManual;
 
   @override
   Widget build(BuildContext context) {
@@ -288,9 +279,18 @@ class ItemTankVariation extends StatelessWidget {
             Text(
               tanksEntity.descripcion,
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            if (isManual)
+              Container(
+                child: const Text(
+                  'Modo Consola ',
+                ),
+              )
+            else
+              Container(
+                child: const Text(
+                  'Modo Manual',
+                ),
+              ),
             if (consoleEntity != null)
               Container(
                 padding:
@@ -318,10 +318,7 @@ class ItemTankVariation extends StatelessWidget {
               ),
             if (consoleEntity == null)
               Container(
-                padding:
-                    const EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 5),
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 161, 72, 56),
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
                 child: const Row(
@@ -330,13 +327,13 @@ class ItemTankVariation extends StatelessWidget {
                     Text(
                       'Variación no registrada',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 161, 72, 56),
                         fontSize: 13,
                       ),
                     ),
                     Icon(
                       Icons.close_outlined,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 161, 72, 56),
                     ),
                   ],
                 ),
@@ -344,31 +341,15 @@ class ItemTankVariation extends StatelessWidget {
           ],
         ),
         isThreeLine: true,
-        trailing: PopupMenuButton(
-          icon: const Icon(Icons.more_vert),
-          itemBuilder: (context) {
-            return [
-              if (consoleEntity != null)
-                PopupMenuItem(
-                  value: 'edit',
-                  onTap: onTapUpdate,
-                  child: const Text('Editar variación'),
-                ),
-              if (consoleEntity == null)
-                PopupMenuItem(
-                  value: 'new',
-                  onTap: onTapCreate,
-                  child: const Text('Crear variación'),
-                ),
-              PopupMenuItem(
-                value: 'delete',
-                onTap: onTapDelete,
-                child: const Text('Eliminar'),
+        trailing: existVariation
+            ? IconButton(
+                icon: const Icon(Icons.edit_rounded),
+                onPressed: onTapUpdate,
+              )
+            : IconButton(
+                icon: const Icon(Icons.add_box_rounded),
+                onPressed: onTapCreate,
               ),
-            ];
-          },
-          //onSelected: (v) => actionPopUpItemSelected(v, consoleEntity),
-        ),
       ),
     );
   }

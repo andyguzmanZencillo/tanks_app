@@ -25,6 +25,10 @@ extension ExtensionDateTime on DateTime {
     return DateFormat(format).format(this);
   }
 
+  DateTime singleDate() {
+    return DateTime(year, month, day);
+  }
+
   int getDateAsNumber() {
     final before = DateTime(1800);
     final today = DateTime.now();
@@ -45,5 +49,9 @@ extension ExtensionDateTime on DateTime {
     final milisegundos = duracion.inMilliseconds;
     final text = milisegundos.toString().substring(0, 7);
     return int.parse(text);
+  }
+
+  bool equal(DateTime date) {
+    return day == date.day && month == date.month && year == date.year;
   }
 }

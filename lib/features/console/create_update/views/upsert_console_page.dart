@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tank_repository/features/sales_center/entity/sales_center_entity.dart';
 import 'package:tanks_app/core/util/bloc_generics.dart';
 import 'package:tanks_app/core/util/extensions/extension_string.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
@@ -10,6 +12,7 @@ import 'package:tanks_app/features/console/create_update/cubit/upsert_console_cu
 import 'package:tanks_app/features/console/create_update/helpers/upsert_console_listener.dart';
 import 'package:tanks_app/features/console/create_update/views/upsert_console_inherited.dart';
 import 'package:tanks_app/features/console/list/cubit/console_cubit.dart';
+import 'package:tanks_app/features/tanks/create_update/widgets/dropdown.dart';
 import 'package:tanks_app/injection/injection.dart';
 
 class UpsertConsolePage extends StatelessWidget {
@@ -100,14 +103,7 @@ class UpsertConsoleBody extends StatelessWidget {
                     ),
                     Expanded(
                       child: Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: const BoxDecoration(
-                          //color: Color.fromARGB(52, 29, 29, 29),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30),
-                          ),
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Form(
                           key: inherited.formKey,
                           child: Column(
@@ -125,6 +121,8 @@ class UpsertConsoleBody extends StatelessWidget {
                                 label: 'Descripción',
                               ),
                               TextFieldCustomPro(
+                                inputType: TextInputType.number,
+                                maxLength: 10,
                                 controller:
                                     inherited.idConsolaTanqueProtocoloField,
                                 label: 'ID Consola Tanque Protocolo',
@@ -133,9 +131,48 @@ class UpsertConsoleBody extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    child: TextFieldCustomPro(
-                                      controller: inherited.tipoField,
-                                      label: 'Tipo',
+                                    child: Builder(
+                                      builder: (context) {
+                                        final items = [
+                                          const ValueExtend<String>(
+                                            id: 1,
+                                            text: 'Serial',
+                                          ),
+                                          const ValueExtend<String>(
+                                            id: 2,
+                                            text: 'IP',
+                                          ),
+                                          const ValueExtend<String>(
+                                            id: 3,
+                                            text: 'Test',
+                                          ),
+                                        ];
+                                        ValueExtend<String>? value;
+                                        if (inherited.typeOperation ==
+                                            TypeOperation.update) {
+                                          value = items.firstWhereOrNull(
+                                            (element) =>
+                                                element.text ==
+                                                consoleCubit
+                                                    .state.selected.tipo,
+                                          );
+                                        }
+
+                                        return DropdownCustom(
+                                          controller: inherited.tipoField,
+                                          validator: (p0) {
+                                            if (p0 == null) {
+                                              return 'Valor requerido';
+                                            }
+                                            return null;
+                                          },
+                                          label: 'Tipo',
+                                          value: value,
+                                          showDecoration: false,
+                                          isLabelTitle: true,
+                                          items: items,
+                                        );
+                                      },
                                     ),
                                   ),
                                   const SizedBox(
@@ -145,6 +182,7 @@ class UpsertConsoleBody extends StatelessWidget {
                                     child: TextFieldCustomPro(
                                       controller: inherited.ipField,
                                       label: 'IP',
+                                      maxLength: 15,
                                     ),
                                   ),
                                 ],
@@ -155,7 +193,9 @@ class UpsertConsoleBody extends StatelessWidget {
                                   Expanded(
                                     child: TextFieldCustomPro(
                                       controller: inherited.socketField,
+                                      inputType: TextInputType.number,
                                       label: 'Socket',
+                                      maxLength: 6,
                                     ),
                                   ),
                                   const SizedBox(
@@ -165,6 +205,7 @@ class UpsertConsoleBody extends StatelessWidget {
                                     child: TextFieldCustomPro(
                                       controller: inherited.puertoSerialField,
                                       label: 'Puerto Serial',
+                                      maxLength: 5,
                                     ),
                                   ),
                                 ],
@@ -191,7 +232,8 @@ class UpsertConsoleBody extends StatelessWidget {
                                             .idConsolaTanqueProtocoloField
                                             .getValue()
                                             .toIntSafe(),
-                                        tipo: inherited.tipoField.getValue(),
+                                        tipo:
+                                            inherited.tipoField.getValue().text,
                                         ip: inherited.ipField.getValue(),
                                         socket:
                                             inherited.socketField.getValue(),
@@ -214,7 +256,8 @@ class UpsertConsoleBody extends StatelessWidget {
                                             .idConsolaTanqueProtocoloField
                                             .getValue()
                                             .toIntSafe(),
-                                        tipo: inherited.tipoField.getValue(),
+                                        tipo:
+                                            inherited.tipoField.getValue().text,
                                         ip: inherited.ipField.getValue(),
                                         socket:
                                             inherited.socketField.getValue(),

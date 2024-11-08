@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:failures/failures.dart';
+import 'package:tank_api/core/models/default_response.dart';
 import 'package:tank_api/core/network/api_method.dart';
 import 'package:tank_api/core/network/endpoints.dart';
 import 'package:tank_api/features/token/models/token_request.dart';
@@ -10,7 +12,7 @@ class TokenApi {
 
   final Dio _dio;
 
-  Future<String> getToken({
+  Future<TokenResponse> getToken({
     required String idCompany,
     required String user,
     required String password,
@@ -18,7 +20,7 @@ class TokenApi {
     try {
       final response = await ApiMethod.getToken(
         dio: _dio,
-        uri: Uri.https(
+        uri: Uri.http(
           Endpoints.authority,
           Endpoints.token,
         ),
@@ -28,6 +30,11 @@ class TokenApi {
           password: password,
         ).toJson(),
       );
+      if (!response.response) {
+        throw ResultException(
+          response.message.isEmpty ? response.error : response.message,
+        );
+      }
 
       return response;
     } catch (e) {

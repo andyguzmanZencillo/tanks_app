@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 import 'package:tanks_app/core/util/form/validator_field/valid.dart';
+import 'package:tanks_app/core/util/formaters/formaters.dart';
 
 class SignInInherited extends InheritedWidget {
   SignInInherited({
@@ -15,6 +16,7 @@ class SignInInherited extends InheritedWidget {
   final idCompany = ControllerField(
     inputFormatters: [
       FilteringTextInputFormatter.digitsOnly,
+      NoSpaceFormatter(),
     ],
     validators: [
       RequiredValid(
@@ -26,15 +28,18 @@ class SignInInherited extends InheritedWidget {
     validators: [
       RequiredValid(error: 'Campo requerido'),
     ],
-  );
-  final name = ControllerField(
-    validators: [
-      RequiredValid(error: 'Campo requerido'),
+    inputFormatters: [
+      NoSpaceFormatter(),
+      FilteringTextInputFormatter.allow(RegExp('[0-9a-zA-Z@.]')),
     ],
   );
+
   final password = ControllerField(
     validators: [
       RequiredValid(error: 'Campo requerido'),
+    ],
+    inputFormatters: [
+      NoSpaceFormatter(),
     ],
   );
 
@@ -47,18 +52,10 @@ class SignInInherited extends InheritedWidget {
     return result!;
   }
 
-  void dispose() {
-    idCompany.dispose();
-    user.dispose();
-    name.dispose();
-    password.dispose();
-  }
-
   ResultValidate valid() {
     return formKey.validateAndGetErrors([
       idCompany.fieldKey,
       user.fieldKey,
-      name.fieldKey,
       password.fieldKey,
     ]);
   }

@@ -48,37 +48,12 @@ class UpsertTankVariationCubit extends Cubit<UpsertTankVariationState> {
     );
   }
 
-  /*Future<void> updateArticle({
-    required SalesCenterEntity salesCenterEntity,
-    required String centroVenta,
-    required String descripcion,
-    required String correo,
-  }) async {
-    emit(state.copyWith(upsertStatus: UpsertStatus.loading));
-    final result = await salesCenterRepository.updateSalesCenter(
-      salesCenterEntity.copyWith(
-        centroVenta: centroVenta,
-        descripcion: descripcion,
-        correo: correo,
-      ),
-    );
-
-    result.when(
-      ok: (ok) {
-        emit(state.copyWith(upsertStatus: UpsertStatus.success));
-      },
-      err: (err) {
-        emit(state.copyWith(upsertStatus: UpsertStatus.error));
-      },
-    );
-  }*/
-
   double searchAforo({
     required List<CapacityEntity> capacityEntitys,
     required double rValorBuscado,
   }) {
     if (capacityEntitys.isEmpty) return 0;
-
+    capacityEntitys.sort((a, b) => a.alturaTanque.compareTo(b.alturaTanque));
     final initial = capacityEntitys.first.alturaTanque;
     final last = capacityEntitys.last.alturaTanque;
 

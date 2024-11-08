@@ -11,6 +11,7 @@ class FieldVariationTank extends StatelessWidget {
     required this.controller,
     required this.label,
     this.onFocusChange,
+    this.onChanged,
     this.enable = true,
     super.key,
   });
@@ -18,7 +19,7 @@ class FieldVariationTank extends StatelessWidget {
   final String label;
   // ignore: avoid_positional_boolean_parameters
   final void Function(bool, String)? onFocusChange;
-
+  final void Function(String)? onChanged;
   final bool enable;
 
   @override
@@ -28,6 +29,7 @@ class FieldVariationTank extends StatelessWidget {
       labelSingle: false,
       onFocusChange: onFocusChange,
       enable: enable,
+      onChanged: onChanged,
       inputFormatters: [
         //FilteringTextInputFormatter.digitsOnly,
         DecimalTextInputFormatter(decimalRange: 3),

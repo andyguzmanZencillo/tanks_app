@@ -32,7 +32,7 @@ class InsertTanksRequest extends TanksRequest {
 
   final int idCentroVenta;
   final int idArticulo;
-  final int idConsolaTanque;
+  final int? idConsolaTanque;
   final double capacidad;
   final double alturaTanque;
   final String descripcion;
@@ -100,7 +100,7 @@ class UpdateTanksRequest extends TanksRequest {
   final int idTank;
   final int idCentroVenta;
   final int idArticulo;
-  final int idConsolaTanque;
+  final int? idConsolaTanque;
   final double capacidad;
   final double alturaTanque;
   final String descripcion;

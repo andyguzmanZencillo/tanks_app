@@ -45,7 +45,7 @@ class TanksEntity extends Equatable implements ValueExtend<TanksEntity> {
   final int idCompania;
   final int idCentroVenta;
   final int idArticulo;
-  final int idConsolaTanque; // Puede ser nulo
+  final int? idConsolaTanque; // Puede ser nulo
   final double capacidad;
   final double alturaTanque;
   final String descripcion;

@@ -12,6 +12,7 @@ class UserDeviceApi extends BaseApi {
   ) async {
     try {
       final response = await post(
+        requestName: request.query,
         request.toJson(),
       );
       return response.message;
@@ -25,6 +26,7 @@ class UserDeviceApi extends BaseApi {
   ) async {
     try {
       final response = await post(
+        requestName: request.query,
         request.toJson(),
       );
       return response.message;
@@ -38,6 +40,7 @@ class UserDeviceApi extends BaseApi {
   ) async {
     try {
       final response = await post(
+        requestName: request.query,
         request.toJson(),
       );
       return response.message;
@@ -51,9 +54,12 @@ class UserDeviceApi extends BaseApi {
   ) async {
     try {
       final response = await post(
+        requestName: request.query,
         request.toJson(),
       );
-      final list = (response.resultSp ?? <dynamic>[]) as List;
+      final list =
+          response.resultSp == null ? <dynamic>[] : response.resultSp as List;
+
       return list
           .map(
             (e) => UserDeviceResponse.fromJson(e as Map<String, dynamic>),
@@ -69,9 +75,12 @@ class UserDeviceApi extends BaseApi {
   ) async {
     try {
       final response = await post(
+        requestName: request.query,
         request.toJson(),
       );
-      final list = response.resultSp as List;
+      final list =
+          response.resultSp == null ? <dynamic>[] : response.resultSp as List;
+
       return list
           .map(
             (e) => UserDeviceResponse.fromJson(e as Map<String, dynamic>),
@@ -87,9 +96,12 @@ class UserDeviceApi extends BaseApi {
   ) async {
     try {
       final response = await post(
+        requestName: request.query,
         request.toJson(),
       );
-      final list = response.resultSp as List;
+      final list =
+          response.resultSp == null ? <dynamic>[] : response.resultSp as List;
+
       return list
           .map(
             (e) => UserAlertResponse.fromJson(e as Map<String, dynamic>),
@@ -105,9 +117,11 @@ class UserDeviceApi extends BaseApi {
   ) async {
     try {
       final response = await post(
+        requestName: request.query,
         request.toJson(),
       );
-      final list = response.resultSp as List;
+      final list =
+          response.resultSp == null ? <dynamic>[] : response.resultSp as List;
       return list
           .map(
             (e) => UserNotificationResponse.fromJson(e as Map<String, dynamic>),
@@ -119,11 +133,12 @@ class UserDeviceApi extends BaseApi {
   }
 
   Future<String> updateUserDevice(
-    UpdateUserDeviceRequest updateArticleRequest,
+    UpdateUserDeviceRequest request,
   ) async {
     try {
       final response = await post(
-        updateArticleRequest.toJson(),
+        requestName: request.query,
+        request.toJson(),
       );
       return response.message;
     } catch (e) {
@@ -136,6 +151,7 @@ class UserDeviceApi extends BaseApi {
   ) async {
     try {
       final response = await post(
+        requestName: request.query,
         request.toJson(),
       );
       return response.message;
@@ -149,6 +165,7 @@ class UserDeviceApi extends BaseApi {
   ) async {
     try {
       final response = await post(
+        requestName: request.query,
         request.toJson(),
       );
       return response.message;
@@ -162,6 +179,7 @@ class UserDeviceApi extends BaseApi {
   ) async {
     try {
       final response = await post(
+        requestName: request.query,
         request.toJson(),
       );
       return response.message;

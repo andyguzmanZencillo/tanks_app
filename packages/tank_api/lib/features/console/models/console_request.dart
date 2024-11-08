@@ -11,10 +11,10 @@ class InsertConsoleRequest extends ConsoleRequest {
     required this.description,
     required this.idConsoleTankProtocol,
     required this.type,
-    required this.ip,
     required this.socket,
-    required this.portSerial,
     required this.passWordIp,
+    this.ip,
+    this.portSerial,
     this.idUserTrace = 123,
     this.operation = 'I',
   });
@@ -27,9 +27,9 @@ class InsertConsoleRequest extends ConsoleRequest {
   final String description;
   final int idConsoleTankProtocol;
   final String type;
-  final String ip;
+  final String? ip;
   final String socket;
-  final String portSerial;
+  final String? portSerial;
   final String passWordIp;
 
   Map<String, dynamic> toJson() {
@@ -57,10 +57,10 @@ class UpdateConsoleRequest extends ConsoleRequest {
     required this.description,
     required this.idConsoleTankProtocol,
     required this.type,
-    required this.ip,
     required this.socket,
-    required this.portSerial,
     required this.passWordIp,
+    this.ip,
+    this.portSerial,
     this.idUserTrace = 123,
     this.operation = 'U',
   });
@@ -74,9 +74,9 @@ class UpdateConsoleRequest extends ConsoleRequest {
   final String description;
   final int idConsoleTankProtocol;
   final String type;
-  final String ip;
+  final String? ip;
   final String socket;
-  final String portSerial;
+  final String? portSerial;
   final String passWordIp;
 
   Map<String, dynamic> toJson() {

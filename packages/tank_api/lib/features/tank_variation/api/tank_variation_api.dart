@@ -1,5 +1,6 @@
 import 'package:failures/failures.dart';
 import 'package:tank_api/features/company/api/company_api.dart';
+import 'package:tank_api/features/tank_variation/models/tank_variation_multi_response.dart';
 import 'package:tank_api/features/tank_variation/models/tank_variation_request.dart';
 import 'package:tank_api/features/tank_variation/models/tank_variation_response.dart';
 
@@ -47,6 +48,25 @@ class TankVariationApi extends BaseApi {
       return list
           .map(
             (e) => TankVariationResponse.fromJson(e as Map<String, dynamic>),
+          )
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<TankVariationMultiResponse>> getBySaleCenterAndDatePro(
+    GetTankVariationBySaleCenterAndDate request,
+  ) async {
+    try {
+      final response = await post(
+        request.toJson(),
+      );
+      final list = response.resultSp as List;
+      return list
+          .map(
+            (e) =>
+                TankVariationMultiResponse.fromJson(e as Map<String, dynamic>),
           )
           .toList();
     } catch (e) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tanks_app/core/app/themes/app_colors.dart';
 import 'package:tanks_app/core/util/extensions/extension_string.dart';
 import 'package:tanks_app/features/capacity_table/create_update/cubit/upsert_capacity_table_cubit.dart';
 import 'package:tanks_app/features/capacity_table/create_update/widgets/field_capacity.dart';
@@ -78,11 +79,11 @@ class DialogSecuence extends StatelessWidget {
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             side: const BorderSide(
-              color: Color.fromARGB(255, 243, 170, 25),
+              color: BlueStoneColors.blueStone700,
               width: 2,
             ), // Borde azul
             shape: const RoundedRectangleBorder(),
-            backgroundColor: const Color.fromARGB(255, 243, 170, 25),
+            backgroundColor: BlueStoneColors.blueStone700,
           ),
           child: const Text('Confirmar'),
         ),

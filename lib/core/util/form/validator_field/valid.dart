@@ -34,6 +34,21 @@ class RequiredValid extends AbstractValid {
   }
 }
 
+class IPValid extends AbstractValid {
+  IPValid({this.error});
+
+  final String? error;
+
+  @override
+  String? valid(String? value) {
+    if (!InputValidators.isIP(value)) {
+      return error ?? 'Formato incorrecto';
+    }
+
+    return null;
+  }
+}
+
 class RequiredNumericValid extends AbstractValid {
   RequiredNumericValid({this.error});
 

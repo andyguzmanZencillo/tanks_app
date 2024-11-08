@@ -23,7 +23,7 @@ class ConsoleResponse {
       idConsolaTanqueProtocolo: json.get('id_consola_tanque_protocolo', 0),
       tipo: json.get('tipo', ''),
       ip: json.get('ip', ''),
-      socket: json.get('socket', ''),
+      socket: json.getPro('socket', ''),
       puertoSerial: json.get('puerto_serial', ''),
       contrasenaIp: json.get('contrasena_ip', ''),
     );

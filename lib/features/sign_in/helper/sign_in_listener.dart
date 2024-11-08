@@ -4,6 +4,7 @@ import 'package:tanks_app/core/helpers/user_device/cubit/user_device_cubit.dart'
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
 import 'package:tanks_app/features/home/views/home_page.dart';
+import 'package:tanks_app/features/session/session_cubit.dart';
 import 'package:tanks_app/features/sign_in/cubit/sign_in_cubit.dart';
 
 class LoginListener {
@@ -42,8 +43,10 @@ class LoginListener {
             },
           );
         } else if (s == SignStatus.success) {
+          final sessionCubit = context.read<SessionCubit>();
           context.pop();
           context.read<UserDeviceCubit>().register();
+          sessionCubit.getUserEntity();
           context.go(HomePage.route());
         }
       },

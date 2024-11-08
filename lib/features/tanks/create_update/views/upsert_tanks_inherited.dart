@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:tank_repository/features/article/article.dart';
 import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
+import 'package:tanks_app/core/util/form/validator_field/valid.dart';
+import 'package:tanks_app/core/util/formaters/formaters.dart';
 import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
 
 class UpsertTanksInherited extends InheritedWidget {
@@ -15,22 +19,90 @@ class UpsertTanksInherited extends InheritedWidget {
   final TypeOperation typeOperation;
 
   // Campos relacionados con TanksEntity
-  final capacidadField = ControllerField();
-  final alturaTanqueField = ControllerField();
-  final descripcionField = ControllerField();
-  final porcentajeMinimoCombustibleField = ControllerField();
-  final alturaOffsetField = ControllerField();
-  final factorInicioDescargueField = ControllerField();
-  final codigoField = ControllerField();
-  final alturaAguaOffsetField = ControllerField();
-  final offsetInclinacionField = ControllerField();
+  final saleCenter = ControllerFieldDropdown<SalesCenterEntity>();
+  final article = ControllerFieldDropdown<ArticleEntity>();
+  final console = ControllerFieldDropdown<ConsoleEntity>();
+
+  final capacidadField = ControllerField(
+    validators: [RequiredValid(error: 'Campo requerido')],
+    inputFormatters: [
+      DecimalTextInputFormatter(decimalRange: 3),
+      FilteringTextInputFormatter.allow(
+        RegExp(r'^\d+\.?\d{0,3}'),
+      ),
+    ],
+  );
+  final alturaTanqueField = ControllerField(
+    validators: [RequiredValid(error: 'Campo requerido')],
+    inputFormatters: [
+      DecimalTextInputFormatter(decimalRange: 3),
+      FilteringTextInputFormatter.allow(
+        RegExp(r'^\d+\.?\d{0,3}'),
+      ),
+    ],
+  );
+
+  final descripcionField = ControllerField(
+    validators: [RequiredValid(error: 'Campo requerido')],
+  );
+
+  final alturaOffsetField = ControllerField(
+    validators: [RequiredValid(error: 'Campo requerido')],
+    inputFormatters: [
+      DecimalTextInputFormatter(decimalRange: 3),
+      FilteringTextInputFormatter.allow(
+        RegExp(r'^\d+\.?\d{0,3}'),
+      ),
+    ],
+  );
+  final factorInicioDescargueField = ControllerField(
+    validators: [RequiredValid(error: 'Campo requerido')],
+    inputFormatters: [
+      DecimalTextInputFormatter(decimalRange: 3),
+      FilteringTextInputFormatter.allow(
+        RegExp(r'^\d+\.?\d{0,3}'),
+      ),
+    ],
+  );
+
+  final codigoField = ControllerField(
+    validators: [RequiredValid(error: 'Campo requerido')],
+    inputFormatters: [
+      FilteringTextInputFormatter.digitsOnly,
+    ],
+  );
+  final alturaAguaOffsetField = ControllerField(
+    validators: [RequiredValid(error: 'Campo requerido')],
+    inputFormatters: [
+      DecimalTextInputFormatter(decimalRange: 3),
+      FilteringTextInputFormatter.allow(
+        RegExp(r'^\d+\.?\d{0,3}'),
+      ),
+    ],
+  );
+
+  final offsetInclinacionField = ControllerField(
+    validators: [RequiredValid(error: 'Campo requerido')],
+    inputFormatters: [
+      DecimalTextInputFormatter(decimalRange: 3),
+      FilteringTextInputFormatter.allow(
+        RegExp(r'^\d+\.?\d{0,3}'),
+      ),
+    ],
+  );
+  final porcentajeMinimoCombustibleField = ControllerField(
+    validators: [RequiredValid(error: 'Campo requerido')],
+    inputFormatters: [
+      DecimalTextInputFormatter(decimalRange: 3),
+      FilteringTextInputFormatter.allow(
+        RegExp(r'^\d+\.?\d{0,3}'),
+      ),
+    ],
+  );
+
   final estadoField = ControllerField();
   final modificableField = ControllerField();
   final manejaMmField = ControllerField();
-
-  final saleCenter = ControllerFieldDropdown();
-  final console = ControllerFieldDropdown();
-  final article = ControllerFieldDropdown();
 
   final formKey = GlobalKey<FormState>();
 

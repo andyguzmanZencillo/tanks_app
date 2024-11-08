@@ -186,7 +186,7 @@ class PerfilBody extends StatelessWidget {
                       }
                       return const Center(
                         child: Text(
-                          'No hay alertas configuradas',
+                          'No hay notificaciones configuradas',
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey,

@@ -137,7 +137,6 @@ class Graft extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: SizedBox(
-        height: 170,
         child: BlocSelector<TankVariationCubit, TankVariationState,
             List<TankVariationEntity>>(
           selector: (state) {
@@ -145,7 +144,7 @@ class Graft extends StatelessWidget {
           },
           builder: (context, state) {
             if (state.isEmpty) {
-              return LineChart(getGraft([], []));
+              return const SizedBox.shrink();
             }
             final listAgua = state
                 .map(
@@ -159,7 +158,10 @@ class Graft extends StatelessWidget {
                 )
                 .toList();
 
-            return LineChart(getGraft(listAgua, inventarioFinalList));
+            return SizedBox(
+              height: 170,
+              child: LineChart(getGraft(listAgua, inventarioFinalList)),
+            );
           },
         ),
       ),

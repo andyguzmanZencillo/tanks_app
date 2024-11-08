@@ -23,8 +23,8 @@ class TokenRequest {
 
   Map<String, dynamic> toJson() {
     final json = {
-      'token_command': {
-        'idcompany': int.parse(idCompany),
+      'token_tanque': {
+        'zencillo_id_company': int.parse(idCompany),
         'user': user,
         'password': password,
       },
@@ -32,9 +32,9 @@ class TokenRequest {
 
     log('REQUEST TOKEN ===> ${jsonEncode(json)}');
     final jsonDone = {
-      'token_command': encrypt(
+      'token_tanque': encrypt(
         jsonEncode({
-          'idcompany': int.parse(idCompany),
+          'zencillo_id_company': int.parse(idCompany),
           'user': user,
           'password': password,
         }),

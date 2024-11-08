@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 import 'package:tanks_app/core/util/form/validator_field/valid.dart';
+import 'package:tanks_app/core/util/formaters/formaters.dart';
 
 class SignUpInherited extends InheritedWidget {
   SignUpInherited({
@@ -21,8 +22,9 @@ class SignUpInherited extends InheritedWidget {
     ],
   );
   final user = ControllerField(
-    validators: [
-      RequiredValid(error: 'Campo requerido'),
+    inputFormatters: [
+      NoSpaceFormatter(),
+      FilteringTextInputFormatter.allow(RegExp('[0-9a-zA-Z@.]')),
     ],
   );
   final name = ControllerField(
@@ -34,6 +36,9 @@ class SignUpInherited extends InheritedWidget {
     validators: [
       RequiredValid(error: 'Campo requerido'),
     ],
+    inputFormatters: [
+      NoSpaceFormatter(),
+    ],
   );
 
   final formKey = GlobalKey<FormState>();
@@ -43,13 +48,6 @@ class SignUpInherited extends InheritedWidget {
         context.dependOnInheritedWidgetOfExactType<SignUpInherited>();
     assert(result != null, 'No LicenseFormInherited found in context');
     return result!;
-  }
-
-  void dispose() {
-    idCompany.dispose();
-    user.dispose();
-    name.dispose();
-    password.dispose();
   }
 
   ResultValidate valid() {

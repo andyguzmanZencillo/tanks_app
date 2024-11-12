@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/tank_repository.dart';
+import 'package:tanks_app/core/helpers/listener/listener_generic.dart';
 import 'package:tanks_app/core/util/extensions/extension_double.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
 import 'package:tanks_app/features/binnacle/list/cubit/binnacle_cubit.dart';
-import 'package:tanks_app/features/capacity_table/list/cubit/capacity_table_cubit.dart';
+import 'package:tanks_app/features/capacity_table/cubit/capacity_table_cubit.dart';
 import 'package:tanks_app/features/drawer/views/drawer_view.dart';
 import 'package:tanks_app/features/home/dashboard/cubit/dashboard_cubit.dart';
 import 'package:tanks_app/features/home/dashboard/widgets/info_date.dart';
@@ -14,10 +15,9 @@ import 'package:tanks_app/features/home/widgets/gallons.dart';
 import 'package:tanks_app/features/home/widgets/graft_.dart';
 import 'package:tanks_app/features/home/widgets/percentage_existence.dart';
 import 'package:tanks_app/features/home/widgets/volume.dart';
-import 'package:tanks_app/features/sales_center/list/cubit/sales_center_cubit.dart';
-import 'package:tanks_app/features/sales_center/list/helpers/sales_center_listener.dart';
+import 'package:tanks_app/features/sales_center/cubit/sales_center_cubit.dart';
 import 'package:tanks_app/features/tank_variation/list/cubit/tank_variation_cubit.dart';
-import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
+import 'package:tanks_app/features/tanks/cubit/tanks_cubit.dart';
 import 'package:tanks_app/injection/injection.dart';
 
 class HomePage extends StatelessWidget {
@@ -67,7 +67,7 @@ class HomeViesw extends StatelessWidget {
     final binacleCubit = context.read<BinnacleCubit>();
     return MultiBlocListener(
       listeners: [
-        SalesCenterListener.salesCenter(),
+        ListenerPro<SalesCenterCubit, SalesCenterState>().listen(),
       ],
       child: FullWidgetGeneric(
         onInit: () async {

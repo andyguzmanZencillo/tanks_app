@@ -127,7 +127,7 @@ class UserDeviceRepository {
       final token = await FirebaseMessaging.instance.getToken();
 
       if (token == null) {
-        throw const ResultException(
+        throw const InvalidDataException(
           'Error al obtener el token del dispositivo',
         );
       }
@@ -148,7 +148,7 @@ class UserDeviceRepository {
         final iosInfo = await deviceInfo.iosInfo;
         return iosInfo.utsname.machine;
       } else {
-        throw const ResultException(
+        throw const InvalidDataException(
           'Error al obtener el nombre del dispositivo',
         );
       }

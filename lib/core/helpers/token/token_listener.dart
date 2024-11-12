@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tanks_app/core/helpers/token/token_cubit.dart';
 import 'package:tanks_app/core/util/enums/enums.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
-import 'package:tanks_app/features/sales_center/delete/helpers/sales_center_delete_listener.dart';
 
 class TokenListener {
   static BlocListener<TokenCubit, TokenState> article({

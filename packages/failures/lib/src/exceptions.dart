@@ -1,64 +1,40 @@
-/// Exception thrown when request fails
-class RequestException implements Exception {}
+/// Excepción lanzada cuando falla una solicitud de red
+class NetworkRequestException implements Exception {}
 
-/// Exception thrown when backend return errors
-class ServerException implements Exception {}
+/// Excepción lanzada cuando el servidor devuelve un error inesperado
+class ServerResponseException implements Exception {}
 
-/// Exception thrown when error occurs on client side
-class InternalException implements Exception {}
+/// Excepción lanzada cuando ocurre un error en la base de datos
+class DatabaseErrorException implements Exception {}
 
-/// Exception thrown when query fails
-class DatabaseException implements Exception {}
+/// Excepción lanzada cuando no se encuentran datos en la base de datos
+class DataNotFoundException implements Exception {}
 
-/// Exception thrown when No Element found
-class NotFoundException implements Exception {}
+/// Excepción lanzada cuando se intenta acceder sin permisos válidos
+class UnauthorizedAccessException implements Exception {}
 
-/// Exception thrown when Invalid Resolution
-class InvalidResolutionException implements Exception {}
+/// Excepción lanzada cuando no hay conexión a Internet
+class NoInternetConnectionException implements Exception {}
 
-/// Exception thrown when Invalid Resolution
-class NoResolutionException implements Exception {
-  const NoResolutionException(this.message);
-
+/// Excepción lanzada cuando los datos recibidos son nulos o inválidos
+class InvalidDataException implements Exception {
+  const InvalidDataException(this.message);
   final String message;
 }
 
-/// Exception thrown when No Client Found
-class NoClientException implements Exception {}
-
-/// Exception thrown when request returns invalid
-class ResultException implements Exception {
-  const ResultException(this.message);
-
+/// Excepción lanzada cuando la operación falla por una configuración incorrecta
+class ConfigurationException implements Exception {
+  const ConfigurationException(this.message);
   final String message;
 }
 
-class DataNullException implements Exception {
-  const DataNullException(this.message);
-
-  final String message;
-}
-
-/// Exception thrown when No Client Found
-class UnauthorizedException implements Exception {}
-
-/// Exception thrown when No Internet Connection
-class NoInternetException implements Exception {}
-
-class DatabaseNoResult implements Exception {}
-
-enum ResultExceptionType { noShift }
-
-class ResultExceptionCustom implements Exception {
-  const ResultExceptionCustom(this.message, this.type);
-  final ResultExceptionType type;
-  final String message;
-}
-
-class ResultNotFoundException implements Exception {
-  const ResultNotFoundException([this.message = 'Información no encontrada']);
+/// Excepción lanzada cuando ocurre un error desconocido en la aplicación
+class UnknownApplicationException implements Exception {
+  const UnknownApplicationException([
+    this.message = 'Error desconocido en la aplicación',
+  ]);
   final String message;
 
   @override
-  String toString() => 'ResultNotFoundException: $message';
+  String toString() => 'UnknownApplicationException: $message';
 }

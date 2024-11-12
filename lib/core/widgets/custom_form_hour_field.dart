@@ -28,10 +28,13 @@ class CustomFormHourField extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<void> selectTime() async {
       final pickedTime = await showTimePicker(
+        barrierDismissible: false,
         context: context,
         hourLabelText: 'Hora',
         helpText: 'Seleccione la hora',
         minuteLabelText: 'Minuto',
+        confirmText: 'Añadir',
+        cancelText: 'Cerrar',
         errorInvalidText: 'Tiempo invalido',
         initialTime: TimeOfDay.now(),
         initialEntryMode: TimePickerEntryMode.inputOnly,

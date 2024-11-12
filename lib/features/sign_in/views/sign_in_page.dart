@@ -8,12 +8,6 @@ import 'package:tanks_app/injection/injection.dart';
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
 
-  static Route<void> route() {
-    return MaterialPageRoute<void>(
-      builder: (context) => const SignInPage(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

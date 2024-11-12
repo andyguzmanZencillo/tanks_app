@@ -48,7 +48,7 @@ class UserDeviceCubit extends Cubit<UserDeviceState> {
         );
       },
       err: (err) {
-        if (err is ResultFailure) {
+        if (err is InvalidDataFailure) {
           emit(
             state.copyWith(
               status: GeneralStatus.error,
@@ -79,7 +79,7 @@ class UserDeviceCubit extends Cubit<UserDeviceState> {
         );
       },
       err: (err) {
-        if (err is ResultFailure) {
+        if (err is InvalidDataFailure) {
           emit(
             state.copyWith(
               status: GeneralStatus.error,

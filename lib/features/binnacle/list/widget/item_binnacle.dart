@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tank_repository/features/binnacle/entity/binnacle_entity.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
+import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/util/extensions/extension_date.dart';
-import 'package:tanks_app/features/sales_center/delete/helpers/sales_center_delete_listener.dart';
 
 class ItemBinnacle extends StatelessWidget {
   const ItemBinnacle({

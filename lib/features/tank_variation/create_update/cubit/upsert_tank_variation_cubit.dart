@@ -29,7 +29,7 @@ class UpsertTankVariationCubit extends Cubit<UpsertTankVariationState> {
         emit(state.copyWith(upsertStatus: UpsertStatus.success));
       },
       err: (err) {
-        if (err is ResultFailure) {
+        if (err is InvalidDataFailure) {
           emit(
             state.copyWith(
               upsertStatus: UpsertStatus.error,

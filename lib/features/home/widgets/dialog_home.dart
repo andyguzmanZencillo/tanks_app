@@ -3,15 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/features/sales_center/entity/sales_center_entity.dart';
 import 'package:tank_repository/features/tanks/entity/tanks_entity.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
+import 'package:tanks_app/core/util/enums/enums.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 import 'package:tanks_app/features/binnacle/list/cubit/binnacle_cubit.dart';
-import 'package:tanks_app/features/capacity_table/list/cubit/capacity_table_cubit.dart';
+import 'package:tanks_app/features/capacity_table/cubit/capacity_table_cubit.dart';
 import 'package:tanks_app/features/home/dashboard/cubit/dashboard_cubit.dart';
 import 'package:tanks_app/features/home/widgets/date_picker_home.dart';
 import 'package:tanks_app/features/home/widgets/dropdown_sales_center.dart';
-import 'package:tanks_app/features/sales_center/list/cubit/sales_center_cubit.dart';
+import 'package:tanks_app/features/sales_center/cubit/sales_center_cubit.dart';
 import 'package:tanks_app/features/tank_variation/list/cubit/tank_variation_cubit.dart';
-import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
+import 'package:tanks_app/features/tanks/cubit/tanks_cubit.dart';
 
 class DialogHome extends StatelessWidget {
   const DialogHome({super.key});
@@ -83,20 +84,20 @@ class DialogHome extends StatelessWidget {
             ),
             BlocBuilder<TanksCubit, TanksState>(
               builder: (context, state) {
-                if (state.tanksStatus == TanksStatus.initial) {
+                if (state.generalStatus == GeneralStatus.initial) {
                   return const Center(
                     child: Text(
                       'Seleccione un centro de venta para aplicar los filtros',
                       textAlign: TextAlign.center,
                     ),
                   );
-                } else if (state.tanksStatus == TanksStatus.loading) {
+                } else if (state.generalStatus == GeneralStatus.loading) {
                   return const Center(
                     child: CircularProgressIndicator(
                       color: BlueStoneColors.blueStone600,
                     ),
                   );
-                } else if (state.tanksStatus == TanksStatus.error) {
+                } else if (state.generalStatus == GeneralStatus.error) {
                   return const Center(
                     child: Text(
                       'No se encontraron tanques para este centro de venta.',

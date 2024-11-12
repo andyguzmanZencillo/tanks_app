@@ -23,13 +23,14 @@ class NoSpaceFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    // Check if the new value contains any spaces
-    if (newValue.text.contains(' ')) {
-      // If it does, return the old value
-      return oldValue;
-    }
-    // Otherwise, return the new value
-    return newValue;
+    final filteredText = newValue.text.replaceAll(' ', '');
+    return TextEditingValue(
+      text: filteredText,
+      selection: newValue.selection.copyWith(
+        baseOffset: filteredText.length,
+        extentOffset: filteredText.length,
+      ),
+    );
   }
 }
 
@@ -64,5 +65,134 @@ class DecimalTextInputFormatter extends TextInputFormatter {
       return oldValue;
     }
     return newValue;
+  }
+}
+
+class AlphanumericInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final filteredText = newValue.text.replaceAll(RegExp('[^a-zA-Z0-9]'), '');
+    return TextEditingValue(
+      text: filteredText,
+      selection: newValue.selection.copyWith(
+        baseOffset: filteredText.length,
+        extentOffset: filteredText.length,
+      ),
+    );
+  }
+}
+
+/*
+class AlphanumericWithSpaceInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final filteredText = newValue.text.replaceAll(RegExp('[^a-zA-Z0-9 ]'), '');
+    return TextEditingValue(
+      text: filteredText,
+      selection: newValue.selection.copyWith(
+        baseOffset: filteredText.length,
+        extentOffset: filteredText.length,
+      ),
+    );
+  }
+}
+*/
+class AlphanumericWithSpaceNoLeadingInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // Filtra solo letras, números y espacios, y elimina los espacios al inicio
+    final filteredText = newValue.text
+        .replaceAll(RegExp('[^a-zA-Z0-9 ]'), '')
+        .replaceFirst(RegExp(r'^\s+'), '');
+
+    return TextEditingValue(
+      text: filteredText,
+      selection: newValue.selection.copyWith(
+        baseOffset: filteredText.length,
+        extentOffset: filteredText.length,
+      ),
+    );
+  }
+}
+
+/// Formatea el texto para permitir solo letras, números y espacios
+class AlphanumericWithSpaceInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final filteredText = newValue.text.replaceAll(RegExp('[^a-zA-Z0-9 ]'), '');
+    return TextEditingValue(
+      text: filteredText,
+      selection: newValue.selection,
+    );
+  }
+}
+
+/// Formatea el texto para eliminar los espacios al inicio
+class NoLeadingSpaceInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final filteredText = newValue.text.replaceFirst(RegExp(r'^\s+'), '');
+    return TextEditingValue(
+      text: filteredText,
+      selection: newValue.selection,
+    );
+  }
+}
+
+class NoOnlyZeroInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final text = newValue.text;
+
+    // Permitir el campo vacío o valores distintos a solo "0" o "0.0"
+    if (text == '0' || text == '0.0') {
+      return oldValue;
+    }
+
+    return newValue;
+  }
+}
+
+class IpAddressInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // Expresión regular para validar una dirección IP mientras el usuario escribe
+    final ipRegex = RegExp(r'^(?:\d{1,3}\.){0,3}\d{0,3}$');
+
+    // Verificar si el texto coincide con el formato de una IP parcial
+    if (ipRegex.hasMatch(newValue.text)) {
+      // Asegurarse de que cada número en la IP esté en el rango de 0 a 255
+      final segments = newValue.text.split('.');
+      for (final segment in segments) {
+        if (segment.isNotEmpty && int.parse(segment) > 255) {
+          return oldValue; // Regresa al valor anterior si algún segmento es mayor que 255
+        }
+      }
+      return newValue;
+    } else {
+      // Si el nuevo valor no coincide con el patrón, volver al valor anterior
+      return oldValue;
+    }
   }
 }

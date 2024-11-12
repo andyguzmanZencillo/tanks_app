@@ -11,7 +11,7 @@ class CapacityTableApi extends BaseApi {
       final response = await post(
         insertCapacityTableRequest.toJson(),
       );
-      if (!response.result) throw ResultException(response.message);
+      if (!response.result) throw InvalidDataException(response.message);
       return response.result;
     } catch (e) {
       rethrow;

@@ -31,7 +31,7 @@ class TokenCubit extends Cubit<TokenState> {
         emit(state.copyWith(status: GeneralStatus.success));
       },
       err: (err) {
-        if (err is ResultFailure) {
+        if (err is InvalidDataFailure) {
           emit(
             state.copyWith(
               status: GeneralStatus.error,
@@ -58,7 +58,7 @@ class TokenCubit extends Cubit<TokenState> {
         emit(state.copyWith(status: GeneralStatus.success));
       },
       err: (err) {
-        if (err is ResultFailure) {
+        if (err is InvalidDataFailure) {
           emit(
             state.copyWith(
               status: GeneralStatus.error,

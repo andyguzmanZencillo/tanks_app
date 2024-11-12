@@ -26,6 +26,7 @@ class RequestBase {
         'transaction': transactionFather,
         'content': {
           'query': query,
+          'method': 'tanks',
           'parameters': content,
         },
       },
@@ -41,6 +42,7 @@ class RequestBase {
             'transaction': transactionFather,
             'content': {
               'query': query,
+              'method': 'tanks',
               'parameters': content,
             },
           },

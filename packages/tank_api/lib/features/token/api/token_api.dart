@@ -20,7 +20,7 @@ class TokenApi {
     try {
       final response = await ApiMethod.getToken(
         dio: _dio,
-        uri: Uri.http(
+        uri: Uri.https(
           Endpoints.authority,
           Endpoints.token,
         ),
@@ -31,7 +31,7 @@ class TokenApi {
         ).toJson(),
       );
       if (!response.response) {
-        throw ResultException(
+        throw InvalidDataException(
           response.message.isEmpty ? response.error : response.message,
         );
       }

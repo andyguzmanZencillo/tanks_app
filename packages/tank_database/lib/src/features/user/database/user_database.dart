@@ -33,7 +33,7 @@ class UserDatabase {
     try {
       final all = await _database.getAll<UserCollection>();
       if (all.isEmpty) {
-        throw const ResultException(
+        throw const InvalidDataException(
           'No hay empleados configurados...',
         );
       }
@@ -43,7 +43,7 @@ class UserDatabase {
 
       return login!;
     } catch (e) {
-      if (e is TypeError) throw NotFoundException();
+      if (e is TypeError) throw UnknownApplicationException();
       rethrow;
     }
   }
@@ -52,13 +52,13 @@ class UserDatabase {
     try {
       final all = await _database.getAll<UserCollection>();
       if (all.isEmpty) {
-        throw const DataNullException(
+        throw const InvalidDataException(
           'No hay usuarios guardados',
         );
       }
       return await _database.getById<UserCollection>(1);
     } catch (e) {
-      if (e is TypeError) throw NotFoundException();
+      if (e is TypeError) throw UnknownApplicationException();
       rethrow;
     }
   }

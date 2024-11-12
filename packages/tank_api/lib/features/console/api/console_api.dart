@@ -1,4 +1,6 @@
 import 'package:tank_api/features/company/api/company_api.dart';
+import 'package:tank_api/features/console/models/console_protocol_request.dart';
+import 'package:tank_api/features/console/models/console_protocol_response.dart';
 import 'package:tank_api/features/console/models/console_request.dart';
 import 'package:tank_api/features/console/models/console_response.dart';
 
@@ -55,6 +57,24 @@ class ConsoleApi extends BaseApi {
         updateConsoleRequest.toJson(),
       );
       return response.message;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<ConsoleProtocolResponse>> getProtocolAll(
+    GetConsoleProtocolRequest request,
+  ) async {
+    try {
+      final response = await post(
+        request.toJson(),
+      );
+      final list = response.resultSp as List;
+      return list
+          .map(
+            (e) => ConsoleProtocolResponse.fromJson(e as Map<String, dynamic>),
+          )
+          .toList();
     } catch (e) {
       rethrow;
     }

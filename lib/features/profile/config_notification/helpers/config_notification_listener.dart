@@ -3,7 +3,6 @@ import 'package:tanks_app/core/util/enums/enums.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
 import 'package:tanks_app/features/profile/config_notification/cubit/config_notification_cubit.dart';
-import 'package:tanks_app/features/sales_center/delete/helpers/sales_center_delete_listener.dart';
 
 class ConfigNotificationListener {
   static BlocListener<ConfigNotificationCubit, ConfigNotificationState>

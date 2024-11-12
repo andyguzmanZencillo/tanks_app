@@ -12,7 +12,7 @@ class UserApi extends BaseApi {
       final response = await post(
         insertUserRequest.toJson(),
       );
-      if (!response.result) throw ResultException(response.message);
+      if (!response.result) throw InvalidDataException(response.message);
       final list = response.resultSp as List;
       return list
           .map(
@@ -33,7 +33,7 @@ class UserApi extends BaseApi {
         insertUserRequest.toJson(),
       );
 
-      if (!response.result) throw ResultException(response.message);
+      if (!response.result) throw InvalidDataException(response.message);
       return (response.resultSp as Map<String, dynamic>).get('inserted_id', 0);
     } catch (e) {
       rethrow;

@@ -2,6 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:failures/failures.dart';
 import 'package:tank_repository/tank_repository.dart';
+import 'package:tanks_app/core/helpers/dialog_info.dart';
+import 'package:tanks_app/core/helpers/listener/listener_generic.dart';
+import 'package:tanks_app/core/util/enums/enums.dart';
+import 'package:tanks_app/features/sign_in/helper/message_sign_in_listener.dart';
 
 part 'sign_in_state.dart';
 
@@ -15,7 +19,12 @@ class SignInCubit extends Cubit<SignInState> {
     required String userName,
     required String password,
   }) async {
-    emit(state.copyWith(status: SignStatus.loading));
+    emit(
+      state.copyWith(
+        generalStatus: GeneralStatus.loading,
+        dialogMessage: SignInMessages.loading,
+      ),
+    );
     final result = await userRepository.signIn(
       idCompany: int.parse(idCompany),
       user: userName,
@@ -23,21 +32,26 @@ class SignInCubit extends Cubit<SignInState> {
     );
     result.when(
       ok: (ok) {
-        emit(state.copyWith(status: SignStatus.success));
+        emit(
+          state.copyWith(
+            generalStatus: GeneralStatus.success,
+            dialogMessage: SignInMessages.success,
+          ),
+        );
       },
       err: (err) {
-        if (err is ResultFailure) {
+        if (err is InvalidDataFailure) {
           emit(
             state.copyWith(
-              status: SignStatus.error,
-              errorMessage: err.message,
+              generalStatus: GeneralStatus.error,
+              dialogMessage: DialogMessage(message: err.message),
             ),
           );
         } else {
           emit(
             state.copyWith(
-              status: SignStatus.error,
-              errorMessage: 'Error desconocido',
+              generalStatus: GeneralStatus.error,
+              dialogMessage: SignInMessages.error,
             ),
           );
         }

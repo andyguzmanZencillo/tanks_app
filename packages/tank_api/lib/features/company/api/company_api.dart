@@ -34,14 +34,18 @@ class BaseApi {
       final response = await ApiMethod.post(
         requestName: requestName,
         dio: _dio,
-        uri: Uri.http(
+        uri: Uri.https(
           Endpoints.authority,
           Endpoints.command,
         ),
         data: data,
       );
-      if (!response.result) throw ResultException(response.message);
-
+      if (!response.result) throw InvalidDataException(response.message);
+      if (response.resultSp == null) {
+        throw const InvalidDataException(
+          'No existe información para la solicitud',
+        );
+      }
       return response;
     } catch (e) {
       rethrow;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tanks_app/core/widgets/dialogs/dialogs.dart';
 
 extension ContextRouter on BuildContext {
   void go(Route<void> route) {
@@ -101,5 +102,77 @@ extension ContextRouter on BuildContext {
 
   void popHome() {
     Navigator.popUntil(this, (route) => route.isFirst);
+  }
+}
+
+extension ContextDialog on BuildContext {
+  void show(Widget child) {
+    showDialog<void>(
+      barrierDismissible: false,
+      context: this,
+      builder: (context) {
+        return child;
+      },
+    );
+  }
+
+  void showLoading({
+    required String message,
+  }) {
+    showDialog<void>(
+      barrierDismissible: false,
+      context: this,
+      builder: (context) {
+        return DialogText(
+          text: message,
+        );
+      },
+    );
+  }
+
+  void showGood({
+    required String message,
+    required String title,
+    required String textButton,
+    required void Function()? onPressed,
+  }) {
+    showDialog<void>(
+      barrierDismissible: false,
+      context: this,
+      builder: (context) {
+        return DialogManagment.good(
+          dialogData: DialogData(
+            barrierDismissible: false,
+            message: message,
+            title: title,
+            onPressed: onPressed,
+            textButton: textButton,
+          ),
+        );
+      },
+    );
+  }
+
+  void showError({
+    required String message,
+    required String title,
+    required String textButton,
+    required void Function()? onPressed,
+  }) {
+    showDialog<void>(
+      barrierDismissible: false,
+      context: this,
+      builder: (context) {
+        return DialogManagment.error(
+          dialogData: DialogData(
+            barrierDismissible: false,
+            message: message,
+            title: title,
+            onPressed: onPressed,
+            textButton: textButton,
+          ),
+        );
+      },
+    );
   }
 }

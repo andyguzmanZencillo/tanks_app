@@ -11,7 +11,7 @@ class ConfigApi extends BaseApi {
       final response = await post(
         insertConfigRequest.toJson(),
       );
-      if (!response.result) throw ResultException(response.message);
+      if (!response.result) throw InvalidDataException(response.message);
       return response.result;
     } catch (e) {
       rethrow;

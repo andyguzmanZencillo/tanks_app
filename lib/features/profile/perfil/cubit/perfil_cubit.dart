@@ -12,13 +12,14 @@ class PerfilCubit extends Cubit<PerfilState> {
 
   Future<void> getInfo() async {
     emit(state.copyWith(status: GeneralStatus.loading));
+
     final result = await userRepository.getUser();
     result.when(
       ok: (ok) {
         emit(state.copyWith(user: ok, status: GeneralStatus.success));
       },
       err: (err) {
-        if (err is ResultFailure) {
+        if (err is InvalidDataFailure) {
           emit(
             state.copyWith(
               errorMessage: err.message,

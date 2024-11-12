@@ -2,6 +2,7 @@ import 'package:failures/failures.dart';
 import 'package:oxidized/oxidized.dart';
 import 'package:tank_api/features/user/api/user_api.dart';
 import 'package:tank_api/features/user/models/user_request.dart';
+import 'package:tank_api/tank_api.dart';
 import 'package:tank_database/tank_database.dart';
 import 'package:tank_repository/core/generic_token.dart';
 import 'package:tank_repository/features/user/entities/user_entity.dart';
@@ -10,15 +11,18 @@ import 'package:tank_repository/features/user/mappers/user_collection_to_entity.
 class UserRepository {
   UserRepository({
     UserApi? api,
+    TokenApi? tokenApi,
     UserDatabase? userDatabase,
   })  : _userDatabase = userDatabase ?? UserDatabase(),
+        _tokenApi = tokenApi ?? TokenApi(),
         _api = api ?? UserApi();
 
   final UserApi _api;
+  final TokenApi _tokenApi;
   final UserDatabase _userDatabase;
 
   Future<Result<UserEntity, Failure>> getUser() {
-    return handleExceptionsLocal<UserEntity>(() async {
+    return handleException<UserEntity>(() async {
       final collection = await _userDatabase.getUser();
 
       return collection.toEntity();
@@ -26,7 +30,7 @@ class UserRepository {
   }
 
   Future<Result<Unit, Failure>> removeUser() {
-    return handleExceptionsLocal<Unit>(() async {
+    return handleException<Unit>(() async {
       await _userDatabase.clear();
       return unit;
     });
@@ -37,11 +41,14 @@ class UserRepository {
     required String user,
     required String password,
   }) {
-    return handleExceptionTokenFirst<Unit>(
-      idCompany: idCompany.toString(),
-      user: user,
-      password: password,
-      action: () async {
+    return handleException<Unit>(
+      () async {
+        await _tokenApi.getToken(
+          idCompany: idCompany.toString(),
+          user: user,
+          password: password,
+        );
+
         final request = SignInUserRequest(
           usuario: user,
           clave: password,
@@ -71,8 +78,13 @@ class UserRepository {
     required String password,
     required String name,
   }) {
-    return handleExceptionTokenFirst<Unit>(
-      action: () async {
+    return handleException<Unit>(
+      () async {
+        await _tokenApi.getToken(
+          idCompany: idCompany.toString(),
+          user: user,
+          password: password,
+        );
         final request = InsertUserRequest(
           idCompania: idCompany,
           nombre: name,
@@ -93,14 +105,11 @@ class UserRepository {
         );
         return unit;
       },
-      idCompany: '121',
-      user: 'Andy',
-      password: '12345',
     );
   }
 
   Future<Result<UserEntity, Failure>> verification() {
-    return handleExceptionsLocal<UserEntity>(() async {
+    return handleException<UserEntity>(() async {
       final response = await _userDatabase.getUser();
 
       return UserEntity(

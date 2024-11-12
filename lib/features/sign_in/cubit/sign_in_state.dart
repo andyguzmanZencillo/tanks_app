@@ -1,25 +1,30 @@
 part of 'sign_in_cubit.dart';
 
-enum SignStatus { loading, success, error, initial }
-
-class SignInState extends Equatable {
+class SignInState extends Equatable implements StatusState {
   const SignInState({
-    this.status = SignStatus.initial,
-    this.errorMessage,
+    this.dialogMessage = const DialogMessage.empty(),
+    this.generalStatus = GeneralStatus.initial,
   });
-  final SignStatus status;
-  final String? errorMessage;
+
+  @override
+  final DialogMessage dialogMessage;
+
+  @override
+  final GeneralStatus generalStatus;
 
   SignInState copyWith({
-    SignStatus? status,
-    String? errorMessage,
+    DialogMessage? dialogMessage,
+    GeneralStatus? generalStatus,
   }) {
     return SignInState(
-      status: status ?? this.status,
-      errorMessage: errorMessage ?? this.errorMessage,
+      dialogMessage: dialogMessage ?? this.dialogMessage,
+      generalStatus: generalStatus ?? this.generalStatus,
     );
   }
 
   @override
-  List<Object?> get props => [status, errorMessage];
+  List<Object?> get props => [
+        dialogMessage,
+        generalStatus,
+      ];
 }

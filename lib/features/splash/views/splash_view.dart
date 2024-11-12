@@ -25,7 +25,7 @@ class SplashView extends StatelessWidget {
           await userDeviceCubit.register();
           if (context.mounted) context.go(HomePage.route());
         } else if (state.status == AppStatus.noLoged) {
-          context.go(SignInPage.route());
+          context.goComplete(const SignInPage());
         }
       },
       child: const Scaffold(

@@ -4,29 +4,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tank_repository/features/tank_variation/entity/tank_variation_multi_entity.dart';
 import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
+import 'package:tanks_app/core/helpers/listener/listener_generic.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/util/extensions/extension_date.dart';
 import 'package:tanks_app/core/util/extensions/extension_list.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
-import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
-import 'package:tanks_app/features/article/list/views/article_list_body.dart';
-import 'package:tanks_app/features/sales_center/list/cubit/sales_center_cubit.dart';
+import 'package:tanks_app/features/article/helpers/create_update_inherited.dart';
+import 'package:tanks_app/features/article/views/article_list_body.dart';
+import 'package:tanks_app/features/sales_center/cubit/sales_center_cubit.dart';
 import 'package:tanks_app/features/tank_variation/create_update/views/upsert_tank_variation_page.dart';
 import 'package:tanks_app/features/tank_variation/list/cubit/tank_variation_cubit.dart';
 import 'package:tanks_app/features/tank_variation/list/helpers/tank_variation_listener.dart';
 import 'package:tanks_app/features/tank_variation/list/widget/date_Picker.dart';
-import 'package:tanks_app/features/tanks/create_update/widgets/dropdown.dart';
+import 'package:tanks_app/features/tanks/widgets/dropdown.dart';
 import 'package:tanks_app/injection/injection.dart';
 
 class TankVariationListPage extends StatelessWidget {
   const TankVariationListPage({super.key});
-
-  static Route<bool?> route() {
-    return MaterialPageRoute<bool?>(
-      builder: (context) => const TankVariationListPage(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +46,7 @@ class TankVariationListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        TankVariationListener.salesCenter(),
+        ListenerPro<SalesCenterCubit, SalesCenterState>().listen(),
         TankVariationListener.tankVariation(),
       ],
       child: FullWidgetGeneric(

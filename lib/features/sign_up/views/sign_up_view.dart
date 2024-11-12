@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/features/home/views/home_page.dart';
-import 'package:tanks_app/features/sales_center/delete/helpers/sales_center_delete_listener.dart';
 import 'package:tanks_app/features/session/session_cubit.dart';
 import 'package:tanks_app/features/sign_up/cubit/sign_up_cubit.dart';
 import 'package:tanks_app/features/sign_up/views/sign_up_body.dart';

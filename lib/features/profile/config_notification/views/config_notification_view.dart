@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
 import 'package:tanks_app/core/widgets/button/custom_elevate_button.dart';
+import 'package:tanks_app/features/profile/alert/cubit/alert_cubit.dart';
 import 'package:tanks_app/features/profile/config_notification/cubit/config_notification_cubit.dart';
 import 'package:tanks_app/features/profile/config_notification/helpers/config_notification_listener.dart';
-import 'package:tanks_app/features/profile/get_alert/get_alert_cubit.dart';
-import 'package:tanks_app/features/profile/get_notification/get_notification_cubit.dart';
-import 'package:tanks_app/features/profile/get_user_alert/get_user_alert_cubit.dart';
-import 'package:tanks_app/features/profile/get_user_notification/get_notification_cubit.dart';
+import 'package:tanks_app/features/profile/notification/notification_cubit.dart';
+import 'package:tanks_app/features/profile/user_alert/user_alert_cubit.dart';
+import 'package:tanks_app/features/profile/user_notification/notification_cubit.dart';
 import 'package:tanks_app/injection/injection.dart';
 
 class ConfigNotificationPage extends StatelessWidget {
@@ -34,8 +34,8 @@ class ConfigNotificationView extends StatelessWidget {
       listeners: [
         ConfigNotificationListener.configNotification(
           onTap: () {
-            context.read<GetUserAlertCubit>().getAll();
-            context.read<GetUserNotificationCubit>().getAll();
+            context.read<UserAlertCubit>().getAll();
+            context.read<UserNotificationCubit>().getAll();
           },
         ),
       ],
@@ -52,8 +52,8 @@ class ConfigNotificationBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final getNotificationCubit = context.read<GetNotificationCubit>();
-    final getAlertCubit = context.read<GetAlertCubit>();
+    final getNotificationCubit = context.read<NotificationCubit>();
+    final getAlertCubit = context.read<AlertCubit>();
     final configNotification = context.read<ConfigNotificationCubit>();
 
     return Scaffold(
@@ -76,7 +76,7 @@ class ConfigNotificationBody extends StatelessWidget {
                 fontSize: 17,
               ),
             ),
-            BlocBuilder<GetNotificationCubit, GetNotificationState>(
+            BlocBuilder<NotificationCubit, NotificationState>(
               builder: (context, state) {
                 final list = [...state.list];
                 final listSelected = [...state.listSelected];
@@ -118,7 +118,7 @@ class ConfigNotificationBody extends StatelessWidget {
                 fontSize: 17,
               ),
             ),
-            BlocBuilder<GetAlertCubit, GetAlertState>(
+            BlocBuilder<AlertCubit, AlertState>(
               builder: (context, state) {
                 final list = [...state.list];
                 final listSelected = [...state.listSelected];

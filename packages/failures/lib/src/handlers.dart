@@ -1,4 +1,4 @@
-import 'dart:io';
+/*import 'dart:io';
 
 import 'package:failures/failures.dart';
 import 'package:oxidized/oxidized.dart';
@@ -9,25 +9,33 @@ Future<Result<T, Failure>> handleExceptions<T>(
   try {
     final result = await action();
     return Result.ok(result);
-  } on RequestException {
-    return Result.err(RequestFailure());
-  } on NoInternetException {
-    return Result.err(NoInternetFailure());
+  } on NetworkRequestException {
+    return const Result.err(NetworkRequestFailure());
+  } on NoInternetConnectionException {
+    return const Result.err(NoInternetConnectionFailure());
   } on SocketException {
-    return Result.err(SocketFailure());
-  } on ResultException catch (e) {
-    return Result.err(ResultFailure(e.message));
-  } on InvalidResolutionException {
-    return Result.err(InvalidResolutionFailure());
-  } on NoResolutionException catch (e) {
-    return Result.err(NoResolutionFailure(e.message));
+    return const Result.err(
+      NoInternetConnectionFailure('Error de conexión con el servidor'),
+    );
+  } on ServerResponseException {
+    return const Result.err(ServerResponseFailure());
+  } on DataNotFoundException {
+    return const Result.err(DataNotFoundFailure());
+  } on UnauthorizedAccessException {
+    return const Result.err(UnauthorizedAccessFailure());
+  } on InvalidDataException catch (e) {
+    return Result.err(InvalidDataFailure(e.message));
+  } on ConfigurationException catch (e) {
+    return Result.err(ConfigurationFailure(e.message));
+  } on UnknownApplicationException catch (e) {
+    return Result.err(UnknownApplicationFailure(e.message));
   } on Exception catch (e) {
-    return Result.err(ResultFailure(e.toString()));
+    return Result.err(UnknownApplicationFailure(e.toString()));
   } catch (e) {
     if (e is TypeError) {
-      return Result.err(ResultFailure(e.toString()));
+      return Result.err(UnknownApplicationFailure(e.toString()));
     } else {
-      return Result.err(ResultFailure(e.toString()));
+      return Result.err(UnknownApplicationFailure(e.toString()));
     }
   }
 }
@@ -38,21 +46,24 @@ Future<Result<T, Failure>> handleExceptionsLocal<T>(
   try {
     final result = await action();
     return Result.ok(result);
-  } on DatabaseException {
-    return Result.err(DatabaseFailure());
-  } on DataNullException catch (e) {
-    return Result.err(ResultNullFailure(e.message));
+  } on DatabaseErrorException {
+    return const Result.err(DatabaseErrorFailure());
+  } on DataNotFoundException {
+    return const Result.err(DataNotFoundFailure());
+  } on InvalidDataException catch (e) {
+    return Result.err(InvalidDataFailure(e.message));
   } on Exception catch (e) {
-    return Result.err(ResultFailure(e.toString()));
+    return Result.err(UnknownApplicationFailure(e.toString()));
   } catch (e) {
     if (e is TypeError) {
-      return Result.err(ResultFailure(e.toString()));
+      return Result.err(UnknownApplicationFailure(e.toString()));
     } else {
-      return Result.err(ResultFailure(e.toString()));
+      return Result.err(UnknownApplicationFailure(e.toString()));
     }
   }
-}
+}*/
 
+/*
 Future<Result<T, Failure>> handleDeviceExceptions<T>(
   Future<T> Function() action,
 ) async {
@@ -63,13 +74,13 @@ Future<Result<T, Failure>> handleDeviceExceptions<T>(
     return Result.err(SocketFailure());
   } on Exception catch (e) {
     return Result.err(
-      ResultFailure(e.toString()),
+      InvalidDataFailure(e.toString()),
     );
   } catch (e) {
     if (e is TypeError) {
-      return Result.err(ResultFailure(e.toString()));
+      return Result.err(InvalidDataFailure(e.toString()));
     } else {
-      return Result.err(ResultFailure(e.toString()));
+      return Result.err(InvalidDataFailure(e.toString()));
     }
   }
 }
@@ -87,7 +98,7 @@ Future<Result<T, Failure>> handleExceptionsComplete<T>(
   } on SocketException {
     return Result.err(SocketFailure());
   } on ResultException catch (e) {
-    return Result.err(ResultFailure(e.message));
+    return Result.err(InvalidDataFailure(e.message));
   } on InvalidResolutionException {
     return Result.err(InvalidResolutionFailure());
   } on NoResolutionException catch (e) {
@@ -95,12 +106,13 @@ Future<Result<T, Failure>> handleExceptionsComplete<T>(
   } on DatabaseException {
     return Result.err(DatabaseFailure());
   } on Exception catch (e) {
-    return Result.err(ResultFailure(e.toString()));
+    return Result.err(InvalidDataFailure(e.toString()));
   } catch (e) {
     if (e is TypeError) {
-      return Result.err(ResultFailure(e.toString()));
+      return Result.err(InvalidDataFailure(e.toString()));
     } else {
-      return Result.err(ResultFailure(e.toString()));
+      return Result.err(InvalidDataFailure(e.toString()));
     }
   }
 }
+*/

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tanks_app/core/util/enums/enums.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
-import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
-import 'package:tanks_app/features/sales_center/delete/helpers/sales_center_delete_listener.dart';
+import 'package:tanks_app/features/article/helpers/create_update_inherited.dart';
 import 'package:tanks_app/features/tank_variation/create_update/cubit/upsert_tank_variation_cubit.dart';
 import 'package:tanks_app/features/tank_variation/create_update/helper/upsert_tank_variation_inherited.dart';
 

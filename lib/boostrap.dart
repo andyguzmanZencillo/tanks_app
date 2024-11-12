@@ -43,18 +43,13 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
 
-  Bloc.observer = const AppBlocObserver();
+  //Bloc.observer = const AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   await Notifications.instance.init();
-
-  final token = await FirebaseMessaging.instance.getToken();
-
-  log('Token: $token');
-
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     log('Got a message whilst in the foreground!');
     log('Message data: ${message.data}');

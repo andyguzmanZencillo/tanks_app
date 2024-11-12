@@ -5,12 +5,12 @@ import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
 import 'package:tanks_app/core/util/extensions/extension_date.dart';
 import 'package:tanks_app/features/binnacle/list/cubit/binnacle_cubit.dart';
-import 'package:tanks_app/features/capacity_table/list/cubit/capacity_table_cubit.dart';
+import 'package:tanks_app/features/capacity_table/cubit/capacity_table_cubit.dart';
 import 'package:tanks_app/features/home/dashboard/cubit/dashboard_cubit.dart';
 import 'package:tanks_app/features/home/widgets/dialog_home.dart';
-import 'package:tanks_app/features/sales_center/list/cubit/sales_center_cubit.dart';
+import 'package:tanks_app/features/sales_center/cubit/sales_center_cubit.dart';
 import 'package:tanks_app/features/tank_variation/list/cubit/tank_variation_cubit.dart';
-import 'package:tanks_app/features/tanks/list/cubit/tanks_cubit.dart';
+import 'package:tanks_app/features/tanks/cubit/tanks_cubit.dart';
 
 class InfoDashBoard extends StatelessWidget {
   const InfoDashBoard({super.key});

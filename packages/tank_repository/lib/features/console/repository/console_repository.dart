@@ -4,6 +4,7 @@ import 'package:tank_api/tank_api.dart';
 import 'package:tank_database/tank_database.dart';
 import 'package:tank_repository/core/generic_token.dart';
 import 'package:tank_repository/features/console/entity/console_entity.dart';
+import 'package:tank_repository/features/console/mapper/console_response_to_entity.dart';
 
 class ConsoleRepository {
   ConsoleRepository({
@@ -17,24 +18,29 @@ class ConsoleRepository {
 
   Future<Result<List<ConsoleEntity>, Failure>> getAll() {
     return handleExceptionCompleteToken<List<ConsoleEntity>>(() async {
+      final user = await _userDatabase.getUser();
       final request = GetConsoleRequest(
-        idCompania: 1,
+        idCompania: user.idCompany,
       );
       final response = await _api.getAll(request);
       return response
           .map(
-            (e) => ConsoleEntity(
-              idConsola: e.idConsola,
-              idCompania: e.idCompania,
-              consola: e.consola,
-              descripcion: e.descripcion,
-              idConsolaTanqueProtocolo: e.idConsolaTanqueProtocolo,
-              tipo: e.tipo,
-              ip: e.ip,
-              socket: e.socket,
-              puertoSerial: e.puertoSerial,
-              contrasenaIp: e.contrasenaIp,
-            ),
+            (e) => e.toEntity(),
+          )
+          .toList();
+    });
+  }
+
+  Future<Result<List<ConsoleProtocolEntity>, Failure>> getProtocolAll() {
+    return handleExceptionCompleteToken<List<ConsoleProtocolEntity>>(() async {
+      final user = await _userDatabase.getUser();
+      final request = GetConsoleProtocolRequest(
+        idCompania: user.idCompany,
+      );
+      final response = await _api.getProtocolAll(request);
+      return response
+          .map(
+            (e) => e.toEntity(),
           )
           .toList();
     });

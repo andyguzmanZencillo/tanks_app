@@ -25,7 +25,7 @@ class ConfigNotificationCubit extends Cubit<ConfigNotificationState> {
         emit(state.copyWith(status: GeneralStatus.success));
       },
       err: (err) {
-        if (err is ResultFailure) {
+        if (err is InvalidDataFailure) {
           emit(
             state.copyWith(
               errorMessage: err.message,

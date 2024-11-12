@@ -11,7 +11,7 @@ class TanksApi extends BaseApi {
       final response = await post(
         insertTanksRequest.toJson(),
       );
-      if (!response.result) throw ResultException(response.message);
+      if (!response.result) throw InvalidDataException(response.message);
       return response.result;
     } catch (e) {
       rethrow;
@@ -43,7 +43,7 @@ class TanksApi extends BaseApi {
       final response = await post(
         getTanksRequest.toJson(),
       );
-      if (!response.result) throw ResultException(response.message);
+      if (!response.result) throw InvalidDataException(response.message);
       final list = response.resultSp as List;
       return list
           .map(

@@ -11,8 +11,7 @@ import 'package:tanks_app/core/util/extensions/extension_string.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 import 'package:tanks_app/core/widgets/button/custom_elevate_button.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
-import 'package:tanks_app/features/capacity_table/list/cubit/capacity_table_cubit.dart';
-import 'package:tanks_app/features/sales_center/delete/helpers/sales_center_delete_listener.dart';
+import 'package:tanks_app/features/capacity_table/cubit/capacity_table_cubit.dart';
 import 'package:tanks_app/features/tank_variation/create_update/cubit/upsert_tank_variation_cubit.dart';
 import 'package:tanks_app/features/tank_variation/create_update/helper/controller_to_entity.dart';
 import 'package:tanks_app/features/tank_variation/create_update/helper/upsert_tank_variation_inherited.dart';
@@ -145,7 +144,7 @@ class UpsertTankVariationBody extends StatelessWidget {
                             child: FieldVariationTank(
                               controller: inherited.altura,
                               label: 'Altura',
-                              enable: capacitys.state.status ==
+                              enable: capacitys.state.generalStatus ==
                                       GeneralStatus.success &&
                                   active,
                               onFocusChange: (focus, value) {
@@ -169,7 +168,7 @@ class UpsertTankVariationBody extends StatelessWidget {
                             child: FieldVariationTank(
                               controller: ControllerField(),
                               label: 'Altura Agua',
-                              enable: capacitys.state.status ==
+                              enable: capacitys.state.generalStatus ==
                                       GeneralStatus.success &&
                                   active,
                               onFocusChange: (focus, value) {
@@ -260,7 +259,7 @@ class UpsertTankVariationBody extends StatelessWidget {
                             child: FieldVariationTank(
                               controller: inherited.medidaInicial,
                               label: 'Medida inicial',
-                              enable: capacitys.state.status ==
+                              enable: capacitys.state.generalStatus ==
                                       GeneralStatus.success &&
                                   active,
                               onFocusChange: (focus, value) {
@@ -298,7 +297,7 @@ class UpsertTankVariationBody extends StatelessWidget {
                             child: FieldVariationTank(
                               controller: inherited.medidaFinal,
                               label: 'Medida final',
-                              enable: capacitys.state.status ==
+                              enable: capacitys.state.generalStatus ==
                                       GeneralStatus.success &&
                                   active,
                               onFocusChange: (focus, value) {
@@ -430,7 +429,7 @@ class UpsertTankVariationBody extends StatelessWidget {
                             child: FieldVariationTank(
                               controller: inherited.alturaFinal,
                               label: 'Altura final',
-                              enable: capacitys.state.status ==
+                              enable: capacitys.state.generalStatus ==
                                       GeneralStatus.success &&
                                   active,
                               onFocusChange: (focus, value) {
@@ -454,7 +453,7 @@ class UpsertTankVariationBody extends StatelessWidget {
                             child: FieldVariationTank(
                               controller: inherited.alturaAgua,
                               label: 'Altura agua',
-                              enable: capacitys.state.status ==
+                              enable: capacitys.state.generalStatus ==
                                       GeneralStatus.success &&
                                   active,
                               onFocusChange: (focus, value) {

@@ -17,3 +17,13 @@ extension ConsoleResponseToEntity on ConsoleResponse {
     );
   }
 }
+
+extension ConsoleProtocolResponseToEntity on ConsoleProtocolResponse {
+  ConsoleProtocolEntity toEntity() {
+    return ConsoleProtocolEntity(
+      idConsolaProtocol: idConsolaProtocol,
+      protocolo: protocolo,
+      descripcion: descripcion,
+    );
+  }
+}

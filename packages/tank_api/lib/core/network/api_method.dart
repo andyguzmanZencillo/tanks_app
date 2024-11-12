@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:failures/failures.dart';
@@ -54,20 +53,14 @@ class ApiMethod {
       );*/
       await _secure.write('token', result.token);
       return result;
-    } on SocketException {
-      throw const SocketException('');
     } on DioException catch (e) {
       log('EXCEPTION TOKEN ===> $e');
-      if (e.type == DioExceptionType.connectionTimeout) {
-        throw const SocketException('');
-      } else if (e.type == DioExceptionType.connectionError) {
-        throw NoInternetException();
-      } else if (e.type == DioExceptionType.badResponse) {
+      if (e.type == DioExceptionType.badResponse) {
         final data = e.response?.data as String;
         final decoded = jsonDecode(data) as Map<String, dynamic>;
-        throw ResultException(decoded['Message'] as String);
+        throw InvalidDataException(decoded['Message'] as String);
       } else {
-        throw RequestException();
+        throw NetworkRequestException();
       }
     }
   }
@@ -85,7 +78,7 @@ class ApiMethod {
       final response = await dio.post<String>(
         uri.toString(),
         data: jsonEncode(data),
-      ); //.timeout(const Duration(seconds: 2));
+      );
 
       final decoded = jsonDecode(response.data!);
 
@@ -96,27 +89,21 @@ class ApiMethod {
         final r = map
             .getPro<Map<String, dynamic>>('result', {}).getPro('token', false);
         if (!r) {
-          throw UnauthorizedException();
+          throw UnauthorizedAccessException();
         }
       }
       final result = DataResponse.fromJson(
         decoded,
       );
-      //if (!result.result) throw RequestException();
 
       final message = result.message;
       log('MESSAGE $requestName ===> $message');
       return result;
-    } on RequestException catch (e, stacktrace) {
-      log('EXCEPTION $requestName ===> $e - $stacktrace');
-      throw RequestException();
-    } on DioException catch (e, stacktrace) {
+    } on DioException catch (e) {
       if (e.response?.statusCode == 403) {
-        log('EXCEPTION ${e.response?.statusCode} ===> ${e.response}');
-        log('EXCEPTION $requestName ===> $e - $stacktrace');
-        throw UnauthorizedException();
+        throw UnauthorizedAccessException();
       } else {
-        throw RequestException();
+        throw NetworkRequestException();
       }
     } catch (e) {
       rethrow;

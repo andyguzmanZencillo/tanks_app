@@ -31,7 +31,7 @@ class BinnacleCubit extends Cubit<BinnacleState> {
         );
       },
       err: (err) {
-        if (err is ResultFailure) {
+        if (err is InvalidDataFailure) {
           emit(
             state.copyWith(
               list: [],
@@ -67,7 +67,7 @@ class BinnacleCubit extends Cubit<BinnacleState> {
         );
       },
       err: (err) {
-        if (err is ResultFailure) {
+        if (err is InvalidDataFailure) {
           emit(
             state.copyWith(
               list: [],

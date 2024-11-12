@@ -4,7 +4,7 @@ import 'package:tank_repository/features/tank_variation/entity/tank_variation_en
 import 'package:tank_repository/features/tank_variation/entity/tank_variation_multi_entity.dart';
 import 'package:tanks_app/core/util/extensions/extension_double.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
-import 'package:tanks_app/features/article/create_update/views/create_update_inherited.dart';
+import 'package:tanks_app/features/article/helpers/create_update_inherited.dart';
 
 class UpsertTankVariationInherited extends InheritedWidget {
   UpsertTankVariationInherited({

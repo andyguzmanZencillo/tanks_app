@@ -89,3 +89,45 @@ class ConsoleEntity extends Equatable implements ValueExtend<ConsoleEntity> {
     );
   }
 }
+
+class ConsoleProtocolEntity extends Equatable
+    implements ValueExtend<ConsoleProtocolEntity> {
+  const ConsoleProtocolEntity({
+    required this.idConsolaProtocol,
+    required this.protocolo,
+    required this.descripcion,
+  });
+
+  const ConsoleProtocolEntity.empty()
+      : idConsolaProtocol = 0,
+        protocolo = '',
+        descripcion = '';
+
+  final int idConsolaProtocol;
+  final String protocolo;
+  final String descripcion;
+
+  ConsoleProtocolEntity copyWith({
+    int? idConsolaProtocol,
+    String? protocolo,
+    String? descripcion,
+  }) {
+    return ConsoleProtocolEntity(
+      idConsolaProtocol: idConsolaProtocol ?? this.idConsolaProtocol,
+      protocolo: protocolo ?? this.protocolo,
+      descripcion: descripcion ?? this.descripcion,
+    );
+  }
+
+  @override
+  List<Object?> get props => [idConsolaProtocol, protocolo, descripcion];
+
+  @override
+  int get id => idConsolaProtocol;
+
+  @override
+  String get text => protocolo;
+
+  @override
+  ConsoleProtocolEntity? get value => this;
+}

@@ -44,6 +44,12 @@ dev_dependencies:
     sdk: flutter
   very_good_analysis: ^5.1.0
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/img/icon_app3.png"
 
 flutter:
   uses-material-design: true

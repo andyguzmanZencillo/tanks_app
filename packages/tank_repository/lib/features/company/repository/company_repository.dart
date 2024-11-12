@@ -12,7 +12,7 @@ class CompanyRepository {
   final CompanyApi _api;
 
   Future<Result<Unit, Failure>> saveCompany(String description) {
-    return handleExceptionToken<Unit>(() async {
+    return handleExceptionCompleteToken<Unit>(() async {
       final request = InsertCompanyRequest(descripcion: description);
       await _api.saveCompany(request);
       return unit;

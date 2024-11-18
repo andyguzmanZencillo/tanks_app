@@ -11,6 +11,7 @@ class DropdownCustom<T> extends StatefulWidget {
     required this.isLabelTitle,
     required this.showDecoration,
     this.hint,
+    this.title,
     this.value,
     super.key,
   });
@@ -23,6 +24,7 @@ class DropdownCustom<T> extends StatefulWidget {
   final String? hint;
   final bool isLabelTitle;
   final bool showDecoration;
+  final String? title;
 
   @override
   State<DropdownCustom<T>> createState() => _DropdownCustomState();
@@ -47,16 +49,18 @@ class _DropdownCustomState<T> extends State<DropdownCustom<T>> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.isLabelTitle) ...[
+          if (widget.isLabelTitle || widget.title != null) ...[
             Text(
-              widget.label,
+              widget.title ?? widget.label,
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
               ),
             ),
-            const SizedBox(height: 5),
+            const SizedBox(
+              height: 5,
+            ),
           ],
           Stack(
             children: [

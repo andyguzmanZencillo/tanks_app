@@ -67,6 +67,7 @@ class _TextFieldCustomProState extends State<TextFieldCustomPro> {
                 color: Colors.black,
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             const SizedBox(
@@ -117,6 +118,7 @@ class _TextFieldCustomProState extends State<TextFieldCustomPro> {
                     hintStyle: const TextStyle(
                       color: Color.fromARGB(255, 117, 117, 117),
                       fontWeight: FontWeight.w400,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     suffixIcon: _suffixIcon(),
                     enabledBorder: const OutlineInputBorder(

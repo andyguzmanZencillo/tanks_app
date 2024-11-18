@@ -146,6 +146,7 @@ class UpsertTanksBody extends StatelessWidget {
                                     return null;
                                   },
                                   label: 'Centro de venta',
+                                  title: 'Centro de venta *',
                                   value: itemDefault,
                                   showDecoration: false,
                                   isLabelTitle: true,
@@ -181,6 +182,7 @@ class UpsertTanksBody extends StatelessWidget {
                                     return null;
                                   },
                                   label: 'Articulos',
+                                  title: 'Articulos *',
                                   value: articleEntity,
                                   showDecoration: false,
                                   isLabelTitle: true,

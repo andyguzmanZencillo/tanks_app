@@ -288,25 +288,15 @@ class _DropdownSalesCenterState<T> extends State<DropdownSalesCenter<T>> {
                       color: BlueStoneColors.blueStone600,
                     ),
                     const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        /*const Text(
-                          'Centro de venta',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: Colors.orange,
-                          ),
-                        ),*/
-                        Text(
-                          item.text,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: BlueStoneColors.blueStone900,
-                          ),
+                    Expanded(
+                      child: Text(
+                        item.text,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: BlueStoneColors.blueStone900,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
@@ -346,8 +336,8 @@ class _DropdownSalesCenterState<T> extends State<DropdownSalesCenter<T>> {
               ),
               scrollbarTheme: ScrollbarThemeData(
                 radius: const Radius.circular(40),
-                thickness: MaterialStateProperty.all<double>(6),
-                thumbVisibility: MaterialStateProperty.all<bool>(true),
+                thickness: WidgetStateProperty.all<double>(6),
+                thumbVisibility: WidgetStateProperty.all<bool>(true),
               ),
             ),
             menuItemStyleData: const MenuItemStyleData(
@@ -504,8 +494,8 @@ class _DropdownTanksState<T> extends State<DropdownTanks<T>> {
               ),
               scrollbarTheme: ScrollbarThemeData(
                 radius: const Radius.circular(40),
-                thickness: MaterialStateProperty.all<double>(6),
-                thumbVisibility: MaterialStateProperty.all<bool>(true),
+                thickness: WidgetStateProperty.all<double>(6),
+                thumbVisibility: WidgetStateProperty.all<bool>(true),
               ),
             ),
             menuItemStyleData: const MenuItemStyleData(

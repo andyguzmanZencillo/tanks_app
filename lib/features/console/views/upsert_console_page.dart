@@ -114,10 +114,14 @@ class UpsertConsoleBody extends StatelessWidget {
                           TextFieldCustomPro(
                             controller: inherited.consolaField,
                             label: 'Consola',
+                            title: 'Consola *',
+                            maxLength: 35,
                           ),
                           TextFieldCustomPro(
                             controller: inherited.descripcionField,
                             label: 'Descripción',
+                            title: 'Descripción *',
+                            maxLength: 35,
                           ),
                           BlocSelector<
                               ConsoleProtocolCubit,
@@ -151,6 +155,7 @@ class UpsertConsoleBody extends StatelessWidget {
                                   return null;
                                 },
                                 label: 'Consola Tanque Protocolo',
+                                title: 'Consola Tanque Protocolo *',
                                 value: articleEntity,
                                 showDecoration: false,
                                 isLabelTitle: true,
@@ -197,6 +202,7 @@ class UpsertConsoleBody extends StatelessWidget {
                                         return null;
                                       },
                                       label: 'Tipo',
+                                      title: 'Tipo *',
                                       value: value,
                                       showDecoration: false,
                                       isLabelTitle: true,
@@ -225,6 +231,7 @@ class UpsertConsoleBody extends StatelessWidget {
                                   controller: inherited.socketField,
                                   inputType: TextInputType.number,
                                   label: 'Socket',
+                                  title: 'Socket *',
                                   maxLength: 6,
                                 ),
                               ),
@@ -242,6 +249,7 @@ class UpsertConsoleBody extends StatelessWidget {
                           ),
                           TextFieldCustomPro(
                             controller: inherited.contrasenaIpField,
+                            title: 'Contraseña IP *',
                             label: 'Contraseña IP',
                             maxLength: 15,
                           ),

@@ -44,6 +44,9 @@ class UpsertTanksInherited extends InheritedWidget {
 
   final descripcionField = ControllerField(
     validators: [RequiredValid(error: 'Campo requerido')],
+    inputFormatters: [
+      AlphanumericWithSpaceNoLeadingInputFormatter(),
+    ],
   );
 
   final alturaOffsetField = ControllerField(

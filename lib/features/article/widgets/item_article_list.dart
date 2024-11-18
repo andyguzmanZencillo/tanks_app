@@ -32,12 +32,12 @@ class ItemArticleList extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: BlueStoneColors.blueStone500,
+        color: BlueStoneColors.blueStone200,
       ),
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.center,
         leading: CircleAvatar(
-          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+          backgroundColor: BlueStoneColors.blueStone600,
           child: Icon(
             Icons.circle,
             size: 30,
@@ -46,18 +46,21 @@ class ItemArticleList extends StatelessWidget {
         ),
         title: Text(
           articleEntity.articulo,
-          style:
-              const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: BlueStoneColors.blueStone950,
+          ),
         ),
         subtitle: Text(
           '${articleEntity.descripcion}\nPrecio: \$${articleEntity.precio.toStringAsFixed(2)}',
-          style: TextStyle(color: Colors.grey[200]),
+          style: const TextStyle(
+            color: BlueStoneColors.blueStone900,
+          ),
         ),
         isThreeLine: true,
         trailing: PopupMenuButton(
           icon: const Icon(
             Icons.more_vert,
-            color: Colors.white,
           ),
           itemBuilder: (context) {
             return [

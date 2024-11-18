@@ -127,6 +127,8 @@ class UpsertConsoleInherited extends InheritedWidget {
       socketField.fieldKey,
       puertoSerialField.fieldKey,
       contrasenaIpField.fieldKey,
+      idConsolaTanqueProtocoloField.fieldKey,
+      consoleProtocol.fieldKey,
     ]);
   }
 }

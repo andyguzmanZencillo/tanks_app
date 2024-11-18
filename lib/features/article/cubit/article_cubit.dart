@@ -29,6 +29,7 @@ class ArticleCubit extends Cubit<ArticleState> {
     final result = await articleRepository.getArticles();
     result.when(
       ok: (ok) {
+        ok.sort((a, b) => b.articulo.compareTo(a.articulo));
         emit(
           state.copyWith(
             list: ok,

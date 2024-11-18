@@ -34,6 +34,24 @@ class NoSpaceFormatter extends TextInputFormatter {
   }
 }
 
+class RemoveSpacesFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // Reemplaza los espacios en blanco sin afectar la posición del cursor
+    final newText = newValue.text.replaceAll(' ', '');
+    final cursorPosition =
+        newValue.selection.baseOffset - (newValue.text.length - newText.length);
+
+    return TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: cursorPosition),
+    );
+  }
+}
+
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -109,17 +127,16 @@ class AlphanumericWithSpaceNoLeadingInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    // Filtra solo letras, números y espacios, y elimina los espacios al inicio
     final filteredText = newValue.text
         .replaceAll(RegExp('[^a-zA-Z0-9 ]'), '')
         .replaceFirst(RegExp(r'^\s+'), '');
 
+    final cursorPosition = newValue.selection.baseOffset -
+        (newValue.text.length - filteredText.length);
+
     return TextEditingValue(
       text: filteredText,
-      selection: newValue.selection.copyWith(
-        baseOffset: filteredText.length,
-        extentOffset: filteredText.length,
-      ),
+      selection: TextSelection.collapsed(offset: cursorPosition),
     );
   }
 }

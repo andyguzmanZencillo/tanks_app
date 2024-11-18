@@ -44,6 +44,7 @@ class CreateUpdateSalesCenterInherited extends InheritedWidget {
       ),
       EmailValid(error: 'Formato de correo invalido'),
     ],
+    inputFormatters: [RemoveSpacesFormatter()],
   );
 
   final formKey = GlobalKey<FormState>();

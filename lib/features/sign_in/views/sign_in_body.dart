@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tanks_app/core/util/bloc_generics.dart';
 import 'package:tanks_app/core/util/constans/assets.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
-import 'package:tanks_app/core/widgets/form/text_field_custom_pro.dart';
+import 'package:tanks_app/core/widgets/form/text_field_custom_new.dart';
+import 'package:tanks_app/core/widgets/form/text_field_custom_password.dart';
 import 'package:tanks_app/features/sign_in/cubit/sign_in_cubit.dart';
 import 'package:tanks_app/features/sign_in/helper/sign_in_inherited.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -59,17 +60,19 @@ class SignInBody extends StatelessWidget {
                         const SizedBox(
                           height: 20,
                         ),
-                        TextFieldCustomPro(
+                        TextFieldCustomNew(
                           controller: inherited.idCompany,
                           label: 'ID compañia',
+                          title: 'ID compañia',
                         ),
-                        TextFieldCustomPro(
+                        TextFieldCustomNew(
                           controller: inherited.user,
-                          label: 'Usuario',
+                          title: 'Usuario o correo electrónico',
+                          label: 'Usuario o correo electrónico',
                         ),
-                        TextFieldCustomPro(
+                        TextFieldCustomPassword(
                           controller: inherited.password,
-                          isPassword: true,
+                          title: 'Contraseña',
                           label: 'Contraseña',
                         ),
                         const SizedBox(

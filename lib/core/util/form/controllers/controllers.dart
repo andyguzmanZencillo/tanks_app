@@ -61,6 +61,33 @@ class ControllerField {
   }
 }
 
+class ControllerFieldPro {
+  ControllerFieldPro();
+  final _textEditingController = TextEditingController();
+  final _fieldKey = GlobalKey<FormFieldState<String>>();
+  final _focusNode = FocusNode();
+
+  GlobalKey<FormFieldState<String>> get fieldKey => _fieldKey;
+  FocusNode get focuNode => _focusNode;
+  TextEditingController get textEditingController => _textEditingController;
+
+  // ignore: use_setters_to_change_properties
+  void setValue(String value) {
+    log(value);
+    _textEditingController.text = value;
+  }
+
+  String getValue() {
+    return _textEditingController.text;
+  }
+
+  void dispose() {
+    _textEditingController.dispose();
+    _fieldKey.currentState?.dispose();
+    _focusNode.dispose();
+  }
+}
+
 class ControllerFieldDropdown<T> {
   ValueExtend<T> _value = ValueExtend<T>();
   final _fieldKey = GlobalKey<FormFieldState<ValueExtend<T>>>();

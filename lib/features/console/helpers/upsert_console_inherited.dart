@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
-import 'package:tanks_app/core/util/form/validator_field/valid.dart';
-import 'package:tanks_app/core/util/formaters/formaters.dart';
 import 'package:tanks_app/features/article/helpers/create_update_inherited.dart';
 
 class UpsertConsoleInherited extends InheritedWidget {
@@ -19,60 +16,14 @@ class UpsertConsoleInherited extends InheritedWidget {
 
   final TypeOperation typeOperation;
   final consoleProtocol = ControllerFieldDropdown<ConsoleProtocolEntity>();
-  final consolaField = ControllerField(
-    validators: [
-      RequiredValid(error: 'Campo requerido'),
-    ],
-    inputFormatters: [
-      AlphanumericWithSpaceNoLeadingInputFormatter(),
-    ],
-  );
-  final descripcionField = ControllerField(
-    validators: [
-      RequiredValid(error: 'Campo requerido'),
-    ],
-    inputFormatters: [
-      AlphanumericWithSpaceNoLeadingInputFormatter(),
-    ],
-  );
-  final idConsolaTanqueProtocoloField = ControllerField(
-    validators: [
-      RequiredValid(error: 'Campo requerido'),
-    ],
-    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-  );
+  final consolaField = ControllerFieldPro();
+  final descripcionField = ControllerFieldPro();
+  final idConsolaTanqueProtocoloField = ControllerFieldPro();
   final tipoField = ControllerFieldDropdown<String>();
-  final ipField = ControllerField(
-    /*validators: [
-      RequiredValid(error: 'Campo requerido'),
-      IPValid(error: 'Formato IP invalido'),
-    ],*/
-    inputFormatters: [
-      IpAddressInputFormatter(),
-    ],
-  );
-  final socketField = ControllerField(
-    validators: [
-      RequiredValid(error: 'Campo requerido'),
-    ],
-    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-  );
-  final puertoSerialField = ControllerField(
-    /*validators: [
-      RequiredValid(error: 'Campo requerido'),
-    ],*/
-    inputFormatters: [
-      FilteringTextInputFormatter.digitsOnly,
-    ],
-  );
-  final contrasenaIpField = ControllerField(
-    validators: [
-      RequiredValid(error: 'Campo requerido'),
-    ],
-    inputFormatters: [
-      NoSpaceFormatter(),
-    ],
-  );
+  final ipField = ControllerFieldPro();
+  final socketField = ControllerFieldPro();
+  final puertoSerialField = ControllerFieldPro();
+  final contrasenaIpField = ControllerFieldPro();
 
   final formKey = GlobalKey<FormState>();
 

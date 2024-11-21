@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tank_repository/features/sales_center/entity/sales_center_entity.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
-import 'package:tanks_app/core/util/form/validator_field/valid.dart';
-import 'package:tanks_app/core/util/formaters/formaters.dart';
 import 'package:tanks_app/features/article/helpers/create_update_inherited.dart';
 
 class CreateUpdateSalesCenterInherited extends InheritedWidget {
@@ -17,42 +15,16 @@ class CreateUpdateSalesCenterInherited extends InheritedWidget {
 
   final TypeOperation typeOperation;
 
-  final saleCenter = ControllerField(
-    validators: [
-      RequiredValid(
-        error: 'Campo centro de venta requerido',
-      ),
-    ],
-    inputFormatters: [
-      AlphanumericWithSpaceNoLeadingInputFormatter(),
-    ],
-  );
-  final description = ControllerField(
-    validators: [
-      RequiredValid(
-        error: 'Campo descripción requerido',
-      ),
-    ],
-    inputFormatters: [
-      AlphanumericWithSpaceNoLeadingInputFormatter(),
-    ],
-  );
-  final email = ControllerField(
-    validators: [
-      RequiredValid(
-        error: 'Campo correo electronico requerido',
-      ),
-      EmailValid(error: 'Formato de correo invalido'),
-    ],
-    inputFormatters: [RemoveSpacesFormatter()],
-  );
+  final saleCenter = ControllerFieldPro();
+  final description = ControllerFieldPro();
+  final email = ControllerFieldPro();
 
   final formKey = GlobalKey<FormState>();
 
   static CreateUpdateSalesCenterInherited of(BuildContext context) {
     final result = context
         .dependOnInheritedWidgetOfExactType<CreateUpdateSalesCenterInherited>();
-    assert(result != null, 'No LicenseFormInherited found in context');
+    assert(result != null, 'No  FormInherited found in context');
     return result!;
   }
 

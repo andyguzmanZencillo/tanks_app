@@ -213,3 +213,25 @@ class IpAddressInputFormatter extends TextInputFormatter {
     }
   }
 }
+
+class TrailingSpaceFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // Elimina los espacios finales del texto, pero respeta la posición del cursor
+    final trimmedText = newValue.text.trimRight();
+    final cursorPosition = newValue.selection.baseOffset;
+
+    // Ajusta la posición del cursor si estaba al final
+    final newCursorPosition = cursorPosition > trimmedText.length
+        ? trimmedText.length
+        : cursorPosition;
+
+    return TextEditingValue(
+      text: trimmedText,
+      selection: TextSelection.collapsed(offset: newCursorPosition),
+    );
+  }
+}

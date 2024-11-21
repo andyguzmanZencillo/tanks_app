@@ -8,13 +8,14 @@ import 'package:tanks_app/core/util/bloc_generics.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
-import 'package:tanks_app/core/widgets/form/text_field_custom_pro.dart';
+import 'package:tanks_app/core/widgets/form/text_field_custom_new.dart';
 import 'package:tanks_app/features/article/helpers/create_update_inherited.dart';
 import 'package:tanks_app/features/tanks/cubit/tanks_cubit.dart';
 import 'package:tanks_app/features/tanks/cubit/upsert_tanks_cubit.dart';
+import 'package:tanks_app/features/tanks/helpers/extend_fields_tanks.dart';
 import 'package:tanks_app/features/tanks/helpers/map_inherited_to_entity.dart';
 import 'package:tanks_app/features/tanks/helpers/upsert_tanks_inherited.dart';
-import 'package:tanks_app/features/tanks/widgets/dropdown.dart';
+import 'package:tanks_app/features/tanks/widgets/dropdown_pro.dart';
 import 'package:tanks_app/injection/injection.dart';
 
 class UpsertTanksPage extends StatelessWidget {
@@ -89,12 +90,11 @@ class UpsertTanksBody extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           inherited.typeOperation == TypeOperation.create
-              ? 'Creación de un tanque'
-              : 'Actualización de un tanque',
+              ? 'Nuevo tanque'
+              : 'Actualizar tanque',
           style: const TextStyle(fontWeight: FontWeight.w500),
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
       ),
       resizeToAvoidBottomInset: true,
       body: BlocContext<UpsertTanksCubit, UpsertTanksState>(
@@ -137,7 +137,7 @@ class UpsertTanksBody extends StatelessWidget {
                                   );
                                 }
 
-                                return DropdownCustom(
+                                return DropdownCustomPro(
                                   controller: inherited.saleCenter,
                                   validator: (p0) {
                                     if (p0 == null) {
@@ -173,7 +173,7 @@ class UpsertTanksBody extends StatelessWidget {
                                         tanksCubit.state.selected.idArticulo,
                                   );
                                 }
-                                return DropdownCustom(
+                                return DropdownCustomPro(
                                   controller: inherited.article,
                                   validator: (p0) {
                                     if (p0 == null) {
@@ -182,7 +182,7 @@ class UpsertTanksBody extends StatelessWidget {
                                     return null;
                                   },
                                   label: 'Articulos',
-                                  title: 'Articulos *',
+                                  title: 'Articulos',
                                   value: articleEntity,
                                   showDecoration: false,
                                   isLabelTitle: true,
@@ -211,7 +211,7 @@ class UpsertTanksBody extends StatelessWidget {
                                   );
                                 }
 
-                                return DropdownCustom(
+                                return DropdownCustomPro(
                                   controller: inherited.console,
                                   validator: (p0) {
                                     /*if (p0 == null) {
@@ -231,69 +231,46 @@ class UpsertTanksBody extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  child: TextFieldCustomPro(
+                                  child: TextFieldPro(
                                     controller: inherited.capacidadField,
-                                    label: 'Capacidad',
-                                    title: 'Capacidad *',
-                                    maxLength: 10,
-                                    inputType:
-                                        const TextInputType.numberWithOptions(
-                                      decimal: true,
-                                    ),
+                                    extendTextField: ExtendFieldsTanks.capacity,
                                   ),
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
-                                  child: TextFieldCustomPro(
+                                  child: TextFieldPro(
                                     controller: inherited.alturaTanqueField,
-                                    label: 'Altura Tanque',
-                                    title: 'Altura Tanque *',
-                                    maxLength: 6,
-                                    inputType:
-                                        const TextInputType.numberWithOptions(
-                                      decimal: true,
-                                    ),
+                                    extendTextField:
+                                        ExtendFieldsTanks.alturaTanque,
                                   ),
                                 ),
                               ],
                             ),
-                            TextFieldCustomPro(
+                            TextFieldPro(
                               controller: inherited.descripcionField,
-                              title: 'Descripción *',
-                              label: 'Descripción',
-                              maxLength: 40,
+                              extendTextField: ExtendFieldsTanks.descripcion,
                             ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  child: TextFieldCustomPro(
+                                  child: TextFieldPro(
                                     controller: inherited.alturaOffsetField,
-                                    label: 'Altura Offset',
-                                    title: 'Altura Offset *',
-                                    maxLength: 6,
-                                    inputType:
-                                        const TextInputType.numberWithOptions(
-                                      decimal: true,
-                                    ),
+                                    extendTextField:
+                                        ExtendFieldsTanks.alturaOffset,
                                   ),
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
-                                  child: TextFieldCustomPro(
+                                  child: TextFieldPro(
                                     controller:
                                         inherited.factorInicioDescargueField,
-                                    label: 'Fact. inicio descargue',
-                                    title: 'Fact. inicio descargue *',
-                                    maxLength: 6,
-                                    inputType:
-                                        const TextInputType.numberWithOptions(
-                                      decimal: true,
-                                    ),
+                                    extendTextField:
+                                        ExtendFieldsTanks.factorInicioDescargue,
                                   ),
                                 ),
                               ],
@@ -302,30 +279,19 @@ class UpsertTanksBody extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  child: TextFieldCustomPro(
+                                  child: TextFieldPro(
                                     controller: inherited.codigoField,
-                                    label: 'Codigo',
-                                    title: 'Codigo *',
-                                    maxLength: 7,
-                                    inputType:
-                                        const TextInputType.numberWithOptions(
-                                      decimal: true,
-                                    ),
+                                    extendTextField: ExtendFieldsTanks.codigo,
                                   ),
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
-                                  child: TextFieldCustomPro(
+                                  child: TextFieldPro(
                                     controller: inherited.alturaAguaOffsetField,
-                                    label: 'Altura agua offset',
-                                    title: 'Altura agua offset *',
-                                    maxLength: 6,
-                                    inputType:
-                                        const TextInputType.numberWithOptions(
-                                      decimal: true,
-                                    ),
+                                    extendTextField:
+                                        ExtendFieldsTanks.alturaAguaOffset,
                                   ),
                                 ),
                               ],
@@ -334,32 +300,22 @@ class UpsertTanksBody extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  child: TextFieldCustomPro(
+                                  child: TextFieldPro(
                                     controller:
                                         inherited.offsetInclinacionField,
-                                    label: 'Offset inclinación',
-                                    title: 'Offset inclinación *',
-                                    maxLength: 6,
-                                    inputType:
-                                        const TextInputType.numberWithOptions(
-                                      decimal: true,
-                                    ),
+                                    extendTextField:
+                                        ExtendFieldsTanks.offsetInclinacion,
                                   ),
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
-                                  child: TextFieldCustomPro(
+                                  child: TextFieldPro(
                                     controller: inherited
                                         .porcentajeMinimoCombustibleField,
-                                    label: '% Mín. Combustible',
-                                    title: '% Mín. Combustible *',
-                                    maxLength: 6,
-                                    inputType:
-                                        const TextInputType.numberWithOptions(
-                                      decimal: true,
-                                    ),
+                                    extendTextField: ExtendFieldsTanks
+                                        .porcentajeMinimoCombustible,
                                   ),
                                 ),
                               ],
@@ -436,29 +392,50 @@ class UpsertTanksBody extends StatelessWidget {
                             const SizedBox(
                               height: 10,
                             ),
-                            ButtonCustom(
-                              onPressed: () {
-                                final validResult = inherited.valid();
-                                if (validResult.isPassed) {
-                                  FocusManager.instance.primaryFocus?.unfocus();
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ButtonCustom(
+                                    backgroundColor: Colors.red,
+                                    onPressed: () {
+                                      context.pop();
+                                    },
+                                    text: 'Cancelar',
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: ButtonCustom(
+                                    onPressed: () {
+                                      final validResult = inherited.valid();
+                                      if (validResult.isPassed) {
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
 
-                                  if (isCreate) {
-                                    cubit.create(
-                                      tanksEntity: inherited.toTankEntity(),
-                                    );
-                                  } else if (isUpdate) {
-                                    cubit.update(
-                                      tanksEntity: inherited.toTankEntityUpdate(
-                                        tanksCubit.state.selected,
-                                      ),
-                                    );
-                                  }
-                                }
-                              },
-                              text: inherited.typeOperation ==
-                                      TypeOperation.create
-                                  ? 'Crear Tanque'
-                                  : 'Actualizar Tanque',
+                                        if (isCreate) {
+                                          cubit.create(
+                                            tanksEntity:
+                                                inherited.toTankEntity(),
+                                          );
+                                        } else if (isUpdate) {
+                                          cubit.update(
+                                            tanksEntity:
+                                                inherited.toTankEntityUpdate(
+                                              tanksCubit.state.selected,
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                    text: inherited.typeOperation ==
+                                            TypeOperation.create
+                                        ? 'Crear Tanque'
+                                        : 'Actualizar Tanque',
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tank_repository/features/article/article.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
-import 'package:tanks_app/core/util/form/validator_field/valid.dart';
-import 'package:tanks_app/core/util/formaters/formaters.dart';
 
 enum TypeOperation {
   create,
@@ -25,69 +22,13 @@ class UpsertArticleInherited extends InheritedWidget {
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
 
   final TypeOperation typeOperation;
-
-  final nameArticle = ControllerField(
-    validators: [
-      RequiredValid(
-        error: 'Campo nombre artículo requerido',
-      ),
-    ],
-    inputFormatters: [
-      AlphanumericWithSpaceNoLeadingInputFormatter(),
-    ],
-  );
-
-  final description = ControllerField(
-    validators: [
-      RequiredValid(
-        error: 'Campo descripción requerida',
-      ),
-    ],
-    inputFormatters: [
-      AlphanumericWithSpaceNoLeadingInputFormatter(),
-    ],
-  );
-
-  final codeArticle = ControllerField(
-    validators: [
-      RequiredValid(
-        error: 'Campo código artículo requerido',
-      ),
-    ],
-    inputFormatters: [
-      AlphanumericWithSpaceNoLeadingInputFormatter(),
-      NoSpaceFormatter(),
-    ],
-  );
-
-  final color = ControllerField(
-    validators: [
-      RequiredValid(
-        error: 'Campo color requerido',
-      ),
-    ],
-  );
-
-  final price = ControllerField(
-    validators: [
-      RequiredValid(
-        error: 'Campo precio requerido',
-      ),
-    ],
-    inputFormatters: [
-      //FilteringTextInputFormatter.digitsOnly,
-      DecimalTextInputFormatter(decimalRange: 3),
-      FilteringTextInputFormatter.allow(
-        RegExp(r'^\d+\.?\d{0,3}'),
-      ),
-      FilteringTextInputFormatter.deny(
-        RegExp(r'\s'),
-      ),
-      NoOnlyZeroInputFormatter(),
-    ],
-  );
-
   final formKey = GlobalKey<FormState>();
+
+  final nameArticle = ControllerFieldPro();
+  final description = ControllerFieldPro();
+  final codeArticle = ControllerFieldPro();
+  final color = ControllerFieldPro();
+  final price = ControllerFieldPro();
 
   static UpsertArticleInherited of(BuildContext context) {
     final result =

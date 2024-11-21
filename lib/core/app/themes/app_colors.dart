@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class BlueStoneColors {
-  static const Color blueStone50 = Color(0xFFF3FAF9);
-  static const Color blueStone100 = Color(0xFFD6F1ED);
+  static const Color blueStone55 = Color(0xFFF3FAF9);
+
+  static const Color blueStone50 = Color.fromARGB(255, 255, 255, 255);
+  static const Color blueStone100 = Color.fromARGB(255, 255, 255, 255);
+  static const Color blueStone150 = Color(0xFFD6F1ED);
   static const Color blueStone200 = Color(0xFFACE3DB);
   static const Color blueStone300 = Color(0xFF7BCD45);
   static const Color blueStone400 = Color(0xFF4FB2AB);

@@ -18,7 +18,7 @@ dependencies:
     path: ../failures
   flutter_secure_storage: ^9.0.0
   get_storage: ^2.1.1
-  intl: ^0.19.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

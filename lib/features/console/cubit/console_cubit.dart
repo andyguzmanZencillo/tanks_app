@@ -17,6 +17,23 @@ class ConsoleCubit extends Cubit<ConsoleState> {
     emit(state.copyWith(selected: consoleEntity));
   }
 
+  void changeSort(Sort sort) {
+    final sortedItems = sortList(sort, state.list);
+    emit(state.copyWith(sort: sort, list: sortedItems));
+  }
+
+  List<ConsoleEntity> sortList(Sort sort, List<ConsoleEntity> list) {
+    final sortedItems = List<ConsoleEntity>.from(list);
+    sortedItems.sort((a, b) {
+      if (sort == Sort.asc) {
+        return a.consola.compareTo(b.consola);
+      } else {
+        return b.consola.compareTo(a.consola);
+      }
+    });
+    return sortedItems;
+  }
+
   Future<bool> getAll() async {
     emit(
       state.copyWith(
@@ -27,10 +44,11 @@ class ConsoleCubit extends Cubit<ConsoleState> {
     final result = await consoleRepository.getAll();
     result.when(
       ok: (ok) {
+        final sortedItems = sortList(state.sort, ok);
         emit(
           state.copyWith(
-            list: ok,
-            listCopy: ok,
+            list: sortedItems,
+            listCopy: sortedItems,
             generalStatus: GeneralStatus.success,
             dialogMessage: MessageConsoleListener.successGet,
           ),
@@ -69,8 +87,8 @@ class ConsoleCubit extends Cubit<ConsoleState> {
               element.consola.toLowerCase().contains(text.toLowerCase()),
         )
         .toList();
-
-    emit(state.copyWith(list: listSearh));
+    final sortedItems = sortList(state.sort, listSearh);
+    emit(state.copyWith(list: sortedItems));
   }
 
   Future<void> create({

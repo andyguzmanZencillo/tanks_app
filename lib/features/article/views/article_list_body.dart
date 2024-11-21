@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
 import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/util/extensions/extension_list.dart';
-import 'package:tanks_app/core/util/form/controllers/controllers.dart';
-import 'package:tanks_app/core/widgets/form/text_field_custom_pro.dart';
+import 'package:tanks_app/core/widgets/form/text_field_custom_new.dart';
+import 'package:tanks_app/core/widgets/form/text_field_custom_search.dart';
 import 'package:tanks_app/features/article/cubit/article_cubit.dart';
 import 'package:tanks_app/features/article/helpers/create_update_inherited.dart';
 import 'package:tanks_app/features/article/views/create_update_view.dart';
 import 'package:tanks_app/features/article/widgets/article_delete_dialog.dart';
-import 'package:tanks_app/features/article/widgets/item_article_list.dart';
+import 'package:tanks_app/features/article/widgets/item_article_list2.dart';
 
 class ArticleListBody extends StatelessWidget {
   const ArticleListBody({super.key});
@@ -26,19 +26,23 @@ class ArticleListBody extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Row(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 10,
+              left: 20,
+              right: 20,
+            ),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: TextFieldCustomPro(
-                    controller: ControllerField(),
-                    label: 'Buscar...',
-                    isLabelTitle: false,
+                  child: TextFieldSearch(
+                    extendTextField: ExtendTextField(
+                      label: 'Buscar artículo...',
+                    ),
                     onChanged: articleListCubit.search,
                   ),
                 ),
@@ -59,21 +63,22 @@ class ArticleListBody extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: BlocBuilder<ArticleCubit, ArticleState>(
-                builder: (context, state) {
-                  final list = state.list;
-                  return RefreshIndicator(
-                    onRefresh: () {
-                      return context.read<ArticleCubit>().getArticles();
-                    },
+          ),
+          Expanded(
+            child: BlocBuilder<ArticleCubit, ArticleState>(
+              builder: (context, state) {
+                final list = state.list;
+                return RefreshIndicator(
+                  onRefresh: () {
+                    return context.read<ArticleCubit>().getArticles();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
                     child: list.toListView(
-                      itemSpacing: 10,
                       itemBuilder: (context, item, index) {
-                        return ItemArticleList(
+                        return ItemArticleList2(
                           articleEntity: item,
                           ontalEdit: () {
                             articleListCubit.onChangeSelected(item);
@@ -106,12 +111,12 @@ class ArticleListBody extends StatelessWidget {
                         );
                       },
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

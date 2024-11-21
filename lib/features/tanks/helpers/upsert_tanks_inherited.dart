@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tank_repository/features/article/article.dart';
 import 'package:tank_repository/tank_repository.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
-import 'package:tanks_app/core/util/form/validator_field/valid.dart';
-import 'package:tanks_app/core/util/formaters/formaters.dart';
 import 'package:tanks_app/features/article/helpers/create_update_inherited.dart';
 
 class UpsertTanksInherited extends InheritedWidget {
@@ -18,94 +15,23 @@ class UpsertTanksInherited extends InheritedWidget {
 
   final TypeOperation typeOperation;
 
-  // Campos relacionados con TanksEntity
   final saleCenter = ControllerFieldDropdown<SalesCenterEntity>();
   final article = ControllerFieldDropdown<ArticleEntity>();
   final console = ControllerFieldDropdown<ConsoleEntity>();
 
-  final capacidadField = ControllerField(
-    validators: [RequiredValid(error: 'Campo requerido')],
-    inputFormatters: [
-      DecimalTextInputFormatter(decimalRange: 3),
-      FilteringTextInputFormatter.allow(
-        RegExp(r'^\d+\.?\d{0,3}'),
-      ),
-    ],
-  );
-  final alturaTanqueField = ControllerField(
-    validators: [RequiredValid(error: 'Campo requerido')],
-    inputFormatters: [
-      DecimalTextInputFormatter(decimalRange: 3),
-      FilteringTextInputFormatter.allow(
-        RegExp(r'^\d+\.?\d{0,3}'),
-      ),
-    ],
-  );
+  final capacidadField = ControllerFieldPro();
+  final alturaTanqueField = ControllerFieldPro();
 
-  final descripcionField = ControllerField(
-    validators: [RequiredValid(error: 'Campo requerido')],
-    inputFormatters: [
-      AlphanumericWithSpaceNoLeadingInputFormatter(),
-    ],
-  );
+  final descripcionField = ControllerFieldPro();
 
-  final alturaOffsetField = ControllerField(
-    validators: [RequiredValid(error: 'Campo requerido')],
-    inputFormatters: [
-      DecimalTextInputFormatter(decimalRange: 3),
-      FilteringTextInputFormatter.allow(
-        RegExp(r'^\d+\.?\d{0,3}'),
-      ),
-    ],
-  );
-  final factorInicioDescargueField = ControllerField(
-    validators: [RequiredValid(error: 'Campo requerido')],
-    inputFormatters: [
-      DecimalTextInputFormatter(decimalRange: 3),
-      FilteringTextInputFormatter.allow(
-        RegExp(r'^\d+\.?\d{0,3}'),
-      ),
-    ],
-  );
+  final alturaOffsetField = ControllerFieldPro();
+  final factorInicioDescargueField = ControllerFieldPro();
 
-  final codigoField = ControllerField(
-    validators: [RequiredValid(error: 'Campo requerido')],
-    inputFormatters: [
-      FilteringTextInputFormatter.digitsOnly,
-    ],
-  );
-  final alturaAguaOffsetField = ControllerField(
-    validators: [RequiredValid(error: 'Campo requerido')],
-    inputFormatters: [
-      DecimalTextInputFormatter(decimalRange: 3),
-      FilteringTextInputFormatter.allow(
-        RegExp(r'^\d+\.?\d{0,3}'),
-      ),
-    ],
-  );
+  final codigoField = ControllerFieldPro();
+  final alturaAguaOffsetField = ControllerFieldPro();
 
-  final offsetInclinacionField = ControllerField(
-    validators: [RequiredValid(error: 'Campo requerido')],
-    inputFormatters: [
-      DecimalTextInputFormatter(decimalRange: 3),
-      FilteringTextInputFormatter.allow(
-        RegExp(r'^\d+\.?\d{0,3}'),
-      ),
-    ],
-  );
-  final porcentajeMinimoCombustibleField = ControllerField(
-    validators: [RequiredValid(error: 'Campo requerido')],
-    inputFormatters: [
-      DecimalTextInputFormatter(decimalRange: 3),
-      FilteringTextInputFormatter.allow(
-        RegExp(r'^\d+\.?\d{0,3}'),
-      ),
-    ],
-  );
-
-  final estadoField = ControllerField();
-  final modificableField = ControllerField();
-  final manejaMmField = ControllerField();
+  final offsetInclinacionField = ControllerFieldPro();
+  final porcentajeMinimoCombustibleField = ControllerFieldPro();
 
   final formKey = GlobalKey<FormState>();
 
@@ -128,9 +54,6 @@ class UpsertTanksInherited extends InheritedWidget {
     codigoField.setValue(tanksEntity.codigo.toString());
     alturaAguaOffsetField.setValue(tanksEntity.alturaAguaOffset.toString());
     offsetInclinacionField.setValue(tanksEntity.offsetInclinacion.toString());
-    estadoField.setValue(tanksEntity.estado.toString());
-    modificableField.setValue(tanksEntity.modificable.toString());
-    manejaMmField.setValue(tanksEntity.manejaMm.toString());
   }
 
   void dispose() {
@@ -143,9 +66,6 @@ class UpsertTanksInherited extends InheritedWidget {
     codigoField.dispose();
     alturaAguaOffsetField.dispose();
     offsetInclinacionField.dispose();
-    estadoField.dispose();
-    modificableField.dispose();
-    manejaMmField.dispose();
     saleCenter.dispose();
     console.dispose();
     article.dispose();
@@ -161,9 +81,6 @@ class UpsertTanksInherited extends InheritedWidget {
     codigoField.textEditingController.clear();
     alturaAguaOffsetField.textEditingController.clear();
     offsetInclinacionField.textEditingController.clear();
-    estadoField.textEditingController.clear();
-    modificableField.textEditingController.clear();
-    manejaMmField.textEditingController.clear();
   }
 
   ResultValidate valid() {
@@ -177,9 +94,6 @@ class UpsertTanksInherited extends InheritedWidget {
       codigoField.fieldKey,
       alturaAguaOffsetField.fieldKey,
       offsetInclinacionField.fieldKey,
-      estadoField.fieldKey,
-      modificableField.fieldKey,
-      manejaMmField.fieldKey,
       saleCenter.fieldKey,
       console.fieldKey,
       article.fieldKey,

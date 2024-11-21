@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tanks_app/core/util/extensions/extension_context.dart';
 import 'package:tanks_app/core/util/full_widget_generics.dart';
 import 'package:tanks_app/core/widgets/button_custom.dart';
-import 'package:tanks_app/core/widgets/form/colo_picker_text_field.dart';
-import 'package:tanks_app/core/widgets/form/text_field_custom_pro.dart';
+import 'package:tanks_app/core/widgets/form/color_picker_text_field_pro.dart';
+import 'package:tanks_app/core/widgets/form/text_field_custom_new.dart';
 import 'package:tanks_app/features/article/cubit/article_cubit.dart';
 import 'package:tanks_app/features/article/helpers/create_update_inherited.dart';
+import 'package:tanks_app/features/article/helpers/extend_fields_article.dart';
 
 class CreateUpdatePage extends StatelessWidget {
   const CreateUpdatePage({
@@ -51,78 +53,74 @@ class CreateUpdateBody extends StatelessWidget {
     final articleCubit = context.read<ArticleCubit>();
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          inherited.typeOperation == TypeOperation.create
+              ? 'Nuevo artículo'
+              : 'Modificar artículo',
+          style: const TextStyle(
+            fontWeight: FontWeight.w500,
+            color: Color.fromARGB(255, 16, 16, 34),
+          ),
+        ),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
       resizeToAvoidBottomInset: true,
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      body: CustomScrollView(
-        slivers: [
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        inherited.typeOperation == TypeOperation.create
-                            ? 'Registro de un artículo'
-                            : 'Actualización de artículo',
-                        style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: inherited.formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /*TextFieldCustomNew(
+                      controller: inherited.nameArticle,
+                      label: 'Nombre Artículo',
+                      title: 'Nombre Artículo',
+                      maxLength: 35,
+                    ),*/
+                    TextFieldPro(
+                      extendTextField: ExtendFieldsArticle.nameArticle,
+                      controller: inherited.nameArticle,
                     ),
-                    child: Form(
-                      key: inherited.formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 20,
+                    TextFieldPro(
+                      extendTextField: ExtendFieldsArticle.description,
+                      controller: inherited.description,
+                    ),
+                    TextFieldPro(
+                      extendTextField: ExtendFieldsArticle.codeArticle,
+                      controller: inherited.codeArticle,
+                    ),
+                    ColorPickerTextFieldPro(
+                      controller: inherited.color,
+                    ),
+                    TextFieldPro(
+                      extendTextField: ExtendFieldsArticle.price,
+                      controller: inherited.price,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ButtonCustom(
+                            backgroundColor: Colors.red,
+                            onPressed: () {
+                              context.pop();
+                            },
+                            text: 'Cancelar',
                           ),
-                          TextFieldCustomPro(
-                            controller: inherited.nameArticle,
-                            label: 'Nombre Artículo',
-                            maxLength: 35,
-                          ),
-                          TextFieldCustomPro(
-                            controller: inherited.description,
-                            label: 'Descripción',
-                            maxLength: 35,
-                          ),
-                          TextFieldCustomPro(
-                            controller: inherited.codeArticle,
-                            label: 'Codigo Artículo',
-                            maxLength: 10,
-                          ),
-                          ColorPickerTextField(
-                            controller: inherited.color,
-                          ),
-                          TextFieldCustomPro(
-                            controller: inherited.price,
-                            label: 'Precio',
-                            maxLength: 10,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          ButtonCustom(
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: ButtonCustom(
                             onPressed: () {
                               final validResult = inherited.valid();
                               if (validResult.isPassed) {
@@ -156,18 +154,18 @@ class CreateUpdateBody extends StatelessWidget {
                             },
                             text:
                                 inherited.typeOperation == TypeOperation.create
-                                    ? 'Registrar Artículo'
-                                    : 'Actualizar Artículo',
+                                    ? 'Registrar'
+                                    : 'Actualizar',
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

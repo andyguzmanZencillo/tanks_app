@@ -7,6 +7,7 @@ class SalesCenterState extends Equatable implements StatusState {
     this.listCopy = const [],
     this.selected = const SalesCenterEntity.empty(),
     this.dialogMessage = const DialogMessage.empty(),
+    this.sort = Sort.asc,
   });
 
   @override
@@ -14,6 +15,7 @@ class SalesCenterState extends Equatable implements StatusState {
   final List<SalesCenterEntity> list;
   final List<SalesCenterEntity> listCopy;
   final SalesCenterEntity selected;
+  final Sort sort;
 
   @override
   final DialogMessage dialogMessage;
@@ -23,11 +25,13 @@ class SalesCenterState extends Equatable implements StatusState {
     List<SalesCenterEntity>? list,
     List<SalesCenterEntity>? listCopy,
     SalesCenterEntity? selected,
+    Sort? sort,
     DialogMessage? dialogMessage,
   }) {
     return SalesCenterState(
       generalStatus: generalStatus ?? this.generalStatus,
       list: list ?? this.list,
+      sort: sort ?? this.sort,
       listCopy: listCopy ?? this.listCopy,
       selected: selected ?? this.selected,
       dialogMessage: dialogMessage ?? this.dialogMessage,
@@ -40,6 +44,7 @@ class SalesCenterState extends Equatable implements StatusState {
         list,
         listCopy,
         selected,
+        sort,
         dialogMessage,
       ];
 }

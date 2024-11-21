@@ -7,12 +7,13 @@ class ConsoleState extends Equatable implements StatusState {
     this.selected = const ConsoleEntity.empty(),
     this.generalStatus = GeneralStatus.initial,
     this.dialogMessage = const DialogMessage.empty(),
+    this.sort = Sort.asc,
   });
 
   final List<ConsoleEntity> list;
   final List<ConsoleEntity> listCopy;
   final ConsoleEntity selected;
-
+  final Sort sort;
   @override
   final GeneralStatus generalStatus;
 
@@ -25,9 +26,11 @@ class ConsoleState extends Equatable implements StatusState {
     ConsoleEntity? selected,
     GeneralStatus? generalStatus,
     DialogMessage? dialogMessage,
+    Sort? sort,
   }) {
     return ConsoleState(
       list: list ?? this.list,
+      sort: sort ?? this.sort,
       listCopy: listCopy ?? this.listCopy,
       selected: selected ?? this.selected,
       generalStatus: generalStatus ?? this.generalStatus,
@@ -40,6 +43,7 @@ class ConsoleState extends Equatable implements StatusState {
         list,
         listCopy,
         selected,
+        sort,
         generalStatus,
         dialogMessage,
       ];

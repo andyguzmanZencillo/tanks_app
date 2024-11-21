@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tanks_app/core/app/themes/app_colors.dart';
 
 class DetailRow extends StatelessWidget {
   const DetailRow(
@@ -16,18 +15,19 @@ class DetailRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
         children: [
           Icon(
             icon,
-            color: BlueStoneColors.blueStone900,
+            size: 16,
+            color: const Color.fromARGB(255, 68, 68, 68),
           ),
           const SizedBox(width: 10),
           Text(
             label,
             style: const TextStyle(
-              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 68, 68, 68),
               fontSize: 16,
             ),
           ),
@@ -36,7 +36,8 @@ class DetailRow extends StatelessWidget {
             value,
             style: const TextStyle(
               fontSize: 16,
-              color: BlueStoneColors.blueStone600,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
           ),
         ],

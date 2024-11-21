@@ -20,6 +20,23 @@ class SalesCenterCubit extends Cubit<SalesCenterState> {
     emit(state.copyWith(selected: selected));
   }
 
+  void changeSort(Sort sort) {
+    final sortedItems = sortList(sort, state.list);
+    emit(state.copyWith(sort: sort, list: sortedItems));
+  }
+
+  List<SalesCenterEntity> sortList(Sort sort, List<SalesCenterEntity> list) {
+    final sortedItems = List<SalesCenterEntity>.from(list);
+    sortedItems.sort((a, b) {
+      if (sort == Sort.asc) {
+        return a.centroVenta.compareTo(b.centroVenta);
+      } else {
+        return b.centroVenta.compareTo(a.centroVenta);
+      }
+    });
+    return sortedItems;
+  }
+
   Future<bool> getAll() async {
     emit(
       state.copyWith(
@@ -30,11 +47,12 @@ class SalesCenterCubit extends Cubit<SalesCenterState> {
     final result = await salesCenterRepository.getAll();
     result.when(
       ok: (ok) {
+        final sortedItems = sortList(state.sort, ok);
         emit(
           state.copyWith(
-            list: ok,
-            listCopy: ok,
-            selected: ok.firstOrNull,
+            list: sortedItems,
+            listCopy: sortedItems,
+            selected: sortedItems.firstOrNull,
             generalStatus: GeneralStatus.success,
             dialogMessage: MessageSalesCenterListener.successGet,
           ),
@@ -73,8 +91,8 @@ class SalesCenterCubit extends Cubit<SalesCenterState> {
               element.centroVenta.toLowerCase().contains(text.toLowerCase()),
         )
         .toList();
-
-    emit(state.copyWith(list: listSearh));
+    final sortedItems = sortList(state.sort, listSearh);
+    emit(state.copyWith(list: sortedItems));
   }
 
   Future<void> create({

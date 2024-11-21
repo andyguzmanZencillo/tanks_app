@@ -1,6 +1,7 @@
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tanks_app/core/app/cubit/app_cubit.dart';
 import 'package:tanks_app/core/app/themes/app_colors.dart';
 import 'package:tanks_app/core/helpers/dialog_handler/bloc/dialog_handler_bloc.dart';

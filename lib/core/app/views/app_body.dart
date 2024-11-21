@@ -1,11 +1,26 @@
 part of 'app_view.dart';
 
-class AppBody extends StatelessWidget {
+class AppBody extends StatefulWidget {
   const AppBody({super.key});
 
   @override
+  State<AppBody> createState() => _AppBodyState();
+}
+
+class _AppBodyState extends State<AppBody> {
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('es', 'ES'),
+        Locale('en', 'US'),
+      ],
+      locale: const Locale('es', 'ES'),
       title: 'Tanques',
       theme: blueStoneTheme, // Aquí aplicamos el tema personalizado
       home: const MultiChannelAlertProcessor(child: SplashView()),

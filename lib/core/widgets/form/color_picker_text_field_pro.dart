@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:tanks_app/core/util/form/controllers/controllers.dart';
 
-class ColorPickerTextField extends StatefulWidget {
-  const ColorPickerTextField({required this.controller, super.key});
-  final ControllerField controller;
+class ColorPickerTextFieldPro extends StatefulWidget {
+  const ColorPickerTextFieldPro({required this.controller, super.key});
+  final ControllerFieldPro controller;
 
   @override
-  ColorPickerTextFieldState createState() => ColorPickerTextFieldState();
+  ColorPickerTextFieldProState createState() => ColorPickerTextFieldProState();
 }
 
-class ColorPickerTextFieldState extends State<ColorPickerTextField> {
+class ColorPickerTextFieldProState extends State<ColorPickerTextFieldPro> {
   Color _selectedColor = Colors.orange;
 
   @override
@@ -83,7 +83,7 @@ class ColorPickerTextFieldState extends State<ColorPickerTextField> {
     return const OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
       borderSide: BorderSide(
-        color: Color.fromARGB(59, 0, 0, 0),
+        color: Color.fromARGB(78, 0, 0, 0),
         width: 1.5,
       ),
     );

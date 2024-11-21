@@ -23,6 +23,7 @@ import 'package:tanks_app/features/sign_in/cubit/sign_in_cubit.dart';
 import 'package:tanks_app/features/sign_up/cubit/sign_up_cubit.dart';
 import 'package:tanks_app/features/tank_variation/create_update/cubit/upsert_tank_variation_cubit.dart';
 import 'package:tanks_app/features/tank_variation/list/cubit/tank_variation_cubit.dart';
+import 'package:tanks_app/features/tanks/cubit/prepare_tank_cubit.dart';
 import 'package:tanks_app/features/tanks/cubit/tanks_cubit.dart';
 import 'package:tanks_app/features/tanks/cubit/upsert_tanks_cubit.dart';
 
@@ -111,4 +112,5 @@ void registerBloc() {
   );
 
   sl.registerFactory<ArticleCubit>(() => ArticleCubit(sl()));
+  sl.registerFactory<PrepareTankCubit>(() => PrepareTankCubit(sl(), sl()));
 }
